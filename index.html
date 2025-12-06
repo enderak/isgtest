@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>İSG Pro Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <div id="home-screen" class="screen active">
+            <h1>İSG SINAV PRO <span class="badge">2026</span></h1>
+            
+            <div class="stats-card">
+                <div>
+                    <i class="fas fa-trophy"></i>
+                    <span id="best-score">0</span>
+                    <small>En İyi Skor</small>
+                </div>
+                <div>
+                    <i class="fas fa-star"></i>
+                    <span id="fav-count">0</span>
+                    <small>Favoriler</small>
+                </div>
+            </div>
+
+            <div class="filter-area">
+                <select id="category-filter">
+                    <option value="all">Tüm Kategoriler</option>
+                    <option value="law">Hukuk</option>
+                    <option value="health">Sağlık</option>
+                    <option value="tech">Teknik Konular</option>
+                </select>
+            </div>
+
+            <div class="mode-buttons">
+                <button onclick="startQuiz('normal')" class="btn-mode normal">
+                    <i class="fas fa-play"></i> Normal Mod <small>Süre Sınırsız</small>
+                </button>
+                <button onclick="startQuiz('timed')" class="btn-mode timed">
+                    <i class="fas fa-stopwatch"></i> Zamanlı Mod <small>30 Saniye/Soru</small>
+                </button>
+                <button onclick="startQuiz('practice')" class="btn-mode practice">
+                    <i class="fas fa-heart"></i> Pratik Mod <small>Sadece Favoriler</small>
+                </button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="header-bar">
+                <button onclick="goHome()" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
+                <div class="timer-bar"><div id="time-left"></div></div>
+                <button onclick="toggleFav()" id="fav-btn" class="icon-btn"><i class="far fa-star"></i></button>
+            </div>
+
+            <div class="question-area">
+                <span class="q-category" id="q-category">Genel</span>
+                <h2 id="question-text">Soru yükleniyor...</h2>
+            </div>
+
+            <div id="options-container" class="options-list">
+                </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-card">
+                <i class="fas fa-clipboard-check"></i>
+                <h2>Test Bitti!</h2>
+                <div class="score-display">
+                    <span id="final-score">0</span> / <span id="total-questions">0</span>
+                </div>
+                <p id="feedback-text">Tebrikler!</p>
+                <button onclick="goHome()" class="btn-primary">Ana Menüye Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

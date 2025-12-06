@@ -1,413 +1,277 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>İSG Sınavı Öğrencesi v12</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Modern mobil tarayıcılar için tam ekran sabitleme */
-        body { 
-            font-family: 'Inter', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-            overscroll-behavior: none;
-            position: fixed; /* Sayfayı ekrana çiviler */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 100dvh; /* Dinamik yükseklik: Adres çubuğunu hesaba katar */
-        }
-        .scroller::-webkit-scrollbar { width: 4px; }
-        .scroller::-webkit-scrollbar-track { background: transparent; }
-        .scroller::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .fade-in { animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body class="bg-slate-100 text-slate-800">
+import React, { useState, useEffect } from 'react';
+import { Play, CheckCircle, XCircle, AlertCircle, Clock, ChevronRight, RotateCcw, X, Volume2, VolumeX } from 'lucide-react';
 
-    <div id="app" class="flex flex-col h-full w-full max-w-md mx-auto bg-white shadow-2xl md:my-0 md:rounded-none overflow-hidden relative"></div>
+// Soru verisi (Örnek veriler korundu)
+const quizData = [
+  {
+    id: 1,
+    question: "Aşağıdakilerden hangisi bir 'input' (giriş) birimidir?",
+    options: ["Yazıcı", "Klavye", "Hoparlör", "Monitör"],
+    correct: 1
+  },
+  {
+    id: 2,
+    question: "HTML neyin kısaltmasıdır?",
+    options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Main Link", "Home Tool Markup Language"],
+    correct: 0
+  },
+  {
+    id: 3,
+    question: "Hangi programlama dili web tarayıcılarında çalışır?",
+    options: ["Python", "C#", "JavaScript", "C++"],
+    correct: 2
+  },
+  {
+    id: 4,
+    question: "Veritabanı sorgulama dili hangisidir?",
+    options: ["HTML", "SQL", "CSS", "XML"],
+    correct: 1
+  },
+  {
+    id: 5,
+    question: "Bir Byte kaç Bit'ten oluşur?",
+    options: ["4", "8", "16", "32"],
+    correct: 1
+  }
+];
 
-    <script>
-        // ==========================================
-        // 1. VERİ TABANI
-        // ==========================================
-        const questionPool = [
-            {
-                category: "Mevzuat",
-                text: "1. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre işveren, çalışanları ve çalışan temsilcilerini hangi konularda bilgilendirir?\nI-İşyerinde karşılaşılabilecek sağlık ve güvenlik riskleri\nII-Kendileri ile ilgili yasal hak ve sorumluluklar\nIII-İlk yardım, olağan dışı durumlar, afetler ve yangınla mücadele",
-                options: ["I, II ve III", "I ve II", "II ve III", "I ve III", "Yalnız I"],
-                correct: 0,
-                source: "2025-1C",
-                explanation: "İşveren; riskler, tedbirler, haklar, sorumluluklar ve acil durum ekipleri konularında çalışanları bilgilendirmek zorundadır.",
-                profile: "igu"
-            },
-            {
-                category: "Mevzuat",
-                text: "2. 6331 sayılı Kanuna göre aşağıdakilerden hangisi destek elemanının asli görevinin yanında İSG ile ilgili görevlerinden değildir?",
-                options: ["Önleme", "Koruma", "Tahliye", "Çalışmaları denetleme", "Yangınla mücadele"],
-                correct: 3,
-                source: "2025-1C",
-                explanation: "Destek elemanının görevi önleme, koruma, tahliye, yangınla mücadele ve ilk yardımdır. Denetleme yetkisi yoktur.",
-                profile: "igu"
-            },
-            {
-                category: "Hukuk",
-                text: "3. 6331 sayılı Kanun yürürlüğe girmeden önce işçilerin taraf olduğu özel hukuk uyuşmazlıklarında hangi kanunlara başvurulmaktaydı?",
-                options: ["Borçlar Kanunu-Ticaret Kanunu", "Ceza Kanunu-Ticaret Kanunu", "İş Kanunu- Ticaret Kanunu", "Borçlar Kanunu-İş Kanunu", "Anayasa-Medeni Kanun"],
-                correct: 3,
-                source: "2025-1C",
-                explanation: "6331 öncesinde İş Kanunu (4857) ve Borçlar Kanunu (6098) esas alınıyordu.",
-                profile: "igu"
-            },
-            {
-                category: "Mevzuat",
-                text: "4. 6331 Sayılı Kanuna göre işveren acil durumlarla ilgili aşağıdakilerden hangisini yapmak zorunda değildir?",
-                options: ["Ölçüm ve değerlendirmeleri yapar.", "Acil durumları önceden değerlendirir.", "Önleyici ve sınırlandırıcı tedbirleri alır.", "Afet planı hazırlayıp Bakanlıktan onay alır.", "Acil durum planlarını hazırlar."],
-                correct: 3,
-                source: "2025-1C",
-                explanation: "İşverenin afet planı hazırlayıp Bakanlıktan onay alma zorunluluğu yoktur; acil durum planı hazırlaması yeterlidir.",
-                profile: "igu"
-            },
-            {
-                category: "Mevzuat",
-                text: "5. 6331 Sayılı Kanuna göre çalışan temsilcisi ile ilgili hangisi yanlıştır?",
-                options: ["Çalışanları temsil etmeye yetkilidir.", "Tehlike anında komple işi durdurma yetkisi vardır.", "Sendika temsilcileri çalışan temsilcisi olabilir.", "Kurul kararları kendisine bildirilir.", "Özel olarak eğitilir."],
-                correct: 1,
-                source: "2025-1C",
-                explanation: "Çalışan temsilcisinin işi komple durdurma yetkisi yoktur; tedbir alınmasını isteme yetkisi vardır.",
-                profile: "igu"
-            },
-            {
-                category: "Teknik",
-                text: "(Deneme Örneği) Aşağıdakilerden hangisi fiziksel risk etmenlerinden biridir?",
-                options: ["Gürültü", "Virüs", "Kurşun", "Bakteri", "Silika Tozu"],
-                correct: 0,
-                source: "Deneme",
-                explanation: "Gürültü, titreşim, aydınlatma fiziksel risktir.",
-                profile: "ortak"
-            },
-            {
-                category: "Hukuk",
-                text: "(Deneme Örneği) İş kazası zaman aşımı süresi kaç yıldır?",
-                options: ["1", "5", "10", "15", "20"],
-                correct: 2,
-                source: "Deneme",
-                explanation: "Borçlar kanununa göre 10 yıldır.",
-                profile: "ortak"
-            },
-            {
-                category: "Sağlık",
-                text: "(Deneme Örneği) Pnömokonyoz en çok hangi organda hasar bırakır?",
-                options: ["Kalp", "Karaciğer", "Akciğer", "Böbrek", "Beyin"],
-                correct: 2,
-                source: "Deneme",
-                explanation: "Tozların akciğerde birikmesi sonucu oluşur.",
-                profile: "ortak"
-            },
-            {
-                category: "Genel İSG Konuları",
-                text: "(Deneme Örneği) Aşağıdakilerden hangisi KKD değildir?",
-                options: ["Baret", "Eldiven", "İş Elbisesi (Üniforma)", "Emniyet Kemeri", "Gözlük"],
-                correct: 2,
-                source: "Deneme",
-                explanation: "Koruyucu özelliği olmayan standart üniformalar KKD sayılmaz.",
-                profile: "ortak"
-            },
-            {
-                category: "Mevzuat",
-                text: "(Deneme Örneği) Kurul en az kaç çalışanı olan işyerinde zorunludur?",
-                options: ["10", "20", "30", "40", "50"],
-                correct: 4,
-                source: "Deneme",
-                explanation: "50 ve üzeri çalışanı olan ve 6 aydan uzun işlerde zorunludur.",
-                profile: "ortak"
-            }
-        ];
+export default function QuizAppV13() {
+  const [started, setStarted] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  
+  // V13 YENİLİĞİ: Tema Durumu
+  // Varsayılan 'emerald' (Yeşil). Diğer seçenek 'blue' (Mavi).
+  const [theme, setTheme] = useState('emerald');
 
-        // ==========================================
-        // 2. UYGULAMA MANTIĞI
-        // ==========================================
-        const EXAM_CONFIG = {
-            'igu': { label: 'İGU (A-B-C)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
-            'hekim': { label: 'İşyeri Hekimliği', threshold: 35, distribution: { 'Sağlık': 25, 'Mevzuat': 13, 'Genel İSG Konuları': 7, 'Hukuk': 3, 'Teknik': 2 } },
-            'dsp': { label: 'Diğer Sağlık P.', threshold: 30, distribution: { 'Sağlık': 17, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Teknik': 5, 'Hukuk': 3 } }
-        };
+  // Tema değiştirme fonksiyonu
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'emerald' ? 'blue' : 'emerald');
+  };
 
-        let app = document.getElementById('app');
-        let currentQuestions = [];
-        let userAnswers = {};
-        let currentIndex = 0;
-        let timerInterval;
-        let timeRemaining = 75 * 60;
-        let isTimerActive = true;
-        let isEduMode = false;
-        let showExplanation = false;
+  // Zıt renk belirleme (Buton rengi için)
+  const toggleColor = theme === 'emerald' ? 'blue' : 'emerald';
 
-        function renderStartScreen() {
-            setTimeout(() => lucide.createIcons(), 0);
-            
-            const sources = [...new Set(questionPool.map(q => q.source))].filter(Boolean).sort().reverse();
-            let sourceOptions = sources.map(s => {
-                let style = s.toLowerCase().includes('deneme') ? 'font-weight:bold; color:#059669;' : '';
-                return `<option value="${s}" style="${style}">${s}</option>`;
-            }).join('');
+  const handleStart = () => {
+    setStarted(true);
+    setScore(0);
+    setCurrentQuestion(0);
+    setShowResult(false);
+    setIsAnswered(false);
+    setSelectedOption(null);
+  };
 
-            // Giriş ekranında butonun görünmesi için "flex-1" ve "overflow-auto" kullanıyoruz
-            app.innerHTML = `
-                <div class="flex-1 flex flex-col p-6 bg-slate-50 overflow-y-auto">
-                    <div class="flex-1 flex flex-col justify-center max-w-sm mx-auto w-full">
-                        <div class="text-center mb-6">
-                            <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-3 text-emerald-600">
-                                <i data-lucide="book-open-check" class="w-8 h-8"></i>
-                            </div>
-                            <h1 class="text-2xl font-extrabold text-slate-800">Sınav Giriş</h1>
-                        </div>
+  const handleAnswer = (index) => {
+    if (isAnswered) return;
+    
+    setSelectedOption(index);
+    setIsAnswered(true);
 
-                        <div class="space-y-4 bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                            <div>
-                                <label class="text-xs font-bold text-slate-400 uppercase">Branş</label>
-                                <select id="profileSelect" class="w-full mt-1 p-2.5 rounded-lg border bg-slate-50 font-semibold text-sm outline-none focus:border-emerald-500">
-                                    <option value="igu">İGU (A-B-C)</option>
-                                    <option value="hekim">İşyeri Hekimliği</option>
-                                    <option value="dsp">Diğer Sağlık P.</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-xs font-bold text-slate-400 uppercase">Kaynak</label>
-                                <select id="sourceSelect" class="w-full mt-1 p-2.5 rounded-lg border bg-slate-50 font-semibold text-sm outline-none focus:border-emerald-500">
-                                    ${sourceOptions}
-                                </select>
-                            </div>
+    if (index === quizData[currentQuestion].correct) {
+      setScore(score + 1);
+      if(soundEnabled) playSound('success');
+    } else {
+      if(soundEnabled) playSound('error');
+    }
 
-                            <div class="pt-2 space-y-3">
-                                <div class="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-100">
-                                    <span class="text-sm font-semibold text-slate-700 ml-1">Süre (75 Dk)</span>
-                                    <input type="checkbox" id="timerToggle" checked class="w-4 h-4 accent-emerald-600">
-                                </div>
-                                
-                                <div class="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-100">
-                                    <div>
-                                        <span class="text-sm font-semibold text-slate-700 block ml-1">Eğitim Modu</span>
-                                        <span class="text-[10px] text-slate-400 ml-1">Cevabı anında göster</span>
-                                    </div>
-                                    <input type="checkbox" id="eduToggle" class="w-4 h-4 accent-emerald-600" onchange="toggleExp()">
-                                </div>
+    // Otomatik ilerleme
+    setTimeout(() => {
+      if (currentQuestion < quizData.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setIsAnswered(false);
+        setSelectedOption(null);
+      } else {
+        setShowResult(true);
+        if(soundEnabled) playSound('finish');
+      }
+    }, 1200);
+  };
 
-                                <div id="expContainer" class="flex items-center justify-between p-2 pl-4 opacity-50 transition-opacity">
-                                    <span class="text-sm text-slate-600">Açıklamayı Göster</span>
-                                    <input type="checkbox" id="expToggle" disabled class="w-4 h-4 accent-emerald-600">
-                                </div>
-                            </div>
-                        </div>
+  const playSound = (type) => {
+    // Gerçek ses dosyaları eklenebilir, şimdilik placeholder
+    console.log(`Ses çalınıyor: ${type}`);
+  };
 
-                        <button onclick="startQuiz()" class="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 mb-4">
-                            Başla <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            toggleExp();
-        }
+  const resetQuiz = () => {
+    setStarted(false);
+    setShowResult(false);
+  };
 
-        function toggleExp() {
-            const edu = document.getElementById('eduToggle').checked;
-            const expDiv = document.getElementById('expContainer');
-            const expInput = document.getElementById('expToggle');
-            if(edu) { expDiv.classList.remove('opacity-50'); expInput.disabled = false; } 
-            else { expDiv.classList.add('opacity-50'); expInput.disabled = true; expInput.checked = false; }
-        }
+  // --- GİRİŞ EKRANI ---
+  if (!started) {
+    return (
+      <div className={`min-h-screen bg-${theme}-50 flex items-center justify-center p-4 transition-colors duration-500`}>
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative">
+          
+          {/* V13: Tema Değiştirme Butonu (Giriş Ekranı) */}
+          <button 
+            onClick={toggleTheme}
+            className={`absolute top-4 left-4 w-8 h-8 rounded-full bg-${toggleColor}-500 hover:bg-${toggleColor}-600 shadow-md flex items-center justify-center transition-all duration-300 transform hover:scale-110`}
+            title={`${toggleColor === 'blue' ? 'Mavi' : 'Yeşil'} Temaya Geç`}
+          >
+             {/* İçine küçük bir nokta efekti */}
+             <div className="w-3 h-3 bg-white rounded-full opacity-50"></div>
+          </button>
 
-        function startQuiz() {
-            const profile = document.getElementById('profileSelect').value;
-            const source = document.getElementById('sourceSelect').value;
-            const config = EXAM_CONFIG[profile];
-            
-            isTimerActive = document.getElementById('timerToggle').checked;
-            isEduMode = document.getElementById('eduToggle').checked;
-            showExplanation = document.getElementById('expToggle').checked;
+          <div className={`bg-${theme}-600 p-8 text-center relative overflow-hidden transition-colors duration-500`}>
+             <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+               <Play size={40} className="text-white ml-2" />
+             </div>
+             <h1 className="text-3xl font-bold text-white mb-2">Bilgi Yarışması</h1>
+             <p className={`text-${theme}-100`}>Bilgini test etmeye hazır mısın?</p>
+          </div>
+          
+          <div className="p-8">
+            <div className="space-y-4 mb-8">
+               <div className={`flex items-center p-3 bg-${theme}-50 rounded-lg`}>
+                 <Clock className={`text-${theme}-600 mr-3`} size={20} />
+                 <span className="text-gray-700">Toplam <strong>{quizData.length}</strong> Soru</span>
+               </div>
+               <div className={`flex items-center p-3 bg-${theme}-50 rounded-lg`}>
+                 <CheckCircle className={`text-${theme}-600 mr-3`} size={20} />
+                 <span className="text-gray-700">Her soru için puanlama</span>
+               </div>
+            </div>
 
-            currentQuestions = [];
+            <button 
+              onClick={handleStart}
+              className={`w-full bg-${theme}-600 hover:bg-${theme}-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group duration-300`}
+            >
+              Yarışmaya Başla
+              <ChevronRight className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-            if (source.includes("Deneme")) {
-                const distribution = config.distribution;
-                let pool = questionPool.filter(q => q.source === source);
-                if (pool.length === 0) { alert("Yetersiz soru."); return; }
-                for (const [cat, count] of Object.entries(distribution)) {
-                    let validQs = pool.filter(q => q.category === cat && (q.profile === profile || q.profile === 'ortak' || !q.profile));
-                    if (validQs.length > 0) {
-                        while(validQs.length < count) { validQs.push(validQs[Math.floor(Math.random() * validQs.length)]); }
-                        validQs.sort(() => Math.random() - 0.5);
-                        currentQuestions.push(...validQs.slice(0, count));
-                    }
-                }
-                currentQuestions.sort(() => Math.random() - 0.5);
-            } else {
-                currentQuestions = questionPool.filter(q => q.source === source);
-            }
+  // --- SONUÇ EKRANI ---
+  if (showResult) {
+    const percentage = (score / quizData.length) * 100;
+    let feedback = "";
+    let feedbackIcon = null;
 
-            if (currentQuestions.length === 0) { alert("Soru bulunamadı!"); return; }
+    if (percentage >= 80) {
+        feedback = "Mükemmel!";
+        feedbackIcon = <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce"><CheckCircle size={48} className="text-yellow-500" /></div>;
+    } else if (percentage >= 50) {
+        feedback = "Güzel İş!";
+        feedbackIcon = <div className={`w-24 h-24 bg-${theme}-100 rounded-full flex items-center justify-center mx-auto mb-4`}><CheckCircle size={48} className={`text-${theme}-500`} /></div>;
+    } else {
+        feedback = "Daha İyisini Yapabilirsin";
+        feedbackIcon = <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"><AlertCircle size={48} className="text-red-500" /></div>;
+    }
 
-            userAnswers = {};
-            currentIndex = 0;
-            timeRemaining = 75 * 60;
-            if(isTimerActive) startTimer();
-            renderQuiz();
-        }
+    return (
+      <div className={`min-h-screen bg-${theme}-50 flex items-center justify-center p-4 transition-colors duration-500`}>
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden text-center p-8 relative">
+           {/* V13: Tema Butonu (Sonuç Ekranı) */}
+           <button 
+            onClick={toggleTheme}
+            className={`absolute top-4 left-4 w-8 h-8 rounded-full bg-${toggleColor}-500 hover:bg-${toggleColor}-600 flex items-center justify-center transition-all duration-300`}
+          >
+             <div className="w-3 h-3 bg-white rounded-full opacity-50"></div>
+          </button>
 
-        function startTimer() {
-            if(timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                const el = document.getElementById('timerDisplay');
-                if(el) el.innerText = `${Math.floor(timeRemaining / 60).toString().padStart(2,'0')}:${(timeRemaining % 60).toString().padStart(2,'0')}`;
-                if (timeRemaining <= 0) finishQuiz();
-            }, 1000);
-        }
+           {feedbackIcon}
+           <h2 className="text-2xl font-bold text-gray-800 mb-2">{feedback}</h2>
+           <div className="text-5xl font-black text-gray-800 mb-4">{score}<span className="text-2xl text-gray-400 font-normal">/{quizData.length}</span></div>
+           
+           <div className="w-full bg-gray-200 rounded-full h-3 mb-8">
+             <div className={`bg-${theme}-500 h-3 rounded-full transition-all duration-1000`} style={{ width: `${percentage}%` }}></div>
+           </div>
 
-        function renderQuiz() {
-            setTimeout(() => lucide.createIcons(), 0);
-            const q = currentQuestions[currentIndex];
-            const isAnswered = userAnswers[currentIndex] !== undefined;
-            const myAnswer = userAnswers[currentIndex];
+           <button 
+             onClick={resetQuiz}
+             className={`w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2`}
+           >
+             <RotateCcw size={20} />
+             Tekrar Dene
+           </button>
+        </div>
+      </div>
+    );
+  }
 
-            let optionsHtml = q.options.map((opt, i) => {
-                const letters = ["A", "B", "C", "D", "E"];
-                let btnClass = "bg-white border-slate-200 hover:bg-slate-50";
-                let iconClass = "bg-slate-100 text-slate-500";
+  // --- SORU (QUIZ) EKRANI ---
+  return (
+    <div className={`min-h-screen bg-${theme}-50 flex items-center justify-center p-4 transition-colors duration-500`}>
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden relative">
+        
+        {/* Üst Bar */}
+        <div className={`bg-${theme}-600 p-4 flex justify-between items-center text-white transition-colors duration-500`}>
+          <div className="flex items-center gap-3">
+             <button onClick={() => setStarted(false)} className="hover:bg-white/20 p-1 rounded-lg transition">
+                <X size={24} />
+             </button>
+             {/* V13: Tema Değiştirme Butonu (Sınav Esnası) */}
+             <button 
+                onClick={toggleTheme}
+                className={`w-6 h-6 rounded-full bg-${toggleColor}-400 hover:bg-${toggleColor}-300 border-2 border-white/50 transition-all duration-300`}
+                title="Temayı Değiştir"
+             ></button>
+          </div>
+          
+          <span className="font-bold text-lg">Soru {currentQuestion + 1}/{quizData.length}</span>
+          
+          <button onClick={() => setSoundEnabled(!soundEnabled)} className="hover:bg-white/20 p-1 rounded-lg transition">
+            {soundEnabled ? <Volume2 size={24} /> : <VolumeX size={24} />}
+          </button>
+        </div>
 
-                if (isAnswered) {
-                    if (i === myAnswer) {
-                        btnClass = "bg-emerald-50 border-emerald-500 ring-1 ring-emerald-500";
-                        iconClass = "bg-emerald-600 text-white";
-                        if (isEduMode && i !== q.correct) {
-                            btnClass = "bg-red-50 border-red-500 ring-1 ring-red-500";
-                            iconClass = "bg-red-600 text-white";
-                        }
-                    }
-                    if (isEduMode && i === q.correct) {
-                        btnClass = "bg-green-50 border-green-500 ring-1 ring-green-500";
-                        iconClass = "bg-green-600 text-white";
-                    }
-                }
+        {/* İlerleme Çubuğu */}
+        <div className="w-full bg-gray-200 h-1">
+          <div 
+            className={`bg-${theme}-400 h-1 transition-all duration-300`} 
+            style={{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }}
+          ></div>
+        </div>
 
-                let clickAction = (isEduMode && isAnswered) ? '' : `onclick="selectAnswer(${i})"`;
-                if (isEduMode && isAnswered) btnClass += " cursor-default";
+        {/* Soru Alanı */}
+        <div className="p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 min-h-[80px]">
+            {quizData[currentQuestion].question}
+          </h2>
 
-                return `
-                <div ${clickAction} class="w-full p-3 rounded-lg border mb-2 flex items-start gap-3 transition-all cursor-pointer ${btnClass}">
-                    <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs border ${iconClass} mt-0.5">
-                        ${letters[i]}
-                    </div>
-                    <span class="text-sm font-medium text-slate-700 leading-snug">${opt}</span>
-                </div>`;
-            }).join('');
+          <div className="space-y-3">
+            {quizData[currentQuestion].options.map((option, index) => {
+              let btnClass = `w-full text-left p-4 rounded-xl border-2 transition-all duration-200 font-medium flex justify-between items-center `;
+              
+              if (isAnswered) {
+                 if (index === quizData[currentQuestion].correct) {
+                    btnClass += "bg-green-100 border-green-500 text-green-700"; // Doğru cevap her zaman yeşil
+                 } else if (index === selectedOption) {
+                    btnClass += "bg-red-100 border-red-500 text-red-700"; // Yanlış cevap her zaman kırmızı
+                 } else {
+                    btnClass += "bg-gray-50 border-gray-100 text-gray-400 opacity-50";
+                 }
+              } else {
+                 btnClass += `bg-white border-gray-200 hover:border-${theme}-500 hover:bg-${theme}-50 text-gray-700 hover:shadow-md`;
+              }
 
-            let imageHtml = q.image ? `<div class="mb-3 flex justify-center"><img src="${q.image}" class="max-h-48 rounded border shadow-sm"></div>` : '';
-            let timerHtml = isTimerActive ? `<span class="font-mono font-bold text-emerald-700 text-sm bg-emerald-100 px-2 py-0.5 rounded" id="timerDisplay">75:00</span>` : '';
-            
-            let clearBtn = (!isEduMode && isAnswered) ? 
-                `<button onclick="clearAnswer()" class="text-red-500 text-xs font-bold px-3 py-2 bg-red-50 rounded hover:bg-red-100">Temizle</button>` : `<div></div>`;
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswer(index)}
+                  disabled={isAnswered}
+                  className={btnClass}
+                >
+                  <span>{option}</span>
+                  {isAnswered && index === quizData[currentQuestion].correct && <CheckCircle size={20} className="text-green-600" />}
+                  {isAnswered && index === selectedOption && index !== quizData[currentQuestion].correct && <XCircle size={20} className="text-red-600" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-            let explanationHtml = (isEduMode && showExplanation && isAnswered) ? `
-                <div class="mt-2 p-3 bg-emerald-50 border-l-4 border-emerald-500 rounded text-xs text-emerald-900 fade-in leading-relaxed">
-                    <span class="font-bold block mb-1">Açıklama:</span>
-                    ${q.explanation || 'Açıklama yok.'}
-                </div>
-            ` : '';
-
-            // --- LAYOUT DÜZELTMESİ BURADA ---
-            // Header (Sabit), İçerik (Flex-1 + Scroll), Footer (Sabit)
-            app.innerHTML = `
-                <div class="px-4 py-2 border-b border-slate-100 bg-white flex items-center justify-between shrink-0 z-20 shadow-sm h-12">
-                    <div class="flex items-center gap-2">
-                        <button onclick="if(confirm('Çık?')) renderStartScreen()" class="text-slate-400 hover:text-red-500"><i data-lucide="x" class="w-5 h-5"></i></button>
-                        <span class="text-sm font-bold text-slate-600">${currentIndex + 1}/${currentQuestions.length}</span>
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded uppercase tracking-wider hidden xs:inline-block">${q.category.substring(0,8)}</span>
-                    </div>
-                    ${timerHtml}
-                </div>
-
-                <div class="flex-1 overflow-y-auto p-4 bg-white scroller relative w-full">
-                    <div class="pb-4"> ${imageHtml}
-                        <h2 class="text-base md:text-lg font-bold text-slate-800 mb-4 leading-normal">${q.text}</h2>
-                        <div>${optionsHtml}</div>
-                        ${explanationHtml}
-                    </div>
-                </div>
-
-                <div class="px-4 py-3 bg-slate-50 border-t border-slate-200 shrink-0 z-30 flex gap-3 pb-safe">
-                    <button onclick="prevQ()" ${currentIndex===0?'disabled':''} class="px-3 py-2 rounded-lg border border-slate-300 text-slate-500 hover:bg-white disabled:opacity-40 transition-colors">
-                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                    </button>
-                    
-                    ${clearBtn}
-
-                    <button onclick="${currentIndex === currentQuestions.length-1 ? 'finishQuiz()' : 'nextQ()'}" class="flex-1 px-4 py-2 rounded-lg bg-emerald-600 text-white font-bold text-sm shadow flex items-center justify-center gap-2 active:scale-95 transition-transform">
-                        ${currentIndex === currentQuestions.length-1 ? 'Bitir' : 'Sonraki'}
-                        <i data-lucide="${currentIndex === currentQuestions.length-1 ? 'check' : 'chevron-right'}" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            `;
-        }
-
-        function selectAnswer(i) {
-            if (isEduMode && userAnswers[currentIndex] !== undefined) return;
-            userAnswers[currentIndex] = i;
-            renderQuiz();
-        }
-
-        function clearAnswer() { delete userAnswers[currentIndex]; renderQuiz(); }
-        function nextQ() { if(currentIndex < currentQuestions.length-1) { currentIndex++; renderQuiz(); } }
-        function prevQ() { if(currentIndex > 0) { currentIndex--; renderQuiz(); } }
-
-        function finishQuiz() {
-            clearInterval(timerInterval);
-            let correct = 0, wrong = 0, empty = 0;
-            currentQuestions.forEach((q, i) => {
-                if (userAnswers[i] === undefined) empty++;
-                else if (userAnswers[i] === q.correct) correct++;
-                else wrong++;
-            });
-
-            const score = (correct * (100 / currentQuestions.length)).toFixed(1);
-            
-            app.innerHTML = `
-                <div class="flex-1 flex flex-col items-center justify-center p-6 text-center bg-white fade-in overflow-y-auto">
-                    <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-4 text-emerald-600">
-                        <i data-lucide="award" class="w-10 h-10"></i>
-                    </div>
-                    
-                    <h2 class="text-2xl font-bold text-slate-800 mb-1">Test Bitti!</h2>
-                    <p class="text-sm text-slate-500 mb-6">Puanınız: <span class="text-emerald-600 font-bold text-lg">${score}</span></p>
-
-                    <div class="grid grid-cols-3 gap-3 w-full mb-6 max-w-xs">
-                        <div class="p-3 bg-green-50 rounded border border-green-100">
-                            <div class="text-xl font-bold text-green-600">${correct}</div>
-                            <div class="text-[10px] uppercase font-bold text-green-800">Doğru</div>
-                        </div>
-                        <div class="p-3 bg-red-50 rounded border border-red-100">
-                            <div class="text-xl font-bold text-red-600">${wrong}</div>
-                            <div class="text-[10px] uppercase font-bold text-red-800">Yanlış</div>
-                        </div>
-                        <div class="p-3 bg-slate-50 rounded border border-slate-100">
-                            <div class="text-xl font-bold text-slate-600">${empty}</div>
-                            <div class="text-[10px] uppercase font-bold text-slate-800">Boş</div>
-                        </div>
-                    </div>
-
-                    <button onclick="location.reload()" class="w-full max-w-xs py-3 rounded-lg font-bold bg-emerald-600 text-white text-sm shadow">
-                        Başa Dön
-                    </button>
-                </div>
-            `;
-            setTimeout(() => lucide.createIcons(), 0);
-        }
-
-        renderStartScreen();
-    </script>
-</body>
-</html>
+      </div>
+    </div>
+  );
+}

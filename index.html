@@ -96,16 +96,104 @@
             padding-bottom: 10px;
         }
 
-        /* --- YENİ EKLENEN AÇIKLAMA KUTUSU --- */
+        /* --- AÇIKLAMA KUTUSU --- */
         .explanation-box {
             margin-top: 20px;
             padding: 15px;
-            background-color: #e3f2fd; /* Açık mavi */
-            border-left: 5px solid #2196f3; /* Mavi şerit */
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
             border-radius: 4px;
             color: #0d47a1;
             font-size: 0.95rem;
             line-height: 1.5;
-            text-align: left; /* Metni sola hizala */
+            text-align: left;
             animation: fadeIn 0.5s;
         }
+        
+        .explanation-box strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #1565c0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="start-screen">
+            <h1>İSG Sınav Hazırlık</h1>
+            <p>Kendinizi test etmeye hazır mısınız?</p>
+            
+            <div class="control-group">
+                <label>Soru Sayısı:</label>
+                <input type="number" id="question-count" value="5" min="1" max="50">
+            </div>
+
+            <div class="control-group">
+                <label>Kategori Seç:</label>
+                <select id="category-select">
+                    <option value="all">Tüm Konular (Karışık)</option>
+                    <option value="Mevzuat">Mevzuat</option>
+                    <option value="Yangın">Yangın</option>
+                    <option value="Teknik">Teknik Konular</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="enable-timer"> 
+                    ⏱️ Zamanlayıcı (Her soru için 30sn)
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="instant-answer"> 
+                    ⚡ Anlık Cevap (Seçer seçmez sonucu gör)
+                </label>
+            </div>
+
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="enable-explanations">
+                    📖 Açıklamalı Çözüm Modu (Cevaptan sonra bilgiyi göster)
+                </label>
+            </div>
+
+            <button class="btn" onclick="startQuiz()">Sınava Başla</button>
+        </div>
+
+        <div id="quiz-screen">
+            <div id="stats-bar">
+                <span id="progress-text">Soru: 1/10</span>
+                <span id="score-text">Puan: 0</span>
+            </div>
+            
+            <div id="timer-display" style="display: none;">Süre: 30</div>
+            
+            <h2 id="question-text">Soru buraya gelecek...</h2>
+            
+            <div id="options-container"></div>
+
+            <div id="explanation-box" class="explanation-box" style="display: none;"></div>
+
+            <button class="btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Sonraki Soru</button>
+        </div>
+
+        <div id="result-screen">
+            <h1>Sınav Bitti!</h1>
+            <p>Toplam Puanınız:</p>
+            <h2 id="final-score" style="font-size: 3rem; color: #2ecc71;">0</h2>
+            <p id="result-message"></p>
+            <button class="btn" onclick="location.reload()">Tekrar Dene</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

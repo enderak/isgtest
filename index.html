@@ -83,7 +83,6 @@
                             <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-600"></i>
                         </div>
                         <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">İSG Sınav Öğrenceliği</h1>
-                        <p class="text-sm text-gray-500 mt-2">Kişiselleştirilmiş Sınav Simülasyonu</p>
                     </div>
 
                     <div class="space-y-4">
@@ -223,28 +222,17 @@
                     (q.profile === profile || q.profile === 'ortak' || !q.profile) 
                 );
                 
-                // --- KONTROL MEKANİZMASI ---
-                if (categoryQuestions.length === 0) {
-                    missingCategories.push(`- ${categoryName}: Hiç soru bulunamadı!`);
-                } 
-                else if (categoryQuestions.length < count) {
-                    // Soru var ama yetersizse çoğalt
-                    let originalLen = categoryQuestions.length;
-                    while (categoryQuestions.length < count) {
-                        categoryQuestions.push(categoryQuestions[categoryQuestions.length % originalLen]);
-                    }
-                    categoryQuestions.sort(() => Math.random() - 0.5);
-                    currentQuestions.push(...categoryQuestions.slice(0, count));
-                } 
-                else {
-                    // Yeterli soru var
-                    categoryQuestions.sort(() => Math.random() - 0.5);
-                    currentQuestions.push(...categoryQuestions.slice(0, count));
+                categoryQuestions.sort(() => Math.random() - 0.5);
+                
+                if (categoryQuestions.length < count) {
+                    missingCategories.push(`- ${categoryName}: ${count} tane gerekli, ${categoryQuestions.length} bulundu.`);
                 }
+
+                currentQuestions.push(...categoryQuestions.slice(0, count));
             }
 
             if (missingCategories.length > 0) {
-                alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında şu kategorilerde HİÇ soru yok:\n\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda en az 1 soru ekleyin.`);
+                alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında, "${config.label}" profili için yeterli soru girilmemiş.\n\nEksikler:\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda soru ekleyin.`);
                 return;
             }
 
@@ -278,6 +266,16 @@
             const q = currentQuestions[currentIndex];
             const isAnswered = userAnswers[currentIndex] !== undefined;
             const savedAnswer = userAnswers[currentIndex];
+            
+            // --- RESİM GÖSTERME KODU (BURASI EKLENDİ) ---
+            let imageHtml = '';
+            if (q.image && q.image.trim() !== '') {
+                imageHtml = `
+                    <div class="flex justify-center mb-4">
+                        <img src="${q.image}" class="max-h-60 rounded-lg border border-gray-200 shadow-sm object-contain" alt="Soru Görseli">
+                    </div>`;
+            }
+            // ---------------------------------------------
             
             const optionsHtml = q.options.map((opt, i) => {
                 const letters = ["A", "B", "C", "D", "E"];
@@ -335,17 +333,6 @@
                 </div>
             ` : '';
 
-            // --- YENİ EKLENEN RESİM ALANI ---
-            let imageHtml = '';
-            if (q.image && q.image.trim() !== "") {
-                imageHtml = `
-                    <div class="mb-4 flex justify-center">
-                        <img src="${q.image}" alt="Soru Görseli" class="max-h-64 rounded-lg border border-gray-200 shadow-sm object-contain">
-                    </div>
-                `;
-            }
-            // ---------------------------------
-
             app.innerHTML = `
                 <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-[95vh] md:h-auto fade-in">
                     <div class="px-4 py-3 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20 shadow-sm">
@@ -375,7 +362,7 @@
                             </div>
                             
                             ${imageHtml}
-
+                            
                             <h2 class="text-lg md:text-xl font-bold text-gray-800 leading-snug">${q.question}</h2>
                         </div>
 
@@ -513,4 +500,3 @@
     </script>
 </body>
 </html>
-

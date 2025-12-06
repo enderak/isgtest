@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İSG Sınav Öğrencesi v16</title>
+    <title>İSG Sınav Simülasyonu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -35,7 +35,17 @@
         // ==========================================
         const questionPool = [
             // --- 2025-1C ---
-            { category: "Mevzuat", text: "1. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre işveren, çalışanları ve çalışan temsilcilerini hangi konularda bilgilendirir? I-Riskler II-Haklar III-Acil Durum Ekipleri", options: ["I, II ve III", "I ve II", "II ve III", "I ve III", "Yalnız I"], correct: 0, source: "2025-1C", explanation: "İşveren; riskler, tedbirler, haklar ve acil durum ekipleri konularında bilgilendirme yapar.", profile: "igu" },
+            // BURAYA RESİM EKLENDİ (image: "eldiven.jpg")
+            { 
+                category: "Mevzuat", 
+                text: "1. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre işveren, çalışanları ve çalışan temsilcilerini hangi konularda bilgilendirir? I-Riskler II-Haklar III-Acil Durum Ekipleri", 
+                options: ["I, II ve III", "I ve II", "II ve III", "I ve III", "Yalnız I"], 
+                correct: 0, 
+                source: "2025-1C", 
+                explanation: "İşveren; riskler, tedbirler, haklar ve acil durum ekipleri konularında bilgilendirme yapar.", 
+                profile: "igu",
+                image: "img/eldiven.jpg" // <--- RESİM BURADA
+            },
             { category: "Mevzuat", text: "2. Destek elemanının asli görevinin yanında İSG ile ilgili görevlerinden hangisi yoktur?", options: ["Önleme", "Koruma", "Tahliye", "Çalışmaları denetleme", "Yangınla mücadele"], correct: 3, source: "2025-1C", explanation: "Destek elemanının denetleme yetkisi yoktur.", profile: "igu" },
             { category: "Hukuk", text: "3. 6331 öncesinde İSG ile ilgili özel hukuk uyuşmazlıklarında hangi kanunlara başvurulmaktaydı?", options: ["Borçlar-Ticaret", "Ceza-Ticaret", "İş-Ticaret", "Borçlar Kanunu-İş Kanunu", "Anayasa-Medeni"], correct: 3, source: "2025-1C", explanation: "4857 İş Kanunu ve 6098 Borçlar Kanunu.", profile: "igu" },
             { category: "Mevzuat", text: "4. İşveren acil durumlarla ilgili aşağıdakilerden hangisini yapmak zorunda değildir?", options: ["Ölçüm yapmak", "Acil durumları değerlendirmek", "Önleyici tedbir almak", "Bakanlıktan onaylı afet planı hazırlamak", "Acil durum planı hazırlamak"], correct: 3, source: "2025-1C", explanation: "Afet planı için Bakanlık onayı şartı 6331'de yoktur.", profile: "igu" },
@@ -215,7 +225,6 @@
                 let clickAction = (isEduMode && isAnswered) ? '' : `onclick="selectAnswer(${i})"`;
                 if (isEduMode && isAnswered) btnClass += " cursor-default";
 
-                // KUTULARI KÜÇÜLTMEK İÇİN: p-3 ve mb-2 (Daha kompakt)
                 return `
                 <div ${clickAction} class="w-full p-3 rounded-lg border mb-2 flex items-start gap-3 transition-all ${btnClass}">
                     <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs border border-black/5 mt-0.5 ${iconClass}">
@@ -225,10 +234,11 @@
                 </div>`;
             }).join('');
 
+            // --- RESİM ALANI ---
             let imageHtml = q.image ? `<div class="mb-3 flex justify-center"><img src="${q.image}" class="max-h-48 rounded-lg border border-slate-200 shadow-sm object-contain"></div>` : '';
+            
             let timerHtml = isTimerActive ? `<span class="font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-xs" id="timerDisplay">75:00</span>` : '';
 
-            // AÇIKLAMA (Eğitim Modu)
             let explanationHtml = '';
             if (isEduMode && isAnswered) {
                 explanationHtml = `
@@ -291,9 +301,7 @@
         }
 
         function clearAnswer() { 
-            // Seçimi sil
             delete userAnswers[currentIndex]; 
-            // Ekranı güncelle
             renderQuiz(); 
         }
         

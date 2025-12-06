@@ -1,0 +1,82 @@
+==========================================================================
+             SORULAR.JS DOSYASI - SORU EKLEME VE DÜZENLEME REHBERİ
+==========================================================================
+
+Bu dosya JavaScript formatında bir veri listesidir. 
+Tüm sorular "const questionPool = [" satırı ile başlar ve "];" ile biter.
+Her soru süslü parantez { } içine yazılır ve birbirinden VİRGÜL (,) ile ayrılır.
+
+--------------------------------------------------------------------------
+1. BOŞ SORU ŞABLONU (Kopyala & Yapıştır)
+--------------------------------------------------------------------------
+    {
+        category: "Kategori Adı",
+        text: "Soru metni buraya yazılacak",
+        options: ["A Şıkkı", "B Şıkkı", "C Şıkkı", "D Şıkkı", "E Şıkkı"],
+        correct: 0,
+        source: "Kaynak Adı",
+        explanation: "Cevabın açıklaması buraya.",
+        profile: "ortak"
+    },
+
+--------------------------------------------------------------------------
+2. ALANLARIN ANLAMLARI VE KURALLAR
+--------------------------------------------------------------------------
+
+A) category (Kategori):
+   Sistemin soruyu tanıması için buradaki isimler index.html'deki ile
+   BİREBİR AYNI (büyük/küçük harf dahil) olmalıdır.
+   
+   Kullanabileceğin Geçerli Kategoriler:
+   - "Hukuk"
+   - "Genel İSG Konuları"
+   - "Mevzuat"
+   - "Sağlık"
+   - "Teknik"
+
+B) text (Soru Metni):
+   Sorunun kendisidir. Çift tırnak (") içine yazılır.
+
+C) options (Şıklar):
+   Cevap seçenekleri köşeli parantez [] içinde, virgülle ayrılarak yazılır.
+   Sırası her zaman A, B, C, D, E şeklindedir.
+
+D) correct (Doğru Cevap - ÇOK ÖNEMLİ!):
+   Yazılımda sayma işlemi 0'dan başlar.
+   - A şıkkı doğruysa -> 0
+   - B şıkkı doğruysa -> 1
+   - C şıkkı doğruysa -> 2
+   - D şıkkı doğruysa -> 3
+   - E şıkkı doğruysa -> 4
+
+E) source (Kaynak):
+   Sorunun hangi sınavdan geldiğini belirtir (Örn: "2023-1", "2023-2", "Deneme").
+   Arayüzdeki filtreleme bu isme göre çalışır.
+
+F) profile (Profil):
+   Sorunun kimlere sorulacağını belirler.
+   - "ortak" -> Herkes (İGU, Hekim, DSP)
+   - "igu"   -> Sadece İş Güvenliği Uzmanları
+   - "hekim" -> Sadece İşyeri Hekimleri
+   - "dsp"   -> Sadece Diğer Sağlık Personeli
+
+--------------------------------------------------------------------------
+3. DİKKAT EDİLMESİ GEREKENLER (HATA YAPMAMAK İÇİN)
+--------------------------------------------------------------------------
+1. VİRGÜL KURALI: Her soru bittiğinde, kapatılan süslü parantezden "}" sonra
+   mutlaka virgül "," koyulmalıdır. (Sadece en son soruda gerekmez).
+   
+   Örnek:
+   },  <-- Bu virgül olmazsa sayfa açılmaz!
+   {
+     ...yeni soru...
+   }
+
+2. TIRNAK İŞARETLERİ: Metinler mutlaka tırnak içinde olmalıdır.
+   Eğer metnin içinde tırnak kullanacaksan tek tırnak (') kullan.
+   Örnek: "İş Kanunu'na göre..."
+
+3. KATEGORİ İSMİ: "Teknik Konular" yazarsan sistem bunu "Teknik" kategorisi
+   olarak görmez. Tam olarak "Teknik" yazmalısın.
+
+==========================================================================

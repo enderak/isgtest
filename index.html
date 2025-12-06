@@ -29,7 +29,7 @@
         const EXAM_CONFIG = {
             'igu': { 
                 label: 'A-B-C Sınıfı İGU',
-                threshold: 35, // Geçme barajı (net sayısı)
+                threshold: 35, 
                 distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 7, 'Mevzuat': 15, 'Sağlık': 5, 'Teknik': 20 } 
             },
             'hekim': {
@@ -64,7 +64,6 @@
         function renderStartScreen() {
             setTimeout(() => lucide.createIcons(), 0);
             
-            // Havuzdaki benzersiz kaynakları bul (örn: 2023-1, 2023-2)
             const sources = [...new Set(questionPool.map(q => q.source))].sort().reverse();
             
             let sourceOptions = '';
@@ -84,7 +83,6 @@
                             <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-600"></i>
                         </div>
                         <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">İSG Sınav Öğrenceliği</h1>
-                        <p class="text-sm text-gray-500 mt-2">Kişiselleştirilmiş Sınav Simülasyonu</p>
                     </div>
 
                     <div class="space-y-4">
@@ -200,7 +198,6 @@
             }
         }
 
-        // --- SINAV MOTORU VE ALGORİTMASI ---
         function startQuiz() {
             const profile = document.getElementById('profileSelect').value;
             const source = document.getElementById('sourceSelect').value;
@@ -217,41 +214,28 @@
             currentQuestions = [];
             let missingCategories = [];
 
-            // 1. ADIM: Seçilen KAYNAĞA ait tüm soruları getir (Örn: Sadece 2023-1)
             let basePool = questionPool.filter(q => q.source === source);
 
-            // 2. ADIM: Her KONU BAŞLIĞI için gereken sayıda soruyu rastgele seç
             for (const [categoryName, count] of Object.entries(distribution)) {
-                
-                // Kriterler:
-                // a) Kategori eşleşmeli (Teknik, Mevzuat vb.)
-                // b) Profil eşleşmeli (Ya "igu" gibi spesifik ya da hepsi içinse profile belirtilmemiş olabilir)
-                // Not: Şablonumuzda 'profile' key'i zorunlu kıldık. Eğer 'igu' seçiliyse 'igu' etiketli sorular gelir.
-                
                 let categoryQuestions = basePool.filter(q => 
                     q.category === categoryName && 
                     (q.profile === profile || q.profile === 'ortak' || !q.profile) 
                 );
                 
-                // Soruları karıştır
                 categoryQuestions.sort(() => Math.random() - 0.5);
                 
-                // Yeterli soru var mı kontrol et
                 if (categoryQuestions.length < count) {
                     missingCategories.push(`- ${categoryName}: ${count} tane gerekli, ${categoryQuestions.length} bulundu.`);
                 }
 
-                // Kotayı doldur
                 currentQuestions.push(...categoryQuestions.slice(0, count));
             }
 
-            // HATA KONTROLÜ: Eğer havuzda yeterli soru yoksa sınavı başlatma
             if (missingCategories.length > 0) {
                 alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında, "${config.label}" profili için yeterli soru girilmemiş.\n\nEksikler:\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda soru ekleyin.`);
                 return;
             }
 
-            // Soruları son kez kendi içinde karıştır (Teknikler peş peşe gelmesin)
             currentQuestions.sort(() => Math.random() - 0.5);
 
             userAnswers = {};
@@ -262,7 +246,6 @@
             renderQuiz();
         }
 
-        // --- ZAMANLAYICI ---
         function startTimer() {
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -278,7 +261,6 @@
             }, 1000);
         }
 
-        // --- SORU GÖSTERİMİ ---
         function renderQuiz() {
             setTimeout(() => lucide.createIcons(), 0);
             const q = currentQuestions[currentIndex];
@@ -441,7 +423,6 @@
             renderQuiz();
         }
 
-        // --- SONUÇ EKRANI ---
         function finishQuiz() {
             clearInterval(timerInterval);
             let correct = 0;
@@ -454,7 +435,6 @@
                 else wrong++;
             });
 
-            // Puan hesaplama
             const score = correct * 2; 
             const profile = document.getElementById('profileSelect').value;
             const config = EXAM_CONFIG[profile];

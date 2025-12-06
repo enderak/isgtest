@@ -15,7 +15,7 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
         
-        /* Açıklama kutusu için hafif animasyon */
+        /* Açıklama kutusu animasyonu */
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -29,8 +29,6 @@
 
     <script>
         // --- SORU HAVUZU ---
-        // Not: Açıklama özelliğini kullanmak için sorulara 'explanation' alanı eklemelisin.
-        // Örnek olarak 1. soruya eklenmiştir.
         const questionPool = [
           // --- MEVZUAT & GENEL HUKUK ---
           { 
@@ -58,7 +56,7 @@
           { question: "Gürültü Yönetmeliği'ne göre 'En yüksek maruziyet eylem değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "90 dB(A)"], correct: 1, category: "Fiziksel" },
           { question: "Gürültü Yönetmeliği'ne göre 'Maruziyet sınır değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "140 dB(C)"], correct: 2, category: "Fiziksel" },
           
-          // --- DİĞER (Kısa tutuldu, diğer sorularını buraya ekleyebilirsin) ---
+          // --- DİĞER ---
           { question: "İş güvenliği uzmanlarının görev yetki sorumluluk ve eğitimleri hakkında yönetmeliğe göre, C sınıfı uzman hangi tehlike sınıfına bakabilir?", options: ["Çok Tehlikeli", "Tehlikeli", "Az Tehlikeli", "Hepsine"], correct: 2, category: "Mevzuat" },
           { question: "Kişisel Koruyucu Donanımlar (KKD) ne zaman kullanılır?", options: ["Her zaman ilk sırada", "Toplu koruma önlemleri yetersiz kaldığında", "Maliyet düşük olduğunda", "Çalışan istediğinde"], correct: 1, category: "KKD" }
         ];
@@ -77,14 +75,14 @@
         let settings = {
             timerEnabled: false,
             instantFeedback: true,
-            totalTime: 75 * 60 // 75 Dakika
+            showExplanation: true, // Yeni ayar
+            totalTime: 75 * 60 
         };
 
         const app = document.getElementById('quiz-app');
 
         // --- YARDIMCI FONKSİYONLAR ---
 
-        // Fisher-Yates Karıştırma
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -94,7 +92,6 @@
             return newArray;
         }
 
-        // Zaman Formatı
         function formatTime(seconds) {
             const m = Math.floor(seconds / 60);
             const s = seconds % 60;
@@ -117,7 +114,7 @@
                         <p class="text-sm text-blue-600 font-semibold mt-1">Bu oturum için rastgele ${questionCountToUse} soru seçilecek.</p>
                     </div>
 
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
@@ -129,7 +126,7 @@
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">ÖSYM standart süresi (75 dk / 4500 sn) uygulanır.</p>
+                            <p class="text-xs text-gray-500">ÖSYM standart süresi (75 dk) uygulanır.</p>
                         </div>
 
                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
@@ -139,14 +136,25 @@
                                     <span class="font-semibold text-gray-700">Anlık Cevap</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="feedbackToggle" checked class="sr-only peer">
+                                    <input type="checkbox" id="feedbackToggle" checked class="sr-only peer" onchange="toggleExplanationOption()">
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">
-                                <span class="text-green-600 font-medium">Açık:</span> Cevap sonrası doğru ve açıklama görünür.<br>
-                                <span class="text-red-500 font-medium">Kapalı:</span> Sınav modu (Sonuçlar en sonda).
-                            </p>
+                            <p class="text-xs text-gray-500">Doğru/Yanlış renkleri işaretleyince hemen görünür.</p>
+                        </div>
+
+                        <div id="explanationOptionContainer" class="bg-gray-50 p-4 rounded-xl border border-gray-200 transition-opacity duration-300">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
+                                    <span class="font-semibold text-gray-700">Detaylı Çözüm</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="explanationToggle" checked class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-500">Cevapladıktan sonra konu anlatımını/açıklamayı göster.</p>
                         </div>
                     </div>
 
@@ -158,12 +166,29 @@
             `;
         }
 
+        // Anlık cevap kapalıysa açıklama seçeneğini de pasif yapar (görsel olarak)
+        function toggleExplanationOption() {
+            const feedbackOn = document.getElementById('feedbackToggle').checked;
+            const expContainer = document.getElementById('explanationOptionContainer');
+            const expInput = document.getElementById('explanationToggle');
+            
+            if (!feedbackOn) {
+                expContainer.classList.add('opacity-50', 'pointer-events-none');
+                expInput.checked = false;
+            } else {
+                expContainer.classList.remove('opacity-50', 'pointer-events-none');
+                expInput.checked = true;
+            }
+        }
+
         function startQuiz() {
             const timerToggle = document.getElementById('timerToggle').checked;
             const feedbackToggle = document.getElementById('feedbackToggle').checked;
+            const explanationToggle = document.getElementById('explanationToggle').checked;
 
             settings.timerEnabled = timerToggle;
             settings.instantFeedback = feedbackToggle;
+            settings.showExplanation = explanationToggle;
             
             // --- SORU SEÇİMİ ---
             const shuffledPool = shuffleArray(questionPool);
@@ -271,10 +296,10 @@
                 `;
             });
 
-            // --- YENİ EKLENEN KISIM: AÇIKLAMA KUTUSU ---
+            // --- AÇIKLAMA KUTUSU MANTIĞI ---
             let explanationHtml = '';
-            // Sadece Anlık Cevap açıksa VE soru cevaplanmışsa göster
-            if (isAnswered && settings.instantFeedback) {
+            // GÖSTERME ŞARTI: Cevaplanmış olmalı + Anlık Cevap Açık olmalı + Açıklama Göster Açık olmalı
+            if (isAnswered && settings.instantFeedback && settings.showExplanation) {
                 const expText = q.explanation ? q.explanation : "Bu soru için detaylı açıklama eklenmemiştir.";
                 explanationHtml = `
                     <div class="explanation-box mt-4 mb-2 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl shadow-sm">
@@ -288,7 +313,6 @@
                     </div>
                 `;
             }
-            // ------------------------------------------
 
             // Buton HTML
             let actionButtonHtml = '';

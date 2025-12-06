@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İSG Sınav Simülatörü 2025</title>
+    <title>İSG Sınav Öğrenceliği</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -25,30 +25,27 @@
     <script src="sorular.js"></script>
 
     <script>
-        // --- 2025 KONU DAĞILIMLARI ---
+        // --- 2025 SINAV MÜFREDATI VE SORU DAĞILIM AYARLARI ---
         const EXAM_CONFIG = {
             'igu': { 
                 label: 'A-B-C Sınıfı İGU',
-                threshold: 35, 
-                passScore: 70,
+                threshold: 35, // Geçme barajı (net sayısı)
                 distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 7, 'Mevzuat': 15, 'Sağlık': 5, 'Teknik': 20 } 
             },
             'hekim': {
                 label: 'İşyeri Hekimliği',
                 threshold: 35,
-                passScore: 70,
                 distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 7, 'Mevzuat': 13, 'Sağlık': 25, 'Teknik': 2 }
             },
             'dsp': {
                 label: 'Diğer Sağlık Personeli',
                 threshold: 30, 
-                passScore: 60,
                 distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Sağlık': 17, 'Teknik': 5 }
             }
         };
 
         if (typeof questionPool === 'undefined') {
-            document.body.innerHTML = '<div class="flex flex-col items-center justify-center h-screen p-10 text-center text-red-600 font-bold bg-red-50">"sorular.js" dosyası bulunamadı!</div>';
+            document.body.innerHTML = '<div class="flex flex-col items-center justify-center h-screen p-10 text-center text-red-600 font-bold bg-red-50">HATA: "sorular.js" dosyası bulunamadı veya hatalı!</div>';
             throw new Error("Soru dosyası eksik.");
         }
 
@@ -63,15 +60,22 @@
         let isInstantFeedback = false; 
         let isExplanationActive = false; 
 
+        // --- GİRİŞ EKRANI ---
         function renderStartScreen() {
             setTimeout(() => lucide.createIcons(), 0);
             
-            // Havuzdaki mevcut kaynakları (Yılları/Denemeleri) bul
-            const sources = [...new Set(questionPool.map(q => q.source))].sort();
-            const sourceOptions = sources.map(s => {
-                let label = s.includes('deneme') ? 'Deneme Sınavları' : `${s} Çıkmış Sorular`;
-                return `<option value="${s}">${label}</option>`;
-            }).join('');
+            // Havuzdaki benzersiz kaynakları bul (örn: 2023-1, 2023-2)
+            const sources = [...new Set(questionPool.map(q => q.source))].sort().reverse();
+            
+            let sourceOptions = '';
+            if (sources.length === 0) {
+                sourceOptions = '<option disabled>Kayıtlı soru bulunamadı</option>';
+            } else {
+                sourceOptions = sources.map(s => {
+                    let style = s.includes('Deneme') ? 'font-weight:bold; color:#4338ca;' : '';
+                    return `<option value="${s}" style="${style}">${s}</option>`;
+                }).join('');
+            }
 
             app.innerHTML = `
                 <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 max-w-lg mx-auto fade-in border border-slate-100">
@@ -79,14 +83,14 @@
                         <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-50 rounded-full mb-3 ring-8 ring-indigo-50/50">
                             <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-600"></i>
                         </div>
-                        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">ÖSYM Formatı</h1>
-                        <p class="text-sm text-gray-500 mt-2">Konu Dağılımlı & Kaynak Seçimli</p>
+                        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">İSG Sınav Öğrenceliği</h1>
+                        <p class="text-sm text-gray-500 mt-2">Kişiselleştirilmiş Sınav Simülasyonu</p>
                     </div>
 
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Sınav Branşı</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Branş Seçimi</label>
                                 <div class="relative">
                                     <select id="profileSelect" onchange="updateInfoBox()" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
                                         <option value="igu">İGU (A-B-C)</option>
@@ -98,10 +102,9 @@
                             </div>
                             
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Soru Kaynağı</label>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Sınav Kaynağı</label>
                                 <div class="relative">
                                     <select id="sourceSelect" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
-                                        <option value="all">Tüm Yıllar (Karışık)</option>
                                         ${sourceOptions}
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
@@ -109,14 +112,13 @@
                             </div>
                         </div>
 
-                        <div id="infoBox" class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900 text-xs leading-relaxed space-y-2">
-                            </div>
+                        <div id="infoBox" class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900 text-xs leading-relaxed space-y-2"></div>
 
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-4">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
                                     <div class="bg-white p-1.5 rounded-lg shadow-sm text-gray-600"><i data-lucide="timer" class="w-4 h-4"></i></div>
-                                    <span class="text-sm font-semibold text-gray-700">Süre (75 dk)</span>
+                                    <span class="text-sm font-semibold text-gray-700">Süre Sayacı (75 dk)</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="timerToggle" checked class="sr-only peer">
@@ -155,7 +157,7 @@
                     </div>
 
                     <button onclick="startQuiz()" class="group w-full mt-6 bg-gray-900 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-3">
-                        <span>Sınavı Oluştur</span>
+                        <span>Sınavı Başlat</span>
                         <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
                     </button>
                 </div>
@@ -176,7 +178,8 @@
             distText += `</ul>`;
 
             document.getElementById('infoBox').innerHTML = `
-                <div class="font-bold flex items-center gap-2"><i data-lucide="target" class="w-4 h-4"></i>Baraj: ${config.threshold} Net</div>
+                <div class="font-bold flex items-center gap-2 border-b border-blue-200 pb-2 mb-2"><i data-lucide="target" class="w-4 h-4"></i>Baraj: ${config.threshold} Doğru (Net)</div>
+                <div class="font-semibold text-blue-800 mb-1">Soru Dağılımı:</div>
                 ${distText}
             `;
             lucide.createIcons();
@@ -197,10 +200,13 @@
             }
         }
 
-        // --- SORU SEÇİM MOTORU (HEM YIL HEM KONU FİLTRELİ) ---
+        // --- SINAV MOTORU VE ALGORİTMASI ---
         function startQuiz() {
             const profile = document.getElementById('profileSelect').value;
-            const source = document.getElementById('sourceSelect').value; // Seçilen Kaynak
+            const source = document.getElementById('sourceSelect').value;
+            
+            if(!source) { alert("Lütfen geçerli bir sınav kaynağı seçin."); return; }
+
             const config = EXAM_CONFIG[profile];
             const distribution = config.distribution;
             
@@ -211,37 +217,41 @@
             currentQuestions = [];
             let missingCategories = [];
 
-            // 1. ÖNCE KAYNAĞA GÖRE HAVUZU DARALT
-            // Eğer "Tümü" seçiliyse bütün havuz, değilse sadece o yılın soruları
-            let basePool = (source === 'all') 
-                ? questionPool 
-                : questionPool.filter(q => q.source === source);
+            // 1. ADIM: Seçilen KAYNAĞA ait tüm soruları getir (Örn: Sadece 2023-1)
+            let basePool = questionPool.filter(q => q.source === source);
 
-            // 2. DARALTILMIŞ HAVUZDAN KONU KOTASINA GÖRE SEÇ
+            // 2. ADIM: Her KONU BAŞLIĞI için gereken sayıda soruyu rastgele seç
             for (const [categoryName, count] of Object.entries(distribution)) {
                 
-                // Daraltılmış havuzdan (basePool) bu kategorideki soruları bul
-                let categoryQuestions = basePool.filter(q => q.category === categoryName);
+                // Kriterler:
+                // a) Kategori eşleşmeli (Teknik, Mevzuat vb.)
+                // b) Profil eşleşmeli (Ya "igu" gibi spesifik ya da hepsi içinse profile belirtilmemiş olabilir)
+                // Not: Şablonumuzda 'profile' key'i zorunlu kıldık. Eğer 'igu' seçiliyse 'igu' etiketli sorular gelir.
                 
-                // Karıştır
+                let categoryQuestions = basePool.filter(q => 
+                    q.category === categoryName && 
+                    (q.profile === profile || q.profile === 'ortak' || !q.profile) 
+                );
+                
+                // Soruları karıştır
                 categoryQuestions.sort(() => Math.random() - 0.5);
                 
                 // Yeterli soru var mı kontrol et
                 if (categoryQuestions.length < count) {
-                    missingCategories.push(`${categoryName} (Gereken: ${count}, Bulunan: ${categoryQuestions.length})`);
+                    missingCategories.push(`- ${categoryName}: ${count} tane gerekli, ${categoryQuestions.length} bulundu.`);
                 }
 
                 // Kotayı doldur
                 currentQuestions.push(...categoryQuestions.slice(0, count));
             }
 
-            // Hata Kontrolü: Eğer seçilen kaynakta (örn: 2023) o kategoride yeterli soru yoksa uyar
+            // HATA KONTROLÜ: Eğer havuzda yeterli soru yoksa sınavı başlatma
             if (missingCategories.length > 0) {
-                alert(`UYARI: Seçilen kaynakta (${source === 'all' ? 'Tümü' : source}) sınav formatına uygun yeterli soru yok!\n\nEksik Kategoriler:\n${missingCategories.join('\n')}\n\nLütfen farklı bir kaynak seçin veya soru havuzunu genişletin.`);
+                alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında, "${config.label}" profili için yeterli soru girilmemiş.\n\nEksikler:\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda soru ekleyin.`);
                 return;
             }
 
-            // Soruları kendi içinde karıştır (Teknik peş peşe gelmesin)
+            // Soruları son kez kendi içinde karıştır (Teknikler peş peşe gelmesin)
             currentQuestions.sort(() => Math.random() - 0.5);
 
             userAnswers = {};
@@ -252,6 +262,7 @@
             renderQuiz();
         }
 
+        // --- ZAMANLAYICI ---
         function startTimer() {
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -267,6 +278,7 @@
             }, 1000);
         }
 
+        // --- SORU GÖSTERİMİ ---
         function renderQuiz() {
             setTimeout(() => lucide.createIcons(), 0);
             const q = currentQuestions[currentIndex];
@@ -337,7 +349,7 @@
                                 <i data-lucide="x-circle" class="w-6 h-6"></i>
                             </button>
                             <div class="h-6 w-px bg-slate-200"></div>
-                            <span class="text-sm font-bold text-slate-700">Soru ${currentIndex + 1} <span class="text-slate-400 font-normal">/ 50</span></span>
+                            <span class="text-sm font-bold text-slate-700">Soru ${currentIndex + 1} <span class="text-slate-400 font-normal">/ ${currentQuestions.length}</span></span>
                         </div>
                         ${isTimerActive ? `
                         <div class="bg-slate-800 text-white px-3 py-1.5 rounded-lg font-mono text-sm font-bold tracking-widest flex items-center gap-2 shadow-sm">
@@ -353,7 +365,7 @@
                                     ${q.category}
                                 </span>
                                 <span class="px-2.5 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded-md border border-gray-200">
-                                    ${q.source || 'Genel'}
+                                    ${q.source}
                                 </span>
                             </div>
                             <h2 class="text-lg md:text-xl font-bold text-gray-800 leading-snug">${q.question}</h2>
@@ -429,6 +441,7 @@
             renderQuiz();
         }
 
+        // --- SONUÇ EKRANI ---
         function finishQuiz() {
             clearInterval(timerInterval);
             let correct = 0;
@@ -441,7 +454,7 @@
                 else wrong++;
             });
 
-            // 2 Puan üzerinden hesaplama
+            // Puan hesaplama
             const score = correct * 2; 
             const profile = document.getElementById('profileSelect').value;
             const config = EXAM_CONFIG[profile];
@@ -460,7 +473,7 @@
                         </div>
                     </div>
 
-                    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">${isPassed ? 'TEBRİKLER!' : 'MAALESEF'}</h2>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">${isPassed ? 'TEBRİKLER!' : 'BARAJ ALTI KALDINIZ'}</h2>
                     <p class="text-sm text-slate-500 mb-6">
                         ${config.label} Barajı: ${config.threshold} Net
                         <br>

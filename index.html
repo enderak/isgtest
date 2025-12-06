@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İSG Sınav Öğrenceliği v4</title>
+    <title>İSG Sınav Öğrenceliği v5</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -25,7 +25,7 @@
     <script src="sorular.js"></script>
 
     <script>
-        // --- 2025 SINAV MÜFREDATI VE SORU DAĞILIM AYARLARI ---
+        // --- 2025 DAĞILIM AYARLARI (SADECE DENEME MODUNDA GEÇERLİ) ---
         const EXAM_CONFIG = {
             'igu': { 
                 label: 'A-B-C Sınıfı İGU',
@@ -44,8 +44,9 @@
             }
         };
 
+        // Hata Kontrolü
         if (typeof questionPool === 'undefined') {
-            document.body.innerHTML = '<div class="flex flex-col items-center justify-center h-screen p-10 text-center text-red-600 font-bold bg-red-50">HATA: "sorular.js" dosyası bulunamadı veya hatalı!</div>';
+            document.body.innerHTML = '<div class="flex flex-col items-center justify-center h-screen p-10 text-center text-red-600 font-bold bg-red-50">HATA: "sorular.js" dosyası bulunamadı!</div>';
             throw new Error("Soru dosyası eksik.");
         }
 
@@ -64,19 +65,21 @@
         function renderStartScreen() {
             setTimeout(() => lucide.createIcons(), 0);
             
-            // --- DÜZELTME: UNDEFINED FİLTRESİ EKLENDİ ---
-            // Kaynakları bulurken null, undefined veya boş olanları filtreliyoruz.
+            // --- DÜZELTME 1: UNDEFINED TEMİZLİĞİ ---
+            // Kaynakları çekerken boş veya hatalı olanları temizliyoruz.
             const sources = [...new Set(questionPool.map(q => q.source))]
-                .filter(s => s !== undefined && s !== null && s !== "") 
+                .filter(s => s !== undefined && s !== null && s !== "")
                 .sort().reverse();
             
             let sourceOptions = '';
             if (sources.length === 0) {
-                sourceOptions = '<option disabled>Kayıtlı soru bulunamadı</option>';
+                sourceOptions = '<option disabled>Kayıtlı soru yok</option>';
             } else {
                 sourceOptions = sources.map(s => {
-                    let style = s.toLowerCase().includes('deneme') ? 'font-weight:bold; color:#4338ca;' : '';
-                    return `<option value="${s}" style="${style}">${s}</option>`;
+                    let isDeneme = s.toLowerCase().includes('deneme');
+                    let style = isDeneme ? 'font-weight:bold; color:#4338ca;' : '';
+                    let label = isDeneme ? s : `${s} Çıkmış Sorular`;
+                    return `<option value="${s}" style="${style}">${label}</option>`;
                 }).join('');
             }
 
@@ -107,8 +110,9 @@
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Sınav Kaynağı</label>
                                 <div class="relative">
-                                    <select id="sourceSelect" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
+                                    <select id="sourceSelect" onchange="updateInfoBox()" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
                                         ${sourceOptions}
+                                        <option value="all" style="font-weight:bold; color:#4338ca;">Tüm Havuzdan Karışık Deneme</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
                                 </div>
@@ -169,21 +173,39 @@
             toggleExplanationOption();
         }
         
+        // --- BİLGİ KUTUSU MANTIĞI (GÜNCELLENDİ) ---
         function updateInfoBox() {
             const profile = document.getElementById('profileSelect').value;
+            const source = document.getElementById('sourceSelect').value;
             const config = EXAM_CONFIG[profile];
-            const dist = config.distribution;
             
-            let distText = `<ul class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">`;
-            for (const [key, val] of Object.entries(dist)) {
-                distText += `<li><span class="font-bold text-indigo-700">${val}</span> ${key}</li>`;
+            let infoHtml = '';
+            
+            // Eğer Deneme veya Tümü seçiliyse DAĞILIM TABLOSUNU göster
+            if (source === 'all' || source.toLowerCase().includes('deneme')) {
+                const dist = config.distribution;
+                let distText = `<ul class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">`;
+                for (const [key, val] of Object.entries(dist)) {
+                    distText += `<li><span class="font-bold text-indigo-700">${val}</span> ${key}</li>`;
+                }
+                distText += `</ul>`;
+                infoHtml = `
+                    <div class="font-bold text-indigo-900 mb-1">📝 Deneme Modu Aktif</div>
+                    <div class="text-xs opacity-80">Bu modda, seçilen profile uygun olarak aşağıdaki dağılımda 50 soru üretilir:</div>
+                    ${distText}
+                `;
+            } 
+            // Eğer Belirli Bir Yıl Seçiliyse
+            else {
+                infoHtml = `
+                    <div class="font-bold text-indigo-900 mb-1">📅 Çıkmış Sınav Modu</div>
+                    <div class="text-xs opacity-80">Seçilen yıla/kaynağa ait sorular (${source}) olduğu gibi getirilir. Kategori dağılım kuralları uygulanmaz.</div>
+                `;
             }
-            distText += `</ul>`;
 
             document.getElementById('infoBox').innerHTML = `
-                <div class="font-bold flex items-center gap-2 border-b border-blue-200 pb-2 mb-2"><i data-lucide="target" class="w-4 h-4"></i>Baraj: ${config.threshold} Doğru (Net)</div>
-                <div class="font-semibold text-blue-800 mb-1">Soru Dağılımı:</div>
-                ${distText}
+                <div class="font-bold flex items-center gap-2 border-b border-blue-200 pb-2 mb-2"><i data-lucide="target" class="w-4 h-4"></i>Geçme Barajı: ${config.threshold} Net</div>
+                ${infoHtml}
             `;
             lucide.createIcons();
         }
@@ -203,6 +225,7 @@
             }
         }
 
+        // --- SINAV BAŞLATMA ALGORİTMASI (HİBRİT SİSTEM) ---
         function startQuiz() {
             const profile = document.getElementById('profileSelect').value;
             const source = document.getElementById('sourceSelect').value;
@@ -217,38 +240,57 @@
             isExplanationActive = document.getElementById('explanationToggle').checked;
 
             currentQuestions = [];
-            let missingCategories = [];
-
-            let basePool = questionPool.filter(q => q.source === source);
-
-            for (const [categoryName, count] of Object.entries(distribution)) {
-                let categoryQuestions = basePool.filter(q => 
-                    q.category === categoryName && 
-                    (q.profile === profile || q.profile === 'ortak' || !q.profile) 
-                );
+            
+            // --- MOD 1: DENEME SINAVI (DAĞILIM UYGULA) ---
+            if (source === 'all' || source.toLowerCase().includes('deneme')) {
+                let missingCategories = [];
+                let basePool = questionPool;
                 
-                if (categoryQuestions.length === 0) {
-                    missingCategories.push(`- ${categoryName}: Hiç soru bulunamadı!`);
-                } 
-                else if (categoryQuestions.length < count) {
-                    let originalLen = categoryQuestions.length;
-                    while (categoryQuestions.length < count) {
-                        categoryQuestions.push(categoryQuestions[categoryQuestions.length % originalLen]);
+                // Eğer "all" değilse, sadece o denemeyi filtrele (örn: "Deneme-1")
+                if (source !== 'all') {
+                    basePool = questionPool.filter(q => q.source === source);
+                }
+
+                for (const [categoryName, count] of Object.entries(distribution)) {
+                    let categoryQuestions = basePool.filter(q => 
+                        q.category === categoryName && 
+                        (q.profile === profile || q.profile === 'ortak' || !q.profile) 
+                    );
+                    
+                    if (categoryQuestions.length === 0) {
+                        missingCategories.push(`- ${categoryName}: Hiç soru bulunamadı!`);
+                    } else if (categoryQuestions.length < count) {
+                        // Soru azsa kopyalayarak çoğalt (Sistemi test edebilmen için)
+                        let originalLen = categoryQuestions.length;
+                        while (categoryQuestions.length < count) {
+                            categoryQuestions.push(categoryQuestions[categoryQuestions.length % originalLen]);
+                        }
+                        categoryQuestions.sort(() => Math.random() - 0.5);
+                        currentQuestions.push(...categoryQuestions.slice(0, count));
+                    } else {
+                        // Yeterliyse rastgele seç
+                        categoryQuestions.sort(() => Math.random() - 0.5);
+                        currentQuestions.push(...categoryQuestions.slice(0, count));
                     }
-                    categoryQuestions.sort(() => Math.random() - 0.5);
-                    currentQuestions.push(...categoryQuestions.slice(0, count));
-                } 
-                else {
-                    categoryQuestions.sort(() => Math.random() - 0.5);
-                    currentQuestions.push(...categoryQuestions.slice(0, count));
+                }
+
+                if (missingCategories.length > 0) {
+                    alert(`⚠️ DENEME OLUŞTURULAMADI!\n\nHavuzda şu kategoriler için soru eksik:\n${missingCategories.join('\n')}`);
+                    return;
+                }
+            } 
+            // --- MOD 2: GERÇEK SINAV (DİREKT GETİR) ---
+            else {
+                // Seçilen kaynağa ait tüm soruları getir (Dağılım kontrolü yapma)
+                currentQuestions = questionPool.filter(q => q.source === source);
+                
+                if (currentQuestions.length === 0) {
+                    alert("Seçilen kaynakta hiç soru bulunamadı!");
+                    return;
                 }
             }
 
-            if (missingCategories.length > 0) {
-                alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında şu kategorilerde HİÇ soru yok:\n\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda en az 1 soru ekleyin.`);
-                return;
-            }
-
+            // Soruları karıştır (Sırayla gelmesin)
             currentQuestions.sort(() => Math.random() - 0.5);
 
             userAnswers = {};
@@ -259,6 +301,7 @@
             renderQuiz();
         }
 
+        // --- ZAMANLAYICI ---
         function startTimer() {
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -274,6 +317,7 @@
             }, 1000);
         }
 
+        // --- SORU EKRANI ---
         function renderQuiz() {
             setTimeout(() => lucide.createIcons(), 0);
             const q = currentQuestions[currentIndex];
@@ -449,6 +493,7 @@
             renderQuiz();
         }
 
+        // --- SONUÇ EKRANI ---
         function finishQuiz() {
             clearInterval(timerInterval);
             let correct = 0;
@@ -461,6 +506,7 @@
                 else wrong++;
             });
 
+            // 2 Puan üzerinden hesaplama
             const score = correct * 2; 
             const profile = document.getElementById('profileSelect').value;
             const config = EXAM_CONFIG[profile];
@@ -513,4 +559,3 @@
     </script>
 </body>
 </html>
-

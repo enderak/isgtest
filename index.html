@@ -3,95 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İSG Uzmanlık Sınavı 2025 - Pro</title>
+    <title>İSG Sınav Simülatörü - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Özel Kaydırma Çubuğu */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
-        
-        /* Animasyonlar */
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .explanation-box { animation: slideDown 0.4s ease-out forwards; }
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-100 p-4">
 
-    <div id="quiz-app" class="max-w-2xl mx-auto mt-8"></div>
+    <div id="quiz-app" class="max-w-2xl mx-auto mt-6"></div>
 
     <script>
-        // --- SINAV PROFİLLERİ VE BARAJLAR (2025) ---
+        // --- SINAV PROFİLLERİ (Barajlar) ---
         const examProfiles = {
-            igu: {
-                id: 'igu',
-                name: 'A-B-C Sınıfı İGU',
-                passNet: 35, // 50 soruda 35 net
-                passScore: 70,
-                color: 'text-blue-600',
-                bg: 'bg-blue-100'
-            },
-            hekim: {
-                id: 'hekim',
-                name: 'İşyeri Hekimliği',
-                passNet: 35, // 50 soruda 35 net
-                passScore: 70,
-                color: 'text-emerald-600',
-                bg: 'bg-emerald-100'
-            },
-            dsp: {
-                id: 'dsp',
-                name: 'Diğer Sağlık Personeli (DSP)',
-                passNet: 30, // 50 soruda 30 net
-                passScore: 60,
-                color: 'text-purple-600',
-                bg: 'bg-purple-100'
-            }
+            igu: { id: 'igu', name: 'A-B-C Sınıfı İGU', passScore: 70, color: 'text-blue-600', bg: 'bg-blue-100' },
+            hekim: { id: 'hekim', name: 'İşyeri Hekimliği', passScore: 70, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+            dsp: { id: 'dsp', name: 'Diğer Sağlık Personeli', passScore: 60, color: 'text-purple-600', bg: 'bg-purple-100' }
         };
 
-        // --- SORU HAVUZU ---
+        // --- SORU HAVUZU (source eklendi: 2022, 2023, deneme) ---
         const questionPool = [
-          // --- MEVZUAT & GENEL HUKUK ---
+          // --- DENEME SINAVI SORULARI (ÖZEL) ---
+          { 
+            question: "Elle taşıma işleri yönetmeliğine göre, aşağıdakilerden hangisi yükle ilgili risk faktörlerinden biri değildir?", 
+            options: ["Yükün çok ağır olması", "Yükün kaba olması", "Zeminin düzgün olması", "Yükün dengesiz olması"], 
+            correct: 2, 
+            category: "Fiziksel Riskler",
+            source: "deneme",
+            explanation: "Zeminin düzgün olması bir risk değil, aksine güvenli taşıma için istenen bir durumdur. Diğer şıklar riski artırır."
+          },
+          { 
+            question: "Yapı işlerinde iskelelerin periyodik kontrolü azami ne kadar sürede bir yapılmalıdır?", 
+            options: ["3 ay", "6 ay", "1 yıl", "Her kullanım öncesi"], 
+            correct: 1, 
+            category: "Yapı İşleri",
+            source: "deneme",
+            explanation: "Yapı İşlerinde İş Sağlığı ve Güvenliği Yönetmeliği'ne göre iskelelerin kontrolü en geç 6 ayda bir yapılmalıdır."
+          },
+          { 
+            question: "Taşınabilir yangın söndürme cihazlarının (YSC) duvara montaj yüksekliği zeminden en fazla kaç cm olmalıdır?", 
+            options: ["90 cm", "120 cm", "150 cm", "180 cm"], 
+            correct: 0, 
+            category: "Yangın",
+            source: "deneme",
+            explanation: "4 kg ve daha ağır olanlar 90 cm, daha hafif olanlar ise ulaşılabilir bir yüksekliğe (genelde 90 cm standardı kabul görür) asılmalıdır."
+          },
+          { 
+            question: "Aşağıdakilerden hangisi 'Biyolojik Risk Etmenleri' yönetmeliğine göre Grup 3 biyolojik etken tanımıdır?", 
+            options: ["İnsanda hastalığa yol açmaz", "Hastalığa yol açar, tedavisi yoktur, topluma yayılır", "Ağır hastalığa yol açar, yayılma riski vardır, tedavisi vardır", "Hastalığa yol açar, yayılma riski yoktur"], 
+            correct: 2, 
+            category: "Sağlık",
+            source: "deneme",
+            explanation: "Grup 3: İnsanda ağır hastalığa neden olan, çalışanlar için ciddi tehlike oluşturan, topluma yayılma riski bulunabilen ancak etkili korunma ve tedavisi bulunan etkenlerdir."
+          },
+          { 
+            question: "Ekranlı araçlarla çalışmalarda, çalışanların göz sağlığını korumak için hangisi yapılmalıdır?", 
+            options: ["Ekran parlaklığı maksimuma getirilmeli", "Monitör göze 10 cm mesafede olmalı", "Düzenli molalar veya iş değişimi yapılmalı", "Ortam tamamen karanlık olmalı"], 
+            correct: 2, 
+            category: "Ekranlı Araçlar",
+            source: "deneme",
+            explanation: "Göz yorgunluğunu önlemek için çalışma süreleri düzenlenmeli, periyodik molalar verilmeli veya gözleri dinlendirecek başka işler yapılmalıdır."
+          },
+
+          // --- ÇIKMIŞ SORULAR (SİMÜLASYON VERİSİ - source: 2022, 2023 vb.) ---
           { 
             question: "4857 sayılı İş Kanunu'na göre, deneme süresi toplu iş sözleşmeleriyle en çok ne kadar olabilir?", 
             options: ["2 ay", "3 ay", "4 ay", "6 ay"], 
-            correct: 2, 
-            category: "Mevzuat",
-            explanation: "Bireysel iş sözleşmelerinde deneme süresi en çok 2 aydır. Ancak deneme süresi toplu iş sözleşmeleriyle 4 aya kadar uzatılabilir."
+            correct: 2, category: "Mevzuat", source: "2023",
+            explanation: "Bireysel sözleşmelerde 2 ay, toplu sözleşmelerde 4 aydır."
           },
-          { question: "İş sözleşmesi feshedilen işçiye bildirim süresinde yeni iş arama izni günde en az kaç saattir?", options: ["1 saat", "2 saat", "3 saat", "4 saat"], correct: 1, category: "Mevzuat" },
-          { question: "6331 sayılı İSG Kanunu'na göre, iş kazası ve meslek hastalığı kayıtları ne kadar süre saklanmalıdır?", options: ["10 yıl", "15 yıl", "20 yıl", "Süresiz"], correct: 1, category: "Mevzuat" },
-          { question: "Haftalık çalışma süresi yasal olarak en fazla kaç saattir?", options: ["40", "45", "48", "50"], correct: 1, category: "Mevzuat" },
-          { question: "Gece süresi hangi saatler arasını kapsar?", options: ["20:00 - 06:00", "18:00 - 06:00", "20:00 - 08:00", "19:00 - 07:00"], correct: 0, category: "Mevzuat" },
-          { question: "Çocuk ve genç işçilerin çalıştırılamayacağı işler listesi hangi yaş grubunu kapsar?", options: ["14 yaşını doldurmamış", "15 yaşını doldurmamış", "18 yaşını doldurmamış", "21 yaşını doldurmamış"], correct: 2, category: "Genç Çalışanlar" },
-          { question: "Kamu çalışanları için İSG kanunu ne zaman tam yürürlüğe girmiştir/girecektir?", options: ["2013", "2016", "2020", "Ertelenmiştir (2024 sonu vb.)"], correct: 3, category: "Mevzuat" },
-          { question: "İdari para cezalarına itiraz süresi tebliğden itibaren kaç gündür?", options: ["7 gün", "15 gün", "30 gün", "60 gün"], correct: 2, category: "Hukuk" },
-          
-          // --- İSG ORGANİZASYONU & KURULLAR ---
-          { question: "İş sağlığı ve güvenliği kurulu en az kaç çalışanın olduğu işyerlerinde zorunludur?", options: ["20", "30", "40", "50"], correct: 3, category: "Organizasyon" },
-          { question: "Tehlikeli sınıfta yer alan bir işyerinde İSG kurulu ne sıklıkla toplanır?", options: ["Ayda 1", "2 ayda 1", "3 ayda 1", "6 ayda 1"], correct: 1, category: "Organizasyon" },
-          { question: "Az tehlikeli sınıfta risk değerlendirmesi kaç yılda bir yenilenir?", options: ["2", "4", "6", "8"], correct: 2, category: "Risk Değerlendirme" },
-          { question: "Tehlikeli sınıfta risk değerlendirmesi kaç yılda bir yenilenir?", options: ["2", "4", "6", "10"], correct: 1, category: "Risk Değerlendirme" },
-          
-          // --- FİZİKSEL RİSK ETMENLERİ ---
-          { question: "Gürültü Yönetmeliği'ne göre 'En yüksek maruziyet eylem değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "90 dB(A)"], correct: 1, category: "Fiziksel" },
-          { question: "Gürültü Yönetmeliği'ne göre 'Maruziyet sınır değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "140 dB(C)"], correct: 2, category: "Fiziksel" },
-          
-          // --- SAĞLIK / DİĞER ---
-          { question: "İş güvenliği uzmanlarının görev yetki sorumluluk ve eğitimleri hakkında yönetmeliğe göre, C sınıfı uzman hangi tehlike sınıfına bakabilir?", options: ["Çok Tehlikeli", "Tehlikeli", "Az Tehlikeli", "Hepsine"], correct: 2, category: "Mevzuat" },
-          { question: "Kişisel Koruyucu Donanımlar (KKD) ne zaman kullanılır?", options: ["Her zaman ilk sırada", "Toplu koruma önlemleri yetersiz kaldığında", "Maliyet düşük olduğunda", "Çalışan istediğinde"], correct: 1, category: "KKD" }
+          { question: "İş sözleşmesi feshedilen işçiye bildirim süresinde yeni iş arama izni günde en az kaç saattir?", options: ["1 saat", "2 saat", "3 saat", "4 saat"], correct: 1, category: "Mevzuat", source: "2022" },
+          { question: "6331 sayılı Kanun'a göre kayıtlar ne kadar saklanır?", options: ["10 yıl", "15 yıl", "20 yıl", "Süresiz"], correct: 1, category: "Mevzuat", source: "2023" },
+          { question: "Haftalık çalışma süresi en fazla kaç saattir?", options: ["40", "45", "48", "50"], correct: 1, category: "Mevzuat", source: "2022" },
+          { question: "Gece süresi hangi saatler arasını kapsar?", options: ["20:00 - 06:00", "18:00 - 06:00", "20:00 - 08:00", "19:00 - 07:00"], correct: 0, category: "Mevzuat", source: "2023" },
+          { question: "Çocuk işçilerin çalıştırılamayacağı işler hangi yaşı kapsar?", options: ["14", "15", "18", "21"], correct: 2, category: "Genç Çalışanlar", source: "2022" },
+          { question: "İdari para cezalarına itiraz süresi kaç gündür?", options: ["7", "15", "30", "60"], correct: 2, category: "Hukuk", source: "2023" },
+          { question: "İSG kurulu en az kaç çalışanda zorunludur?", options: ["20", "30", "40", "50"], correct: 3, category: "Organizasyon", source: "2022" },
+          { question: "Tehlikeli sınıfta kurul ne sıklıkla toplanır?", options: ["Ayda 1", "2 ayda 1", "3 ayda 1", "6 ayda 1"], correct: 1, category: "Organizasyon", source: "2023" },
+          { question: "Az tehlikeli sınıfta risk analizi kaç yılda bir?", options: ["2", "4", "6", "8"], correct: 2, category: "Risk", source: "2022" },
+          { question: "Gürültüde en yüksek maruziyet eylem değeri?", options: ["80", "85", "87", "90"], correct: 1, category: "Fiziksel", source: "2023" },
+          { question: "Gürültü maruziyet sınır değeri?", options: ["80", "85", "87", "140"], correct: 2, category: "Fiziksel", source: "2022" },
+          { question: "C sınıfı uzman hangi sınıfa bakabilir?", options: ["Çok Tehlikeli", "Tehlikeli", "Az Tehlikeli", "Hepsi"], correct: 2, category: "Mevzuat", source: "2023" },
+          { question: "KKD ne zaman kullanılır?", options: ["İlk sırada", "Toplu koruma yetersizse", "Ucuzsa", "İstenirse"], correct: 1, category: "KKD", source: "2022" }
         ];
 
-        // --- UYGULAMA DURUM DEĞİŞKENLERİ ---
+        // --- DEĞİŞKENLER ---
         let activeQuestions = []; 
         let currentQuestion = 0;
         let score = 0;
@@ -101,19 +106,18 @@
         let timeLeft = 0; 
         let timerInterval = null;
 
-        // Ayarlar
         let settings = {
             timerEnabled: false,
             instantFeedback: true,
             showExplanation: true, 
             totalTime: 75 * 60,
-            profile: 'igu' // Varsayılan: İGU
+            profile: 'igu',
+            source: 'all' // all, 2022, 2023, deneme
         };
 
         const app = document.getElementById('quiz-app');
 
-        // --- YARDIMCI FONKSİYONLAR ---
-
+        // --- FONKSİYONLAR ---
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -129,84 +133,83 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // 1. EKRAN: Ayarlar ve Başlangıç
+        // --- 1. START EKRANI ---
         function renderStartScreen() {
             setTimeout(() => lucide.createIcons(), 0);
-
-            const poolSize = questionPool.length;
-            const questionCountToUse = poolSize < 50 ? poolSize : 50;
+            const totalQ = questionPool.length;
 
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto fade-in">
-                    <div class="text-center mb-8 relative">
-                        <div class="inline-block relative">
-                            <i data-lucide="settings-2" class="w-20 h-20 text-blue-600 mx-auto mb-4"></i>
+                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto fade-in border border-gray-100">
+                    <div class="text-center mb-6">
+                        <div class="inline-block p-3 rounded-full bg-blue-50 mb-3">
+                            <i data-lucide="book-open-check" class="w-12 h-12 text-blue-600"></i>
                         </div>
-                        <h1 class="text-3xl font-bold text-gray-800">İSG Sınav Simülatörü</h1>
-                        <p class="text-gray-500 mt-2 text-sm">2025 Müfredatı</p>
+                        <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight">İSG Sınav Simülatörü</h1>
                     </div>
 
                     <div class="space-y-4">
-                        
-                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
-                            <div class="flex items-center gap-2 mb-3">
-                                <i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-700"></i>
-                                <span class="font-bold text-indigo-900">Sınav Branşı Seçin</span>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="col-span-2 md:col-span-1">
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Sınav Branşı</label>
+                                <select id="profileSelect" class="w-full p-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-700 font-semibold focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
+                                    <option value="igu">İGU (A-B-C)</option>
+                                    <option value="hekim">İşyeri Hekimliği</option>
+                                    <option value="dsp">Diğer Sağlık Pers.</option>
+                                </select>
                             </div>
-                            <select id="profileSelect" class="w-full p-3 rounded-lg border-2 border-indigo-200 bg-white font-medium text-gray-700 focus:border-indigo-500 focus:outline-none transition-colors cursor-pointer">
-                                <option value="igu">A-B-C Sınıfı İGU (Baraj: 70 Puan)</option>
-                                <option value="hekim">İşyeri Hekimliği (Baraj: 70 Puan)</option>
-                                <option value="dsp">Diğer Sağlık Personeli (Baraj: 60 Puan)</option>
-                            </select>
-                            <p class="text-xs text-indigo-600 mt-2 ml-1">
-                                * Seçilen branşa göre başarı barajı güncellenir.
-                            </p>
+
+                            <div class="col-span-2 md:col-span-1">
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Soru Kaynağı</label>
+                                <select id="sourceSelect" class="w-full p-2.5 rounded-lg border border-gray-300 bg-gray-50 text-gray-700 font-semibold focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all">
+                                    <option value="all">📚 Tüm Yıllar (Karma)</option>
+                                    <option value="2023">📅 2023 Çıkmış Sorular</option>
+                                    <option value="2022">📅 2022 Çıkmış Sorular</option>
+                                    <option value="deneme" class="font-bold text-blue-700">⭐ Deneme Sınavı</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div class="flex items-center justify-between mb-2">
+
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="timer" class="w-5 h-5 text-gray-600"></i>
-                                    <span class="font-semibold text-gray-700">Zamanlayıcı (75 Dk)</span>
+                                    <i data-lucide="timer" class="w-4 h-4 text-gray-500"></i>
+                                    <span class="text-sm font-medium text-gray-700">Süre (75 dk)</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="timerToggle" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                        </div>
-
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div class="flex items-center justify-between mb-2">
+                            
+                            <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="eye" class="w-5 h-5 text-gray-600"></i>
-                                    <span class="font-semibold text-gray-700">Anlık Cevap</span>
+                                    <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
+                                    <span class="text-sm font-medium text-gray-700">Anlık Cevap</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="feedbackToggle" checked class="sr-only peer" onchange="toggleExplanationOption()">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                        </div>
 
-                        <div id="explanationOptionContainer" class="bg-gray-50 p-4 rounded-xl border border-gray-200 transition-opacity duration-300">
-                            <div class="flex items-center justify-between mb-2">
+                            <div id="explanationOptionContainer" class="flex items-center justify-between transition-opacity duration-300">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="book-open" class="w-5 h-5 text-gray-600"></i>
-                                    <span class="font-semibold text-gray-700">Detaylı Çözüm</span>
+                                    <i data-lucide="book-open" class="w-4 h-4 text-gray-500"></i>
+                                    <span class="text-sm font-medium text-gray-700">Çözümü Göster</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="explanationToggle" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="startQuiz()" class="w-full mt-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-transform hover:scale-[1.02] flex items-center justify-center gap-2">
+                    <button onclick="startQuiz()" class="w-full mt-6 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                         <i data-lucide="play" class="w-5 h-5"></i>
                         Sınavı Başlat
                     </button>
-                    <p class="text-center text-xs text-gray-400 mt-4">Havuzda toplam ${poolSize} soru var. Bu oturumda ${questionCountToUse} soru sorulacak.</p>
+                    <p class="text-center text-xs text-gray-400 mt-3">Toplam soru havuzu: ${totalQ} adet</p>
                 </div>
             `;
         }
@@ -225,21 +228,39 @@
             }
         }
 
+        // --- SINAV BAŞLATMA MANTIĞI ---
         function startQuiz() {
-            const timerToggle = document.getElementById('timerToggle').checked;
-            const feedbackToggle = document.getElementById('feedbackToggle').checked;
-            const explanationToggle = document.getElementById('explanationToggle').checked;
-            const profileSelect = document.getElementById('profileSelect').value;
-
-            settings.timerEnabled = timerToggle;
-            settings.instantFeedback = feedbackToggle;
-            settings.showExplanation = explanationToggle;
-            settings.profile = profileSelect;
+            settings.timerEnabled = document.getElementById('timerToggle').checked;
+            settings.instantFeedback = document.getElementById('feedbackToggle').checked;
+            settings.showExplanation = document.getElementById('explanationToggle').checked;
+            settings.profile = document.getElementById('profileSelect').value;
+            settings.source = document.getElementById('sourceSelect').value; // Seçilen Kaynak
             
-            // --- SORU SEÇİMİ ---
-            const shuffledPool = shuffleArray(questionPool);
-            const limit = questionPool.length < 50 ? questionPool.length : 50;
-            activeQuestions = shuffledPool.slice(0, limit);
+            // --- SORU FİLTRELEME ---
+            let filteredQuestions = [];
+            
+            if (settings.source === 'all') {
+                // Deneme sorularını 'Tüm Yıllar' karma testine katmıyoruz (veya isteğe bağlı katabiliriz).
+                // Şimdilik sadece gerçek çıkmış soruları (yıl bazlıları) alalım.
+                filteredQuestions = questionPool.filter(q => q.source !== 'deneme');
+            } else if (settings.source === 'deneme') {
+                // Sadece deneme soruları
+                filteredQuestions = questionPool.filter(q => q.source === 'deneme');
+            } else {
+                // Belirli bir yıl (2022, 2023)
+                filteredQuestions = questionPool.filter(q => q.source === settings.source);
+            }
+
+            // Eğer filtre sonucu soru yoksa (Hata önleyici)
+            if (filteredQuestions.length === 0) {
+                alert("Bu kategoride henüz soru eklenmemiş. Lütfen 'Tüm Yıllar' veya 'Deneme Sınavı'nı seçin.");
+                return;
+            }
+
+            const shuffled = shuffleArray(filteredQuestions);
+            // Maksimum 50 soru veya eldeki kadar
+            const limit = shuffled.length < 50 ? shuffled.length : 50;
+            activeQuestions = shuffled.slice(0, limit);
 
             if (settings.timerEnabled) {
                 timeLeft = settings.totalTime;
@@ -269,7 +290,6 @@
             }, 1000);
         }
 
-        // 2. ANA RENDER FONKSİYONU
         function render() {
             if (!gameStarted) {
                 renderStartScreen();
@@ -283,7 +303,7 @@
             lucide.createIcons();
         }
 
-        // 3. EKRAN: Soru ve Şıklar
+        // --- 2. SORU EKRANI ---
         function renderQuestion() {
             const q = activeQuestions[currentQuestion];
             const progress = ((currentQuestion + 1) / activeQuestions.length) * 100;
@@ -291,26 +311,29 @@
             const isAnswered = userAnswer !== null;
             const currentProfile = examProfiles[settings.profile];
 
-            // Timer HTML
+            // Başlık Metni Ayarı
+            let headerTitle = currentProfile.name;
+            if (settings.source === 'deneme') headerTitle += " - Deneme Sınavı";
+            else if (settings.source !== 'all') headerTitle += ` - ${settings.source}`;
+
             let timerHtml = '';
             if (settings.timerEnabled) {
-                const timerColor = timeLeft < 300 ? 'text-red-700 bg-red-100 border-red-200' : 'text-orange-700 bg-orange-100 border-orange-200';
+                const timerColor = timeLeft < 300 ? 'text-red-700 bg-red-50 border-red-200' : 'text-gray-700 bg-gray-50 border-gray-200';
                 timerHtml = `
-                    <div class="${timerColor} px-4 py-2 rounded-lg font-mono font-bold flex items-center gap-2 border">
+                    <div class="${timerColor} px-3 py-1.5 rounded-lg font-mono font-bold flex items-center gap-2 border text-sm">
                         <i data-lucide="clock" class="w-4 h-4"></i>
                         <span id="timer-display">${formatTime(timeLeft)}</span>
                     </div>
                 `;
             }
 
-            // Şıklar HTML
             let optionsHtml = '';
             q.options.forEach((option, index) => {
-                let buttonClass = "w-full p-4 text-left rounded-xl border-2 transition-all duration-200 flex items-center justify-between mb-3 group ";
+                let buttonClass = "w-full p-4 text-left rounded-xl border-2 transition-all duration-200 flex items-center justify-between mb-3 group relative overflow-hidden ";
                 let iconHtml = '';
 
                 if (!isAnswered) {
-                    buttonClass += "border-gray-200 hover:border-blue-400 hover:bg-blue-50 bg-white cursor-pointer";
+                    buttonClass += "border-gray-100 hover:border-blue-400 hover:bg-blue-50 bg-white cursor-pointer shadow-sm";
                 } else {
                     if (settings.instantFeedback) {
                         if (index === q.correct) {
@@ -320,14 +343,14 @@
                             buttonClass += "border-red-500 bg-red-50";
                             iconHtml = '<i data-lucide="x-circle" class="w-6 h-6 text-red-500"></i>';
                         } else {
-                            buttonClass += "border-gray-200 bg-gray-50 opacity-50";
+                            buttonClass += "border-gray-100 bg-gray-50 opacity-60";
                         }
                     } else {
                         if (index === userAnswer) {
-                            buttonClass += "border-blue-600 bg-blue-100 ring-2 ring-blue-200";
+                            buttonClass += "border-blue-600 bg-blue-50 ring-1 ring-blue-200";
                             iconHtml = '<i data-lucide="circle-dot" class="w-6 h-6 text-blue-600"></i>';
                         } else {
-                            buttonClass += "border-gray-200 bg-gray-50 opacity-70";
+                            buttonClass += "border-gray-100 bg-gray-50 opacity-60";
                         }
                     }
                 }
@@ -336,22 +359,21 @@
 
                 optionsHtml += `
                     <button ${onClickAttr} class="${buttonClass}">
-                        <span class="font-medium text-gray-800 group-hover:text-blue-700 transition-colors">${option}</span>
+                        <span class="font-medium text-gray-800 z-10">${option}</span>
                         ${iconHtml}
                     </button>
                 `;
             });
 
-            // Açıklama Kutusu
             let explanationHtml = '';
             if (isAnswered && settings.instantFeedback && settings.showExplanation) {
                 const expText = q.explanation ? q.explanation : "Bu soru için detaylı açıklama eklenmemiştir.";
                 explanationHtml = `
-                    <div class="explanation-box mt-4 mb-2 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl shadow-sm">
+                    <div class="explanation-box mt-4 mb-2 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl">
                         <div class="flex items-start gap-3">
-                            <i data-lucide="book-open-check" class="w-6 h-6 text-indigo-600 mt-1 flex-shrink-0"></i>
+                            <i data-lucide="info" class="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0"></i>
                             <div>
-                                <h4 class="font-bold text-indigo-900 text-sm uppercase tracking-wide mb-1">Çözüm / Bilgi Notu</h4>
+                                <h4 class="font-bold text-indigo-900 text-xs uppercase tracking-wider mb-1">Bilgi Notu</h4>
                                 <p class="text-indigo-800 text-sm leading-relaxed">${expText}</p>
                             </div>
                         </div>
@@ -359,12 +381,11 @@
                 `;
             }
 
-            // Buton HTML
             let actionButtonHtml = '';
             if (isAnswered) {
                 const isLast = currentQuestion + 1 === activeQuestions.length;
                 actionButtonHtml = `
-                    <button onclick="${isLast ? 'finishQuiz()' : 'nextQuestion()'}" class="w-full mt-2 bg-gray-800 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-lg flex justify-center gap-2 items-center">
+                    <button onclick="${isLast ? 'finishQuiz()' : 'nextQuestion()'}" class="w-full mt-4 bg-gray-800 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-md flex justify-center gap-2 items-center">
                         ${isLast ? 'Sınavı Bitir' : 'Sonraki Soru'}
                         <i data-lucide="${isLast ? 'flag' : 'arrow-right'}" class="w-5 h-5"></i>
                     </button>
@@ -372,36 +393,38 @@
             }
 
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px] flex flex-col fade-in">
-                    <div class="bg-white border-b border-gray-100 p-6 flex items-center justify-between">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px] flex flex-col fade-in border border-gray-100">
+                    <div class="bg-white border-b border-gray-100 p-5 flex items-center justify-between sticky top-0 z-20">
                         <div class="flex items-center gap-3">
                             <div class="${currentProfile.bg} p-2 rounded-lg">
-                                <i data-lucide="book-open" class="w-6 h-6 ${currentProfile.color}"></i>
+                                <i data-lucide="book-open" class="w-5 h-5 ${currentProfile.color}"></i>
                             </div>
                             <div>
-                                <h1 class="text-lg font-bold text-gray-800">${currentProfile.name}</h1>
-                                <span class="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded">${q.category}</span>
+                                <h1 class="text-sm font-bold text-gray-900 leading-tight">${headerTitle}</h1>
+                                <div class="flex gap-2 text-[10px] mt-0.5">
+                                    <span class="text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">${q.category}</span>
+                                    <span class="text-gray-400 border border-gray-200 px-1.5 py-0.5 rounded uppercase">${q.source}</span>
+                                </div>
                             </div>
                         </div>
                         ${timerHtml}
                     </div>
 
-                    <div class="w-full bg-gray-100 h-1.5">
-                        <div class="bg-blue-600 h-1.5 transition-all duration-300" style="width: ${progress}%"></div>
+                    <div class="w-full bg-gray-100 h-1">
+                        <div class="bg-blue-600 h-1 transition-all duration-300" style="width: ${progress}%"></div>
                     </div>
 
-                    <div class="p-6 md:p-8 flex-1 flex flex-col justify-center">
+                    <div class="p-6 md:p-8 flex-1 flex flex-col justify-center bg-slate-50/50">
                         <div class="mb-6">
-                            <span class="text-sm font-semibold text-blue-600 mb-2 block">Soru ${currentQuestion + 1} / ${activeQuestions.length}</span>
-                            <h2 class="text-2xl font-bold text-gray-800 leading-tight">${q.question}</h2>
+                            <span class="text-xs font-bold text-blue-600 mb-2 block tracking-wider uppercase">Soru ${currentQuestion + 1} / ${activeQuestions.length}</span>
+                            <h2 class="text-xl md:text-2xl font-bold text-gray-800 leading-snug">${q.question}</h2>
                         </div>
 
-                        <div class="space-y-3">
+                        <div class="space-y-2.5">
                             ${optionsHtml}
                         </div>
                         
                         ${explanationHtml}
-
                         ${actionButtonHtml}
                     </div>
                 </div>
@@ -435,37 +458,23 @@
             render();
         }
 
-        // 4. EKRAN: Sonuç
+        // --- 3. SONUÇ EKRANI ---
         function renderResult() {
             const totalQ = activeQuestions.length;
             const currentProfile = examProfiles[settings.profile];
-            
-            // Puanlama (Her soru 2 puan varsayılır, toplam 100 üzerinden)
-            // Ama net üzerinden geçme kalma hesaplayalım.
-            // 50 soru varsa, her soru 2 puandır. 
-            // 35 Net = 70 Puan. 30 Net = 60 Puan.
-            
             const pointsPerQuestion = 100 / totalQ; 
             const totalPoints = Math.round(score * pointsPerQuestion);
-            
-            // Baraj Kontrolü (Net Sayısına Göre)
-            // Ancak toplam soru sayısı havuz nedeniyle 50'den az olabilir. 
-            // Bu durumda orantı kurmak lazım: (score / totalQ) * 50 >= passNet ?
-            // Daha basit yöntem: Puan üzerinden gitmek.
-            
             const isPassed = totalPoints >= currentProfile.passScore;
             
-            let message = "";
-            let colorClass = "";
-            let icon = "";
+            let message, colorClass, icon, iconColor;
             
             if (isPassed) {
-                message = `Tebrikler! ${currentProfile.passScore} puan barajını geçtin! 🎓`;
+                message = `Tebrikler! ${currentProfile.passScore} puan barajını geçtin!`;
                 colorClass = "text-green-600";
                 icon = "award";
                 iconColor = "text-yellow-500";
             } else {
-                message = `Maalesef ${currentProfile.passScore} puan barajının altında kaldın. 📚`;
+                message = `${currentProfile.passScore} puan barajının altında kaldın.`;
                 colorClass = "text-red-600";
                 icon = "frown";
                 iconColor = "text-red-400";
@@ -476,86 +485,4 @@
                 const givenAns = userAnswers[idx];
                 const isCorrect = givenAns === q.correct;
                 const isEmpty = givenAns === null;
-                
-                let statusIcon = '';
-                let statusClass = '';
-                
-                if (isCorrect) {
-                    statusIcon = 'check-circle';
-                    statusClass = 'text-green-500 bg-green-50 border-green-200';
-                } else if (isEmpty) {
-                    statusIcon = 'minus-circle';
-                    statusClass = 'text-gray-400 bg-gray-50 border-gray-200';
-                } else {
-                    statusIcon = 'x-circle';
-                    statusClass = 'text-red-500 bg-red-50 border-red-200';
-                }
-
-                summaryHtml += `
-                    <div class="flex items-start gap-3 p-3 rounded-lg border ${statusClass} text-sm">
-                        <i data-lucide="${statusIcon}" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
-                        <div class="w-full">
-                            <span class="font-bold text-gray-700 block mb-1">Soru ${idx + 1}: ${q.question}</span>
-                            <div class="grid grid-cols-1 gap-1">
-                                <span class="${isCorrect ? 'font-bold text-green-700' : 'text-gray-500 line-through'}">
-                                    Doğru: ${q.options[q.correct]}
-                                </span>
-                                ${!isCorrect && !isEmpty ? `<span class="font-bold text-red-700">Senin Cevabın: ${q.options[givenAns]}</span>` : ''}
-                                ${isEmpty ? `<span class="text-orange-600 italic">Boş Bırakıldı</span>` : ''}
-                            </div>
-                            ${q.explanation ? `<div class="mt-2 text-xs text-gray-600 bg-white p-2 rounded border border-gray-100">ℹ️ ${q.explanation}</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-
-            app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl mx-auto fade-in">
-                    <div class="text-center border-b border-gray-100 pb-8 mb-8">
-                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-bold mb-4 tracking-wide uppercase">${currentProfile.name}</span>
-                        <div class="inline-flex p-4 rounded-full bg-gray-50 mb-4 block mx-auto">
-                            <i data-lucide="${icon}" class="w-16 h-16 ${iconColor}"></i>
-                        </div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Sınav Tamamlandı</h2>
-                        <p class="text-xl font-medium ${colorClass}">${message}</p>
-                        
-                        <div class="grid grid-cols-3 gap-4 mt-8">
-                            <div class="bg-blue-50 p-4 rounded-xl">
-                                <p class="text-blue-600 text-sm font-semibold uppercase">Doğru</p>
-                                <p class="text-3xl font-bold text-blue-900">${score}</p>
-                            </div>
-                            <div class="bg-indigo-50 p-4 rounded-xl">
-                                <p class="text-indigo-600 text-sm font-semibold uppercase">Puan</p>
-                                <p class="text-3xl font-bold text-indigo-900">${totalPoints}</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-xl">
-                                <p class="text-gray-500 text-sm font-semibold uppercase">Yanlış/Boş</p>
-                                <p class="text-3xl font-bold text-gray-800">${totalQ - score}</p>
-                            </div>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-2">Not: 3 yanlış 1 doğruyu götürmez.</p>
-                    </div>
-
-                    <div class="mb-8">
-                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <i data-lucide="list-checks" class="w-5 h-5"></i>
-                            Detaylı Rapor
-                        </h3>
-                        <div class="h-96 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
-                            ${summaryHtml}
-                        </div>
-                    </div>
-
-                    <button onclick="restartQuiz()" class="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
-                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-                        Ana Menüye Dön
-                    </button>
-                </div>
-            `;
-            lucide.createIcons();
-        }
-
-        render();
-    </script>
-</body>
-</html>
+                let statusClass = isCorrect ? 'border-l-4 border-l-green-500 bg-green-5

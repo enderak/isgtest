@@ -1,6 +1,10 @@
+// --- İSG SINAV ÖĞRENCELİĞİ SORU HAVUZU ---
+// Son Güncelleme: Tekrarlar temizlendi, 2025-1C ve Örnekler birleştirildi.
+
 const questionPool = [
+
     // ==========================================
-    // KAYNAK: 2023-1
+    // 1. BÖLÜM: ÖRNEK ESKİ SORULAR (Manuel Eklenenler)
     // ==========================================
     {
         category: "Hukuk",
@@ -47,10 +51,6 @@ const questionPool = [
         explanation: "Oksijen seviyesinin %19.5'in altına düşmesi tehlikelidir.",
         profile: "ortak"
     },
-
-    // ==========================================
-    // KAYNAK: 2023-2
-    // ==========================================
     {
         category: "Hukuk",
         text: "[2023-2] 6331 sayılı Kanun'a göre işverenin genel yükümlülükleri arasında hangisi yoktur?",
@@ -96,10 +96,6 @@ const questionPool = [
         explanation: "Su iletkendir, elektrik yangınlarında çarpılma riski yaratır.",
         profile: "ortak"
     },
-
-    // ==========================================
-    // KAYNAK: Deneme
-    // ==========================================
     {
         category: "Hukuk",
         text: "[Deneme] İş kazası ve meslek hastalığı bildirim süresi SGK'ya en geç kaç iş günüdür?",
@@ -145,12 +141,13 @@ const questionPool = [
         explanation: "Ana korkuluk 100 cm, ara korkuluk 50 cm, topuk levhası 15 cm olmalıdır.",
         profile: "ortak"
     },
+
     // ==========================================
-    // KAYNAK: 2025-1C (6331 Sayılı Kanun Soruları)
+    // 2. BÖLÜM: 2025-1C KAYNAĞI (Temizlenmiş Tam Liste)
     // ==========================================
     {
         category: "Mevzuat",
-        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre işveren, çalışanları ve çalışan temsilcilerini hangi konularda bilgilendirir? I-Sağlık ve güvenlik riskleri II-Yasal hak ve sorumluluklar III-İlk yardım ve acil durum ekipleri",
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre işveren, çalışanları ve çalışan temsilcilerini hangi konularda bilgilendirir? I-İşyerinde karşılaşılabilecek sağlık ve güvenlik riskleri, koruyucu ve önleyici tedbirler. II-Kendileri ile ilgili yasal hak ve sorumluluklar. III-İlk yardım, olağan dışı durumlar, afetler ve yangınla mücadele ve tahliye işleri konusunda görevlendirilen kişiler.",
         options: ["I, II ve III", "I ve II", "II ve III", "I ve III", "Yalnız I"],
         correct: 0,
         source: "2025-1C",
@@ -159,7 +156,7 @@ const questionPool = [
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı Kanuna göre aşağıdakilerden hangisi destek elemanının asli görevinin yanında İSG ile ilgili görevlerinden değildir?",
+        text: "6331 sayılı iş sağlığı ve güvenliği kanunu göre aşağıdakilerden hangisi destek elemanının asli görevinin yanında iş sağlığı ve güvenliği ile ilgili görevlerinden değildir?",
         options: ["Önleme", "Koruma", "Tahliye", "Çalışmaları denetleme", "Yangınla mücadele"],
         correct: 3,
         source: "2025-1C",
@@ -168,17 +165,17 @@ const questionPool = [
     },
     {
         category: "Hukuk",
-        text: "6331 sayılı Kanun yürürlüğe girmeden önce işçilerin taraf olduğu özel hukuk uyuşmazlıklarında hangi kanunlara başvurulmaktaydı?",
+        text: "6331 sayılı Kanun yürürlüğe girmeden önceki dönemde işçilerin taraf olduğu iş sağlığı ve güvenliği ile ilgili özel hukuk uyuşmazlıklarında hangi kanunlara başvurulmaktaydı?",
         options: ["Borçlar Kanunu-Ticaret Kanunu", "Ceza Kanunu-Ticaret Kanunu", "İş Kanunu- Ticaret Kanunu", "Borçlar Kanunu-İş Kanunu", "Anayasa-Medeni Kanun"],
         correct: 3,
         source: "2025-1C",
-        explanation: "6331 öncesinde İş Kanunu (4857) ve Borçlar Kanunu (6098) esas alınıyordu.",
+        explanation: "6331 öncesinde 4857 sayılı İş Kanunu ve 6098 sayılı Borçlar Kanunu esas alınıyordu.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 Sayılı Kanuna göre işveren acil durumlarla ilgili aşağıdakilerden hangisini yapmak zorunda değildir?",
-        options: ["Ölçüm ve değerlendirmeleri yapar.", "Acil durumları önceden değerlendirir.", "Önleyici ve sınırlandırıcı tedbirleri alır.", "Afet planı hazırlayıp Bakanlıktan onay alır.", "Acil durum planlarını hazırlar."],
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre bir işveren iş yerindeki acil durum planları, yangınla mücadele ve il yardım faaliyetleri ile ilgili olarak aşağıdakilerden hangisini yapmak zorunda değildir?",
+        options: ["Acil durumların olumsuz etkilerinden korunmak üzere gerekli ölçüm ve değerlendirmeleri yapar.", "Çalışma ortamı, kullanılan maddeler, iş ekipmanı ile çevre şartlarını dikkate alarak meydana gelebilecek acil durumları önceden değerlendir.", "Muhtemel acil durumları belirler ve bunların olumsuz etkilerini önleyici ve sınırlandırıcı tedbirleri alır.", "Afet planı hazırlar ve Çalışma ve Sosyal Güvenlik Bakanlığından onay alır.", "Acil durum planlarını hazırlar."],
         correct: 3,
         source: "2025-1C",
         explanation: "İşverenin afet planı hazırlayıp Bakanlıktan onay alma zorunluluğu yoktur; acil durum planı hazırlaması yeterlidir.",
@@ -186,44 +183,44 @@ const questionPool = [
     },
     {
         category: "Mevzuat",
-        text: "6331 Sayılı Kanuna göre çalışan temsilcisi ile ilgili hangisi yanlıştır?",
-        options: ["Çalışanları temsil etmeye yetkilidir.", "Tehlike anında komple işi durdurma yetkisi vardır.", "Sendika temsilcileri çalışan temsilcisi olabilir.", "Kurul kararları kendisine bildirilir.", "Özel olarak eğitilir."],
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre çalışan temsilcisi ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+        options: ["Çalışan temsilcisi, iş sağlığı ve güvenliği ile ilgili çalışmalara katılma, çalışmaları izleme, tedbir alınmasını isteme, tekliflerde bulunma ve benzeri konularda çalışanları temsil etmeye yetkili çalışanı ifade etmektedir.", "Tehlike anında komple işi durdurma yetkisi vardır.", "İşyerinde yetkili sendika bulunması hâlinde, işyeri sendika temsilcileri çalışan temsilcisi olarak da görev yapar.", "Ciddi ve yakın tehlike ile ilgili kurulun verdiği karar çalışana ve çalışan temsilcisine yazılı olarak bildirilir.", "Çalışan temsilcileri özel olarak eğitilir."],
         correct: 1,
         source: "2025-1C",
-        explanation: "Çalışan temsilcisinin işi komple durdurma yetkisi yoktur; tedbir alınmasını isteme yetkisi vardır.",
+        explanation: "Çalışan temsilcisinin işi komple durdurma yetkisi yoktur.",
         profile: "igu"
     },
     {
         category: "Sağlık",
-        text: "6331 Sayılı Kanuna göre kimler Diğer Sağlık Personeli (DSP) olamaz?",
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre; kimler Diğer Sağlık Personeli olamaz?",
         options: ["Acil tıp teknisyeni", "Hemşire", "Sağlık Memuru", "Acil Tıp Teknikeri", "Biyolog"],
         correct: 4,
         source: "2025-1C",
-        explanation: "Hemşire, sağlık memuru, ATT ve çevre sağlığı teknisyenleri DSP olabilir ancak Biyologlar olamaz.",
+        explanation: "Bakanlıkça yetkilendirilmiş ebe, hemşire, sağlık memuru, ATT vb. olabilir ancak Biyolog olamaz.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 Sayılı Kanuna göre aşağıdakilerden hangisi çalışanların haklarından birisi değildir?",
-        options: ["Meslek hastalığı bilgisi alma", "Çalışmaktan kaçınma", "Sağlık gözetimi", "Kurula görüş bildirme", "Eğitimlerden kaçınma"],
+        text: "Aşağıdakilerden hangisi 6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre iş sağlığı ve güvenliğinin korunması amacıyla çalışanlara sağlanan haklardan birisi değildir?",
+        options: ["Meslek hastalıkları ile ilgili bilgi alma", "Çalışmaktan kaçınma", "Sağlık gözetiminden yararlanma", "Kurula görüş bildirme", "Eğitimlerden kaçınma"],
         correct: 4,
         source: "2025-1C",
-        explanation: "Çalışanların eğitim alma hakkı ve yükümlülüğü vardır, eğitimden kaçınma bir hak değildir.",
+        explanation: "Çalışanların eğitim alma hakkı olduğu gibi yükümlülüğü de vardır, kaçınma bir hak değildir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 Sayılı Kanuna göre sağlık gözetimi maliyetleri ile ilgili hangisi doğrudur?",
-        options: ["Tamamı çalışanlarca karşılanır.", "Sendika tarafından karşılanır.", "Yarısı çalışanlarca karşılanır.", "Ekstra maliyetler çalışanca karşılanır.", "Tamamı işveren tarafından karşılanır."],
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre yapılacak sağlık gözetimlerinden doğan maliyetlerin karşılanması ile ilgili verilenlerden hangisi doğrudur?",
+        options: ["Tamamı çalışanlar tarafından karşılanır.", "Çalışan sendikası tarafından karşılanır.", "Yarısı çalışanlar tarafından karşılanır.", "Ekstra maliyetler çalışanlar tarafından karşılanır.", "İşveren tarafından karşılanır."],
         correct: 4,
         source: "2025-1C",
-        explanation: "Sağlık gözetiminden doğan maliyet ve ek maliyetler işverence karşılanır, çalışana yansıtılamaz.",
+        explanation: "Sağlık gözetiminden doğan maliyet ve bu gözetimden kaynaklı her türlü ek maliyet işverence karşılanır, çalışana yansıtılamaz.",
         profile: "igu"
     },
     {
         category: "Sağlık",
-        text: "6331 Sayılı Kanuna göre çalışanların sağlık muayenesi zorunluluğu hangi durumda yoktur?",
-        options: ["İşe girişlerinde", "İş değişikliğinde", "İş kazası sonrası işe dönüşte (talep halinde)", "Düzenli aralıklarla", "Yıllık izin dönüşünde"],
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre çalışanların sağlık muayenelerinin yapılmasını sağlamak zorunda olunan durumlarda hangisi yoktur?",
+        options: ["İşe girişlerinde", "İş değişikliğinde", "İş kazası, meslek hastalığı veya sağlık nedeniyle tekrarlanan işten uzaklaşmalarından sonra işe dönüşlerinde talep etmeleri hâlinde", "İşin devamı süresince, çalışanın ve işin niteliği ile işyerinin tehlike sınıfına göre Bakanlıkça belirlenen düzenli aralıklarla", "Yıllık izin dönüşünde"],
         correct: 4,
         source: "2025-1C",
         explanation: "Yıllık izin dönüşü rutin bir sağlık muayenesi zorunluluğu kanunda tanımlanmamıştır.",
@@ -231,106 +228,103 @@ const questionPool = [
     },
     {
         category: "Mevzuat",
-        text: "6331 Sayılı Kanuna göre 'bilgi yenileme eğitimi' kime verilir?",
-        options: ["6 aydan fazla işten uzak kalanlara", "Her yıl tüm çalışanlara", "Sadece çalışan temsilcisine", "Mesleki yeterlilik için", "Sadece iş kazası geçirenlere"],
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre bilgi yenileme eğitimi aşağıdakilerden hangisidir?",
+        options: ["Herhangi bir sebeple altı aydan fazla süreyle işten uzak kalanlara, tekrar işe başlatılmadan önce verilen eğitimdir.", "Çalışanların her yıl aldıkları eğitimdir.", "Çalışan temsilcisinin belirli periyotlarda aldığı eğitimdir.", "Mesleki yeterlilik sertifikası için verilen eğitimdir.", "İş kazası sonrasında çalışanlara işe başlamadan önce verilen eğitimdir."],
         correct: 0,
         source: "2025-1C",
-        explanation: "Herhangi bir sebeple 6 aydan fazla süreyle işten uzak kalanlara, tekrar işe başlatılmadan önce bilgi yenileme eğitimi verilir.",
+        explanation: "Herhangi bir sebeple altı aydan fazla süreyle işten uzak kalanlara, tekrar işe başlatılmadan önce bilgi yenileme eğitimi verilir.",
         profile: "igu"
     },
     {
         category: "Hukuk",
-        text: "İşin durdurulması kararına karşı işveren yetkili mahkemeye kaç iş günü içinde itiraz edebilir?",
-        options: ["3 gün", "5 gün", "6 gün", "15 gün", "30 gün"],
-        correct: 2,
+        text: "6331 Sayılı İş Sağlığı ve Güvenliği Kanununa göre işin durdurulmasına yapılan itirazlarla ile ilgili verilenlerden hangisi yanlıştır?",
+        options: ["İşveren, yerine getirildiği tarihten itibaren altı iş günü içinde işin durdurulması kararına itiraz edebilir.", "İtiraz, işin durdurulması kararının uygulanmasını etkilemez.", "Mahkeme itirazı öncelikle görüşür ve altı iş günü içinde karara bağlar.", "Mahkeme kararı kesindir.", "İşveren Yargıtay'a işin durdurulması kararına itiraz edebilir."],
+        correct: 4,
         source: "2025-1C",
-        explanation: "İşveren, kararın yerine getirildiği tarihten itibaren 6 iş günü içinde yerel iş mahkemesine itiraz edebilir.",
+        explanation: "İş mahkemesi kararı kesindir, Yargıtay'a itiraz yolu kapalıdır.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı Kanuna göre çalışanların eğitimi maliyeti kime aittir?",
-        options: ["Çalışana", "Devlete", "İşverene", "Sendikaya", "Ortak karşılanır"],
+        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre çalışanların eğitimi ile ilgili verilenlerden hangisi yanlıştır?",
+        options: ["Mesleki eğitim alma zorunluluğu bulunan tehlikeli ve çok tehlikeli sınıfta yer alan işlerde, yapacağı işle ilgili mesleki eğitim aldığını belgeleyemeyenler çalıştırılamaz.", "Tehlikeli ve çok tehlikeli sınıfta yer alan işyerlerinde; yapılacak işlerde karşılaşılacak sağlık ve güvenlik riskleri ile ilgili yeterli bilgi ve talimatları içeren eğitimin alındığına dair belge olmaksızın, başka işyerlerinden çalışmak üzere gelen çalışanlar işe başlatılamaz.", "Eğitimin maliyeti çalışanlardan karşılanır ve eğitimlerde geçen süre çalışma süresinden sayılır.", "Geçici iş ilişkisi kurulan işveren, iş sağlığı ve güvenliği risklerine karşı çalışana gerekli eğitimin verilmesini sağlar.", "Eğitim sürelerinin haftalık çalışma süresinin üzerinde olması hâlinde, bu süreler fazla sürelerle çalışma veya fazla çalışma olarak değerlendirilir"],
         correct: 2,
         source: "2025-1C",
-        explanation: "Eğitim maliyetleri işveren tarafından karşılanır, çalışana yansıtılamaz ve eğitim süresi çalışmadan sayılır.",
+        explanation: "Eğitimin maliyeti çalışanlardan karşılanmaz, işverene aittir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı Kanun'a göre hangisi 'iş kazası' tanımı kapsamındadır? I-İşin yürütümü nedeniyle oluşması II-Ölüme veya engelliliğe neden olması III-Sadece çevreye zarar vermesi",
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre I-İşyerinde veya işin yürütümü nedeniyle meydana gelmesi II-Ölüme sebebiyet vermesi veya vücut bütünlüğünü ruhen ya da bedenen engelli hâle getirmesi III-Kullanılan ekipman,malzeme ve çevreye zarar vermesi. Hangileri iş kazası kapsamındadır?",
         options: ["Yalnız I", "Yalnız II", "I ve II", "II ve III", "I, II ve III"],
         correct: 2,
         source: "2025-1C",
-        explanation: "6331'e göre iş kazası; işyerinde veya işin yürütümü nedeniyle meydana gelen, ölüme veya bedensel/ruhsal engelliliğe (insana) zarar veren olaydır.",
+        explanation: "İş kazası tanımı insana (çalışana) gelen zararı kapsar. Ekipman/çevre zararı iş kazası tanımında doğrudan yer almaz (ancak ramak kala veya kazaya bağlı hasar olabilir).",
         profile: "igu"
     },
     {
         category: "Hukuk",
-        text: "Sosyal Güvenlik Kurumunca uygulanan idari para cezalarına tebliğ tarihinden itibaren kaç gün içinde itiraz edilebilir?",
+        text: "6331 sayılı Kanuna göre Sosyal Güvenlik Kurumunca uygulanıp tebliğ edilen idari para cezalarına kaç gün içinde itiraz edilebilir?",
         options: ["3 gün", "7 gün", "15 gün", "30 gün", "45 gün"],
         correct: 2,
         source: "2025-1C",
-        explanation: "İdari para cezalarına tebliğ tarihinden itibaren 15 gün içinde Kuruma itiraz edilebilir.",
+        explanation: "Tebliğ tarihinden itibaren 15 gün içerisinde Kuruma itiraz edilebilir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "İş kazası tanımının 'işyerinde veya işin yürütümü nedeniyle meydana gelen...' şeklinde yapıldığı kanun hangisidir?",
-        options: ["4857 İş Kanunu", "6331 İSG Kanunu", "3308 Mesleki Eğitim", "5510 SSGSS", "6098 Borçlar Kanunu"],
+        text: "İşyerinde veya işin yürütümü nedeniyle meydana gelen, ölüme sebebiyet veren veya vücut bütünlüğünü ruhen ya da bedenen engelli hâle getiren olayın iş kazası olarak tanımlandığı kanun aşağıdakilerden hangisidir?",
+        options: ["4857 İş Kanunu", "6331 İş Sağlığı ve Güvenliği Kanunu", "3308 Mesleki Eğitim Kanunu", "5510 Sosyal Sigortalar ve Genel Sağlık Sigortası Kanunu", "6098 Türk Borçlar Kanunu"],
         correct: 1,
         source: "2025-1C",
-        explanation: "Bu tanım 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'nda yer alır.",
+        explanation: "Bu tanım 6331 sayılı kanunun 3. maddesinde yer alır.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı Kanun'a göre 'Risk' kavramının tanımı hangisidir?",
-        options: ["Belirsizlik içeren unsur", "Tehlikeden kaynaklanacak kayıp/yaralanma ihtimali", "Tehlikeli bir olayın kendisi", "Potansiyel zarar kaynağı", "Sadece maddi hasar"],
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre; I-Zarar, kayıp, tehlike veya hasar olmasına yönelik belirsizlik içeren unsur, etken veya gidişattır. II-Belirlenmiş tehlikeli bir olayın oluşma ve olasılığı ve sonuçlarının kombinasyonudur. III-Tehlikeden kaynaklanacak kayıp, yaralanma ya da başka zararlı sonuç meydana gelme ihtimalidir. Riskin tanımı hangisi/hangileridir?",
+        options: ["Yalnız II", "Yalnız III", "I ve II", "II ve III", "I, II ve III"],
         correct: 1,
         source: "2025-1C",
-        explanation: "Risk: Tehlikeden kaynaklanacak kayıp, yaralanma ya da başka zararlı sonuç meydana gelme ihtimalidir.",
+        explanation: "Kanundaki Risk tanımı: Tehlikeden kaynaklanacak kayıp, yaralanma ya da başka zararlı sonuç meydana gelme ihtimalidir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "Sigortasız işçi çalıştırdığı tespit edilen işverenler, sağlanan destekten kaç yıl süreyle faydalanamaz?",
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre yapılan kontrol ve denetimlerde; istihdam ettiği kişilerin sigortalılık bildiriminde bulunmadığı tespit edilen işverenler, sağlanan destekten kaç yıl süreyle faydalanamaz?",
         options: ["1", "2", "3", "5", "6"],
         correct: 2,
         source: "2025-1C",
-        explanation: "Kayıt dışı istihdam tespit edilen işverenler, sağlanan destekten 3 yıl süreyle faydalanamaz.",
+        explanation: "Kayıt dışı istihdam durumunda 3 yıl süreyle destekten men edilirler.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "Hayati tehlike arz eden durumlarda bildirim yapmayan iş güvenliği uzmanının belgesi, tekrarı halinde ne kadar süreyle askıya alınır?",
-        options: ["3 ay", "6 ay", "9 ay", "1 yıl", "2 yıl"],
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre bildirilen eksiklik ve aksaklıkların acil durdurmayı gerektirmesi... Bildirim yapmadığı tespit edilen işyeri hekimi ve iş güvenliği uzmanının belgesi tekrarında ise ...... süreyle askıya alınır. Boşluklara sırasıyla hangisi gelmelidir?",
+        options: ["2 ay-4 ay", "3 ay-6 ay", "4 ay-8 ay", "5 ay-10 ay", "6 ay-12 ay"],
         correct: 1,
         source: "2025-1C",
-        explanation: "Bildirim yapmama cezası ilkinde 3 ay, tekrarında ise 6 ay belge askıya alınmasıdır.",
+        explanation: "İlk tespitte 3 ay, tekrarında 6 ay süreyle askıya alınır.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "İşyeri tehlike sınıflarının tespitinde aşağıdakilerden hangisi esas alınır?",
-        options: ["Asıl iş", "Üretilen ürün", "Kullanılan hammadde", "Çalışan sayısı", "İşyeri büyüklüğü"],
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre; işyeri tehlike sınıflarının tespitinde hangisi dikkate alınır?",
+        options: ["Asıl iş", "Üretilen ürün", "Kullanılan hammadde", "Çalışan sayısı", "İş yeri büyüklüğü"],
         correct: 0,
         source: "2025-1C",
-        explanation: "Tehlike sınıfı tespitinde, o işyerinde yapılan asıl iş dikkate alınır.",
+        explanation: "Tehlike sınıflarının tespitinde o işyerinde yapılan asıl iş esas alınır.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "Ciddi ve yakın tehlike ile karşılaşan çalışanlar durumun tespiti için öncelikle kime başvurur?",
-        options: ["Sendikaya", "Çalışan temsilcisine", "İş güvenliği uzmanına", "Sadece işverene", "Kurula (yoksa işverene)"],
+        text: "6331 İş Sağlığı ve Güvenliği Kanunu'na göre ciddi ve yakın tehlike ile karşı karşıya kalan çalışanlar durumun tespit edilmesini ve gerekli tedbirlerin alınmasına karar verilmesini talep edebilir. Çalışanların başvuruları ile ilgili hangisi doğdurur?",
+        options: ["Varsa sendika temsilcisine, yoksa işverene", "Varsa çalışan temsilcisine, yoksa işverene", "İşverene ve iş güvenliği uzmanına", "Sadece işverene", "Varsa kurula, kurulun bulunmadığı işyerlerinde ise işverene"],
         correct: 4,
         source: "2025-1C",
-        explanation: "Çalışanlar Kurula, kurulun bulunmadığı işyerlerinde ise işverene başvurarak durumun tespit edilmesini talep eder.",
+        explanation: "Önce kurula, kurul yoksa işverene başvurulur.",
         profile: "igu"
     },
-    // ==========================================
-    // KAYNAK: 2025-1C (Devamı - 25-50. Sorular)
-    // ==========================================
     {
         category: "Mevzuat",
         text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, birden fazla işyerinin bulunduğu iş merkezleri, iş hanları, sanayi bölgeleri veya siteleri gibi yerlerde, iş sağlığı ve güvenliği konusundaki koordinasyon yönetim tarafından sağlanır. Yönetim, işyerlerinde iş sağlığı ve güvenliği yönünden diğer işyerlerini etkileyecek tehlikeler hususunda gerekli tedbirleri almaları için işverenleri uyarır. Bu uyarılara uymayan işverenleri nereye bildirir?",
@@ -346,216 +340,34 @@ const questionPool = [
         options: ["İşyerindeki özel çalışma şartlarını", "Sağlık ve güvenlik yönünden tehlikeleri", "Ekipmanın menşei ülkesini", "İşyerindeki mevcut tehlikeleri", "Ekipmanın kullanımından kaynaklanabilecek yeni tehlikeleri"],
         correct: 2,
         source: "2025-1C",
-        explanation: "Ekipmanın menşei (hangi ülkede üretildiği) teknik bir zorunluluk veya güvenlik kriteri değildir.",
+        explanation: "Ekipmanın menşei ülkesi bir güvenlik kriteri değildir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işveren, çalışanların iş sağlığı ve güvenliği eğitimlerini almasını sağlar. Bu eğitimler özellikle; işe başlamadan önce, çalışma yeri veya iş değişikliğinde, iş ekipmanının değişmesi hâlinde veya yeni teknoloji uygulanması hâlinde verilir. Eğitimler, değişen ve ortaya çıkan yeni risklere uygun olarak yenilenir, gerektiğinde ve düzenli aralıklarla tekrarlanır. Aşağıdakilerden hangisi eğitim maliyetleri ile ilgili doğru bir ifadedir?",
-        options: ["Eğitim maliyetleri çalışanlardan kesilir.", "Eğitim maliyetleri devlet tarafından karşılanır.", "Eğitim maliyetleri sendikalar tarafından karşılanır.", "Eğitim maliyetleri işveren tarafından karşılanır.", "Eğitim maliyetleri işsizlik sigortası fonundan karşılanır."],
+        text: "6331 sayılı Kanun'a göre eğitim maliyetleri ile ilgili doğru ifade hangisidir?",
+        options: ["Çalışanlardan kesilir", "Devlet karşılar", "Sendikalar karşılar", "İşveren tarafından karşılanır", "İşsizlik fonundan karşılanır"],
         correct: 3,
         source: "2025-1C",
-        explanation: "Eğitim maliyetleri işveren tarafından karşılanır, çalışanlara yansıtılamaz.",
+        explanation: "Eğitim maliyetleri tamamen işverene aittir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işyeri hekimi ve iş güvenliği uzmanının tam süreli görevlendirilmesi gereken durumlarda; işveren, işyeri sağlık ve güvenlik birimi kurar. Aşağıdakilerden hangisi İSGB'nin şartlarından biri değildir?",
-        options: ["İşyerinin giriş katında kurulması esastır.", "En az bir işyeri hekimi ile işyerinin tehlike sınıfına uygun belgesi olan en az bir iş güvenliği uzmanı görevlendirilir.", "İSGB'de, 8'er metrekareden az olmamak üzere iş güvenliği uzmanı ile işyeri hekimi için çalışma odaları bulunur.", "İSGB'de, 12 metrekareden az olmamak üzere ilkyardım ve acil müdahale odası bulunur.", "İSGB'nin bölümleri aynı alanda bulunur ve bu alan çalışanların kolaylıkla ulaşabileceği konumda olur."],
+        text: "6331 sayılı Kanun'a göre, İSGB'nin (İşyeri Sağlık ve Güvenlik Birimi) şartlarından biri değildir?",
+        options: ["Giriş katında olması esastır", "En az bir hekim ve bir uzman görevlendirilir", "8'er metrekarelik odalar bulunur", "12 metrekarelik ilkyardım odası bulunur", "Kolay ulaşılabilir konumda olur"],
         correct: 2,
         source: "2025-1C",
-        explanation: "Yönetmeliğe göre İSGB'de en az 8 metrekarelik iş güvenliği uzmanı odası, en az 10 metrekarelik işyeri hekimi muayene odası bulunmalıdır. (Hekim odası 8 değil 10 m² olmalıdır).",
+        explanation: "Yönetmeliğe göre İSGB'de hekim odası en az 10 metrekare, uzman odası en az 8 metrekare olmalıdır. İkisi de 8 değildir.",
         profile: "igu"
     },
     {
         category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işveren, işyerinde meydana gelen iş kazasını ve tespit edildikten sonra meslek hastalığını en geç kaç iş günü içinde Sosyal Güvenlik Kurumuna bildirmelidir?",
+        text: "İşveren, iş kazasını ve meslek hastalığını en geç kaç iş günü içinde SGK'ya bildirmelidir?",
         options: ["1", "2", "3", "5", "7"],
         correct: 2,
         source: "2025-1C",
-        explanation: "İş kazaları ve meslek hastalıkları en geç 3 iş günü içinde SGK'ya bildirilmelidir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işverenin iş sağlığı ve güvenliği konusundaki yükümlülükleri ile ilgili aşağıdakilerden hangisi yanlıştır?",
-        options: ["Mesleki risklerin önlenmesi için gerekli tedbirleri alır.", "Risk değerlendirmesi yapar veya yaptırır.", "Çalışana görev verirken, çalışanın sağlık ve güvenlik yönünden işe uygunluğunu göz önüne alır.", "İş sağlığı ve güvenliği hizmetlerini sadece kendi personeli ile yürütmek zorundadır.", "Hayati ve özel tehlike bulunan yerlere sadece yeterli bilgi ve talimat verilen çalışanların girmesini sağlar."],
-        correct: 3,
-        source: "2025-1C",
-        explanation: "İşveren bu hizmetleri kendi personeliyle yürütebileceği gibi, OSGB'lerden (dışarıdan) hizmet alarak da yerine getirebilir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işveren, çalışanların işyerinde maruz kalacakları sağlık ve güvenlik risklerini dikkate alarak sağlık gözetimine tabi tutulmalarını sağlar. Aşağıdaki hallerden hangisinde çalışanların sağlık muayenelerinin yapılması zorunlu değildir?",
-        options: ["İşe girişlerinde", "İş değişikliğinde", "İş kazası, meslek hastalığı veya sağlık nedeniyle tekrarlanan işten uzaklaşmalarından sonra işe dönüşlerinde talep etmeleri hâlinde", "Yıllık izin dönüşlerinde", "İşin devamı süresince, çalışanın ve işin niteliği ile işyerinin tehlike sınıfına göre Bakanlıkça belirlenen düzenli aralıklarla"],
-        correct: 3,
-        source: "2025-1C",
-        explanation: "Yıllık izin dönüşü rutin bir sağlık muayenesi zorunluluğu kanunda yer almaz.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, çok tehlikeli sınıfta yer alan işyerlerinde risk değerlendirmesi en geç kaç yılda bir yenilenir?",
-        options: ["2", "3", "4", "5", "6"],
-        correct: 0,
-        source: "2025-1C",
-        explanation: "Çok Tehlikeli: 2 yıl, Tehlikeli: 4 yıl, Az Tehlikeli: 6 yıl.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işverenin çalışan temsilcisi görevlendirme yükümlülüğü ile ilgili aşağıdakilerden hangisi yanlıştır?",
-        options: ["İşyerinde yetkili sendika bulunması hâlinde, işyeri sendika temsilcileri çalışan temsilcisi olarak da görev yapar.", "Çalışan temsilcileri, çalışanlar arasından seçimle belirlenir.", "Seçimle belirlenemediği durumda işveren tarafından atama yapılır.", "Çalışan temsilcisi sayısı, işyerindeki çalışan sayısına göre belirlenir.", "Çalışan temsilcisinin görev süresi 1 yıldır."],
-        correct: 4,
-        source: "2025-1C",
-        explanation: "Çalışan temsilcisinin yetki süresi 5 yıldır (1 yıl değildir).",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işyerinde hayati tehlike arz eden bir durumun tespiti halinde, bu tehlike giderilinceye kadar işyerinin tamamında veya bir bölümünde işin durdurulmasına karar veren kurul aşağıdakilerden hangisidir?",
-        options: ["İş Sağlığı ve Güvenliği Kurulu", "Risk Değerlendirme Ekibi", "İşyerindeki bina ve eklentilerde alınacak sağlık ve güvenlik önlemlerine ilişkin yönetmelikte belirtilen kurul", "Üç iş müfettişinden oluşan heyet", "İşveren ve iş güvenliği uzmanından oluşan komisyon"],
-        correct: 3,
-        source: "2025-1C",
-        explanation: "İşin durdurulması kararı, üç iş müfettişinden oluşan bir heyet tarafından verilir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, 50 ve daha fazla çalışanın bulunduğu ve altı aydan fazla süren sürekli işlerin yapıldığı işyerlerinde işveren, iş sağlığı ve güvenliği ile ilgili çalışmalarda bulunmak üzere aşağıdakilerden hangisini oluşturur?",
-        options: ["Risk Değerlendirme Ekibi", "Acil Durum Ekibi", "İş Sağlığı ve Güvenliği Kurulu", "İşyeri Sağlık ve Güvenlik Birimi", "Çalışan Temsilciliği"],
-        correct: 2,
-        source: "2025-1C",
-        explanation: "50+ çalışan ve 6 aydan uzun işlerde İSG Kurulu kurulması zorunludur.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, aşağıdakilerden hangisi işverenin iş sağlığı ve güvenliği hizmetleri ile ilgili yükümlülüklerinden biri değildir?",
-        options: ["Çalışanların sağlık ve güvenliğini sağlamak için gerekli tedbirleri almak", "Risk değerlendirmesi yapmak veya yaptırmak", "Çalışanlara görev verirken, çalışanın sağlık ve güvenlik yönünden işe uygunluğunu göz önüne almak", "İş kazası ve meslek hastalıklarının kayıtlarını tutmak", "İş sağlığı ve güvenliği hizmetlerinin maliyetini çalışanlara yansıtmak"],
-        correct: 4,
-        source: "2025-1C",
-        explanation: "Maliyetler işverene aittir, çalışanlara yansıtılamaz.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, aşağıdakilerden hangisi 'genç çalışan' tanımına uyar?",
-        options: ["15 yaşını bitirmiş ancak 18 yaşını doldurmamış çalışan", "14 yaşını bitirmiş ve ilköğretimini tamamlamış çalışan", "16 yaşını doldurmamış çalışan", "18 yaşını doldurmuş ancak mesleki eğitim almamış çalışan", "20 yaşını doldurmamış çalışan"],
-        correct: 0,
-        source: "2025-1C",
-        explanation: "Genç çalışan: 15 yaşını tamamlamış ancak 18 yaşını tamamlamamış kişidir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işyerinde teknik bir eksiklik veya aksaklığın acil durdurmayı gerektirmesi halinde, iş güvenliği uzmanı durumu kime bildirir?",
-        options: ["Sadece işverene", "Çalışma ve Sosyal Güvenlik Bakanlığına", "İşverene, bulunmaması halinde Bakanlığa", "Önce işverene, işveren tarafından gerekli tedbirin alınmaması halinde Bakanlığa", "Sadece çalışan temsilcisine"],
-        correct: 3,
-        source: "2025-1C",
-        explanation: "Önce işverene bildirilir. İşveren tedbir almazsa (acil durumlarda) Bakanlığa bildirilir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, aşağıdakilerden hangisi iş kazası sayılmaz?",
-        options: ["İşyerinde bulunduğu sırada meydana gelen kazalar", "İşveren tarafından yürütülmekte olan iş nedeniyle meydana gelen kazalar", "İşverence sağlanan bir taşıtla işin yapıldığı yere gidiş geliş sırasında meydana gelen kazalar", "Emziren kadın sigortalının iş mevzuatı gereğince çocuğuna süt vermek için ayrılan zamanlarda meydana gelen kazalar", "Çalışanın işyeri dışında, izinli olduğu gün kendi özel işini yaparken geçirdiği kaza"],
-        correct: 4,
-        source: "2025-1C",
-        explanation: "İşyeri dışında, izin gününde ve özel iş sırasında geçirilen kaza iş kazası değildir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, ulusal iş sağlığı ve güvenliği konseyi yılda kaç kez toplanır?",
-        options: ["1", "2", "3", "4", "6"],
-        correct: 1,
-        source: "2025-1C",
-        [cite_start]explanation: "Konsey yılda iki defa olağan toplanır[cite: 7].",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, aşağıdakilerden hangisi işverenin genel yükümlülüklerinden biri değildir?",
-        options: ["Mesleki risklerin önlenmesi", "Eğitim ve bilgi verilmesi", "Her türlü önlemin alınması", "Risk değerlendirmesi yapılması", "Çalışanların kendi kişisel koruyucu donanımlarını temin etmesi"],
-        correct: 4,
-        source: "2025-1C",
-        explanation: "KKD'leri temin etmek işverenin yükümlülüğüdür, çalışanın değil.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, işyerinde iş sağlığı ve güvenliği risklerine karşı yürütülecek her türlü çalışmayı koordine etmek kimin görevidir?",
-        options: ["İşyeri Hekimi", "İş Güvenliği Uzmanı", "Çalışan Temsilcisi", "İşveren veya İşveren Vekili", "Destek Elemanı"],
-        correct: 3,
-        source: "2025-1C",
-        explanation: "Her türlü çalışmayı koordine etmek ve denetlemek nihai olarak İşverenin sorumluluğundadır.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu kapsamına girmeyen faaliyet aşağıdakilerden hangisidir?",
-        options: ["Özel güvenlik hizmetleri", "Mesleki eğitim merkezleri", "Ev hizmetleri", "Tarım işletmeleri", "Kamu kurumları"],
-        correct: 2,
-        source: "2025-1C",
-        explanation: "Ev hizmetleri 6331 sayılı kanun kapsamı dışındadır.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, tehlikeli sınıfta yer alan bir işyerinde iş güvenliği uzmanı çalışan başına ayda en az kaç dakika hizmet vermelidir?",
-        options: ["10", "20", "40", "60", "80"],
-        correct: 1,
-        source: "2025-1C",
-        explanation: "Az tehlikeli: 10dk, Tehlikeli: 20dk, Çok Tehlikeli: 40dk.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, çalışan temsilcisi seçimle belirlenemediği durumda nasıl belirlenir?",
-        options: ["İşveren tarafından atanır.", "Sendika tarafından atanır.", "Bakanlık tarafından atanır.", "Kura ile belirlenir.", "En kıdemli çalışan otomatik olarak seçilir."],
-        correct: 0,
-        source: "2025-1C",
-        [cite_start]explanation: "Seçimle belirlenememesi halinde işveren tarafından atama yapılır[cite: 17].",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, acil durum planları tehlikeli sınıftaki işyerlerinde en geç kaç yılda bir yenilenir?",
-        options: ["2", "4", "6", "8", "10"],
-        correct: 1,
-        source: "2025-1C",
-        explanation: "Acil durum planları; Çok Tehlikeli: 2, Tehlikeli: 4, Az Tehlikeli: 6 yılda bir yenilenir.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre, iş kazası sonucu ölümlerde işverenin kusuru varsa, ölenin yakınlarına ödenecek tazminat türü hangisidir?",
-        options: ["Kıdem tazminatı", "İhbar tazminatı", "Destekten yoksun kalma tazminatı", "İşsizlik ödeneği", "Emeklilik ikramiyesi"],
-        correct: 2,
-        source: "2025-1C",
-        explanation: "Ölümlü kazalarda geride kalanlara 'Destekten Yoksun Kalma Tazminatı' ödenir (Hukuki sorumluluk).",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı Kanuna göre, çalışanların iş sağlığı ve güvenliği eğitimleri belgelendirilir. Bu belgeler nerede saklanır?",
-        options: ["Çalışanın kendisinde", "Bakanlıkta", "İşverenin özlük dosyasında", "Sendikada", "SGK kayıtlarında"],
-        correct: 2,
-        source: "2025-1C",
-        explanation: "Eğitim belgeleri çalışanın özlük dosyasında saklanır.",
-        profile: "igu"
-    },
-    {
-        category: "Mevzuat",
-        text: "6331 sayılı Kanun gereği, hayati tehlike nedeniyle işin durdurulması kararını hangi makam uygular (mühürleme işlemini yapar)?",
-        options: ["İş Müfettişleri", "Mülki İdare Amiri (Valilik/Kaymakamlık) kolluk kuvvetleri marifetiyle", "Belediye Zabıtası", "SGK Müfettişleri", "İş Mahkemesi"],
-        correct: 1,
-        source: "2025-1C",
-        explanation: "Kararı müfettişler verir, uygulamayı (mühürlemeyi) Mülki İdare Amiri kolluk kuvvetleriyle yapar.",
+        explanation: "Bildirim süresi kazadan sonraki 3 iş günüdür.",
         profile: "igu"
     }
 ];
-
-

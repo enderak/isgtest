@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İSG Uzmanlık Sınavı - Pro</title>
+    <title>İSG Uzmanlık Sınavı 2025 - Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -15,12 +15,14 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
         
-        /* Açıklama kutusu animasyonu */
+        /* Animasyonlar */
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .explanation-box { animation: slideDown 0.4s ease-out forwards; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -28,6 +30,34 @@
     <div id="quiz-app" class="max-w-2xl mx-auto mt-8"></div>
 
     <script>
+        // --- SINAV PROFİLLERİ VE BARAJLAR (2025) ---
+        const examProfiles = {
+            igu: {
+                id: 'igu',
+                name: 'A-B-C Sınıfı İGU',
+                passNet: 35, // 50 soruda 35 net
+                passScore: 70,
+                color: 'text-blue-600',
+                bg: 'bg-blue-100'
+            },
+            hekim: {
+                id: 'hekim',
+                name: 'İşyeri Hekimliği',
+                passNet: 35, // 50 soruda 35 net
+                passScore: 70,
+                color: 'text-emerald-600',
+                bg: 'bg-emerald-100'
+            },
+            dsp: {
+                id: 'dsp',
+                name: 'Diğer Sağlık Personeli (DSP)',
+                passNet: 30, // 50 soruda 30 net
+                passScore: 60,
+                color: 'text-purple-600',
+                bg: 'bg-purple-100'
+            }
+        };
+
         // --- SORU HAVUZU ---
         const questionPool = [
           // --- MEVZUAT & GENEL HUKUK ---
@@ -56,7 +86,7 @@
           { question: "Gürültü Yönetmeliği'ne göre 'En yüksek maruziyet eylem değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "90 dB(A)"], correct: 1, category: "Fiziksel" },
           { question: "Gürültü Yönetmeliği'ne göre 'Maruziyet sınır değeri' kaçtır?", options: ["80 dB(A)", "85 dB(A)", "87 dB(A)", "140 dB(C)"], correct: 2, category: "Fiziksel" },
           
-          // --- DİĞER ---
+          // --- SAĞLIK / DİĞER ---
           { question: "İş güvenliği uzmanlarının görev yetki sorumluluk ve eğitimleri hakkında yönetmeliğe göre, C sınıfı uzman hangi tehlike sınıfına bakabilir?", options: ["Çok Tehlikeli", "Tehlikeli", "Az Tehlikeli", "Hepsine"], correct: 2, category: "Mevzuat" },
           { question: "Kişisel Koruyucu Donanımlar (KKD) ne zaman kullanılır?", options: ["Her zaman ilk sırada", "Toplu koruma önlemleri yetersiz kaldığında", "Maliyet düşük olduğunda", "Çalışan istediğinde"], correct: 1, category: "KKD" }
         ];
@@ -75,8 +105,9 @@
         let settings = {
             timerEnabled: false,
             instantFeedback: true,
-            showExplanation: true, // Yeni ayar
-            totalTime: 75 * 60 
+            showExplanation: true, 
+            totalTime: 75 * 60,
+            profile: 'igu' // Varsayılan: İGU
         };
 
         const app = document.getElementById('quiz-app');
@@ -106,19 +137,35 @@
             const questionCountToUse = poolSize < 50 ? poolSize : 50;
 
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto">
-                    <div class="text-center mb-8">
-                        <i data-lucide="settings-2" class="w-20 h-20 text-blue-500 mx-auto mb-4"></i>
+                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto fade-in">
+                    <div class="text-center mb-8 relative">
+                        <div class="inline-block relative">
+                            <i data-lucide="settings-2" class="w-20 h-20 text-blue-600 mx-auto mb-4"></i>
+                        </div>
                         <h1 class="text-3xl font-bold text-gray-800">İSG Sınav Simülatörü</h1>
-                        <p class="text-gray-500 mt-2">Havuzda toplam <strong>${poolSize}</strong> soru var.</p>
-                        <p class="text-sm text-blue-600 font-semibold mt-1">Bu oturum için rastgele ${questionCountToUse} soru seçilecek.</p>
+                        <p class="text-gray-500 mt-2 text-sm">2025 Müfredatı</p>
                     </div>
 
                     <div class="space-y-4">
+                        
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-700"></i>
+                                <span class="font-bold text-indigo-900">Sınav Branşı Seçin</span>
+                            </div>
+                            <select id="profileSelect" class="w-full p-3 rounded-lg border-2 border-indigo-200 bg-white font-medium text-gray-700 focus:border-indigo-500 focus:outline-none transition-colors cursor-pointer">
+                                <option value="igu">A-B-C Sınıfı İGU (Baraj: 70 Puan)</option>
+                                <option value="hekim">İşyeri Hekimliği (Baraj: 70 Puan)</option>
+                                <option value="dsp">Diğer Sağlık Personeli (Baraj: 60 Puan)</option>
+                            </select>
+                            <p class="text-xs text-indigo-600 mt-2 ml-1">
+                                * Seçilen branşa göre başarı barajı güncellenir.
+                            </p>
+                        </div>
                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="timer" class="w-5 h-5 text-indigo-600"></i>
+                                    <i data-lucide="timer" class="w-5 h-5 text-gray-600"></i>
                                     <span class="font-semibold text-gray-700">Zamanlayıcı (75 Dk)</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -126,13 +173,12 @@
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">ÖSYM standart süresi (75 dk) uygulanır.</p>
                         </div>
 
                         <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="eye" class="w-5 h-5 text-indigo-600"></i>
+                                    <i data-lucide="eye" class="w-5 h-5 text-gray-600"></i>
                                     <span class="font-semibold text-gray-700">Anlık Cevap</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -140,13 +186,12 @@
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">Doğru/Yanlış renkleri işaretleyince hemen görünür.</p>
                         </div>
 
                         <div id="explanationOptionContainer" class="bg-gray-50 p-4 rounded-xl border border-gray-200 transition-opacity duration-300">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
+                                    <i data-lucide="book-open" class="w-5 h-5 text-gray-600"></i>
                                     <span class="font-semibold text-gray-700">Detaylı Çözüm</span>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -154,7 +199,6 @@
                                     <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">Cevapladıktan sonra konu anlatımını/açıklamayı göster.</p>
                         </div>
                     </div>
 
@@ -162,11 +206,11 @@
                         <i data-lucide="play" class="w-5 h-5"></i>
                         Sınavı Başlat
                     </button>
+                    <p class="text-center text-xs text-gray-400 mt-4">Havuzda toplam ${poolSize} soru var. Bu oturumda ${questionCountToUse} soru sorulacak.</p>
                 </div>
             `;
         }
 
-        // Anlık cevap kapalıysa açıklama seçeneğini de pasif yapar (görsel olarak)
         function toggleExplanationOption() {
             const feedbackOn = document.getElementById('feedbackToggle').checked;
             const expContainer = document.getElementById('explanationOptionContainer');
@@ -185,10 +229,12 @@
             const timerToggle = document.getElementById('timerToggle').checked;
             const feedbackToggle = document.getElementById('feedbackToggle').checked;
             const explanationToggle = document.getElementById('explanationToggle').checked;
+            const profileSelect = document.getElementById('profileSelect').value;
 
             settings.timerEnabled = timerToggle;
             settings.instantFeedback = feedbackToggle;
             settings.showExplanation = explanationToggle;
+            settings.profile = profileSelect;
             
             // --- SORU SEÇİMİ ---
             const shuffledPool = shuffleArray(questionPool);
@@ -243,6 +289,7 @@
             const progress = ((currentQuestion + 1) / activeQuestions.length) * 100;
             const userAnswer = userAnswers[currentQuestion];
             const isAnswered = userAnswer !== null;
+            const currentProfile = examProfiles[settings.profile];
 
             // Timer HTML
             let timerHtml = '';
@@ -276,7 +323,6 @@
                             buttonClass += "border-gray-200 bg-gray-50 opacity-50";
                         }
                     } else {
-                        // Sınav modu (sadece seçileni mavi yap)
                         if (index === userAnswer) {
                             buttonClass += "border-blue-600 bg-blue-100 ring-2 ring-blue-200";
                             iconHtml = '<i data-lucide="circle-dot" class="w-6 h-6 text-blue-600"></i>';
@@ -296,9 +342,8 @@
                 `;
             });
 
-            // --- AÇIKLAMA KUTUSU MANTIĞI ---
+            // Açıklama Kutusu
             let explanationHtml = '';
-            // GÖSTERME ŞARTI: Cevaplanmış olmalı + Anlık Cevap Açık olmalı + Açıklama Göster Açık olmalı
             if (isAnswered && settings.instantFeedback && settings.showExplanation) {
                 const expText = q.explanation ? q.explanation : "Bu soru için detaylı açıklama eklenmemiştir.";
                 explanationHtml = `
@@ -326,16 +371,15 @@
                 `;
             }
 
-            // Ana HTML Yapısı
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px] flex flex-col">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px] flex flex-col fade-in">
                     <div class="bg-white border-b border-gray-100 p-6 flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 p-2 rounded-lg">
-                                <i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i>
+                            <div class="${currentProfile.bg} p-2 rounded-lg">
+                                <i data-lucide="book-open" class="w-6 h-6 ${currentProfile.color}"></i>
                             </div>
                             <div>
-                                <h1 class="text-lg font-bold text-gray-800">İSG Sınav Simülatörü</h1>
+                                <h1 class="text-lg font-bold text-gray-800">${currentProfile.name}</h1>
                                 <span class="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded">${q.category}</span>
                             </div>
                         </div>
@@ -394,16 +438,37 @@
         // 4. EKRAN: Sonuç
         function renderResult() {
             const totalQ = activeQuestions.length;
-            const percentage = Math.round((score / totalQ) * 100);
+            const currentProfile = examProfiles[settings.profile];
+            
+            // Puanlama (Her soru 2 puan varsayılır, toplam 100 üzerinden)
+            // Ama net üzerinden geçme kalma hesaplayalım.
+            // 50 soru varsa, her soru 2 puandır. 
+            // 35 Net = 70 Puan. 30 Net = 60 Puan.
+            
+            const pointsPerQuestion = 100 / totalQ; 
+            const totalPoints = Math.round(score * pointsPerQuestion);
+            
+            // Baraj Kontrolü (Net Sayısına Göre)
+            // Ancak toplam soru sayısı havuz nedeniyle 50'den az olabilir. 
+            // Bu durumda orantı kurmak lazım: (score / totalQ) * 50 >= passNet ?
+            // Daha basit yöntem: Puan üzerinden gitmek.
+            
+            const isPassed = totalPoints >= currentProfile.passScore;
             
             let message = "";
             let colorClass = "";
-            if (percentage >= 70) {
-                message = "Tebrikler! Belgeyi kaptın! 🎓";
+            let icon = "";
+            
+            if (isPassed) {
+                message = `Tebrikler! ${currentProfile.passScore} puan barajını geçtin! 🎓`;
                 colorClass = "text-green-600";
+                icon = "award";
+                iconColor = "text-yellow-500";
             } else {
-                message = "Maalesef Kaldın. Biraz daha tekrar lazım. 📚";
+                message = `Maalesef ${currentProfile.passScore} puan barajının altında kaldın. 📚`;
                 colorClass = "text-red-600";
+                icon = "frown";
+                iconColor = "text-red-400";
             }
 
             let summaryHtml = '';
@@ -445,28 +510,30 @@
             });
 
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl mx-auto fade-in">
                     <div class="text-center border-b border-gray-100 pb-8 mb-8">
-                        <div class="inline-flex p-4 rounded-full bg-gray-50 mb-4">
-                            <i data-lucide="award" class="w-16 h-16 ${percentage >= 70 ? 'text-yellow-500' : 'text-gray-400'}"></i>
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-bold mb-4 tracking-wide uppercase">${currentProfile.name}</span>
+                        <div class="inline-flex p-4 rounded-full bg-gray-50 mb-4 block mx-auto">
+                            <i data-lucide="${icon}" class="w-16 h-16 ${iconColor}"></i>
                         </div>
                         <h2 class="text-3xl font-bold text-gray-800 mb-2">Sınav Tamamlandı</h2>
                         <p class="text-xl font-medium ${colorClass}">${message}</p>
                         
                         <div class="grid grid-cols-3 gap-4 mt-8">
                             <div class="bg-blue-50 p-4 rounded-xl">
-                                <p class="text-blue-600 text-sm font-semibold uppercase">Puan</p>
+                                <p class="text-blue-600 text-sm font-semibold uppercase">Doğru</p>
                                 <p class="text-3xl font-bold text-blue-900">${score}</p>
                             </div>
                             <div class="bg-indigo-50 p-4 rounded-xl">
-                                <p class="text-indigo-600 text-sm font-semibold uppercase">Başarı</p>
-                                <p class="text-3xl font-bold text-indigo-900">%${percentage}</p>
+                                <p class="text-indigo-600 text-sm font-semibold uppercase">Puan</p>
+                                <p class="text-3xl font-bold text-indigo-900">${totalPoints}</p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-xl">
-                                <p class="text-gray-500 text-sm font-semibold uppercase">Soru</p>
-                                <p class="text-3xl font-bold text-gray-800">${totalQ}</p>
+                                <p class="text-gray-500 text-sm font-semibold uppercase">Yanlış/Boş</p>
+                                <p class="text-3xl font-bold text-gray-800">${totalQ - score}</p>
                             </div>
                         </div>
+                        <p class="text-xs text-gray-400 mt-2">Not: 3 yanlış 1 doğruyu götürmez.</p>
                     </div>
 
                     <div class="mb-8">
@@ -488,7 +555,6 @@
             lucide.createIcons();
         }
 
-        // İlk render
         render();
     </script>
 </body>

@@ -2,328 +2,488 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İSG Sınav Modülü</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>İSG Sınav Öğrenceliği</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --primary: #2563eb;
-            --success: #22c55e;
-            --error: #ef4444;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #1e293b;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--card-bg);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        /* Üst Bilgi Alanı */
-        .header-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #64748b;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 10px;
-        }
-
-        /* Soru Alanı */
-        #question-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        /* --- RESİM ALANI STİLLERİ (YENİ) --- */
-        #image-container {
-            text-align: center;
-            margin: 15px 0;
-            display: none; /* Varsayılan olarak gizli */
-        }
-        
-        #question-image {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        /* ---------------------------------- */
-
-        /* Şıklar */
-        .options-grid {
-            display: grid;
-            gap: 10px;
-        }
-
-        .option-btn {
-            padding: 15px;
-            text-align: left;
-            background: #f1f5f9;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1rem;
-        }
-
-        .option-btn:hover {
-            background: #e2e8f0;
-        }
-
-        .option-btn.selected {
-            border-color: var(--primary);
-            background: #eff6ff;
-        }
-
-        .option-btn.correct {
-            background: #dcfce7;
-            border-color: var(--success);
-            color: #14532d;
-        }
-
-        .option-btn.wrong {
-            background: #fee2e2;
-            border-color: var(--error);
-            color: #7f1d1d;
-        }
-
-        /* Kontrol Butonları */
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 25px;
-            gap: 10px;
-        }
-
-        button.nav-btn {
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        
-        button.nav-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        /* Açıklama Kutusu */
-        #explanation-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fffbeb;
-            border-left: 4px solid #f59e0b;
-            border-radius: 4px;
-            display: none;
-            font-size: 0.95rem;
-        }
-
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <div class="container">
-        <div class="header-stats">
-            <span id="question-count">Soru: 0/0</span>
-            <span id="score-board">Doğru: 0 | Yanlış: 0</span>
-        </div>
-
-        <div id="question-text">Yükleniyor...</div>
-
-        <div id="image-container">
-            <img id="question-image" src="" alt="Soru Görseli">
-        </div>
-        <div class="options-grid" id="options-container">
-            </div>
-
-        <div id="explanation-box"></div>
-
-        <div class="controls">
-            <button class="nav-btn" id="prev-btn" onclick="prevQuestion()">❮ Önceki</button>
-            <button class="nav-btn" id="check-btn" onclick="checkAnswer()">Cevapla</button>
-            <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Sonraki ❯</button>
-        </div>
-    </div>
+    <div id="app" class="flex-1 flex flex-col p-2 md:p-4 max-w-3xl mx-auto w-full justify-center"></div>
 
     <script src="sorular.js"></script>
 
     <script>
-        // Değişkenler
-        let currentQuestionIndex = 0;
-        let userAnswers = {}; // Kullanıcının verdiği cevapları tutar
-        let correctCount = 0;
-        let wrongCount = 0;
-
-        // Sorular yüklendi mi kontrol et
-        if (typeof questions === 'undefined' || questions.length === 0) {
-            document.getElementById('question-text').innerHTML = "Hata: sorular.js dosyası bulunamadı veya boş!";
-        } else {
-            // İlk soruyu yükle
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const currentQ = questions[currentQuestionIndex];
-            
-            // 1. İstatistikleri Güncelle
-            document.getElementById('question-count').innerText = `Soru: ${currentQuestionIndex + 1}/${questions.length}`;
-            
-            // 2. Soru Metnini Yaz
-            document.getElementById('question-text').innerText = currentQ.text;
-
-            // 3. --- RESİM KONTROLÜ (GÜNCELLENDİ) ---
-            const imgContainer = document.getElementById('image-container');
-            const imgElement = document.getElementById('question-image');
-
-            if (currentQ.image && currentQ.image.trim() !== "") {
-                imgElement.src = currentQ.image; // Resim yolunu ayarla
-                imgContainer.style.display = "block"; // Kutuyu göster
-            } else {
-                imgContainer.style.display = "none"; // Resim yoksa kutuyu gizle
-                imgElement.src = ""; // Önbelleği temizle
+        // --- 2025 SINAV MÜFREDATI VE SORU DAĞILIM AYARLARI ---
+        const EXAM_CONFIG = {
+            'igu': { 
+                label: 'A-B-C Sınıfı İGU',
+                threshold: 35, 
+                distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 7, 'Mevzuat': 15, 'Sağlık': 5, 'Teknik': 20 } 
+            },
+            'hekim': {
+                label: 'İşyeri Hekimliği',
+                threshold: 35,
+                distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 7, 'Mevzuat': 13, 'Sağlık': 25, 'Teknik': 2 }
+            },
+            'dsp': {
+                label: 'Diğer Sağlık Personeli',
+                threshold: 30, 
+                distribution: { 'Hukuk': 3, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Sağlık': 17, 'Teknik': 5 }
             }
-            // ---------------------------------------
+        };
 
-            // 4. Şıkları Temizle ve Yeniden Oluştur
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
+        if (typeof questionPool === 'undefined') {
+            document.body.innerHTML = '<div class="flex flex-col items-center justify-center h-screen p-10 text-center text-red-600 font-bold bg-red-50">HATA: "sorular.js" dosyası bulunamadı veya hatalı!</div>';
+            throw new Error("Soru dosyası eksik.");
+        }
+
+        let app = document.getElementById('app');
+        let currentQuestions = [];
+        let userAnswers = {}; 
+        let currentIndex = 0;
+        let timerInterval;
+        let timeRemaining = 75 * 60; 
+        
+        let isTimerActive = true;
+        let isInstantFeedback = false; 
+        let isExplanationActive = false; 
+
+        // --- GİRİŞ EKRANI ---
+        function renderStartScreen() {
+            setTimeout(() => lucide.createIcons(), 0);
             
-            // Açıklama kutusunu gizle
-            document.getElementById('explanation-box').style.display = 'none';
-            document.getElementById('check-btn').disabled = false;
+            const sources = [...new Set(questionPool.map(q => q.source))].sort().reverse();
+            
+            let sourceOptions = '';
+            if (sources.length === 0) {
+                sourceOptions = '<option disabled>Kayıtlı soru bulunamadı</option>';
+            } else {
+                sourceOptions = sources.map(s => {
+                    let style = s.includes('Deneme') ? 'font-weight:bold; color:#4338ca;' : '';
+                    return `<option value="${s}" style="${style}">${s}</option>`;
+                }).join('');
+            }
 
-            // Şıkları döngü ile ekle
-            currentQ.options.forEach((option, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = option;
-                btn.onclick = () => selectOption(index);
+            app.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 max-w-lg mx-auto fade-in border border-slate-100">
+                    <div class="text-center mb-6">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-50 rounded-full mb-3 ring-8 ring-indigo-50/50">
+                            <i data-lucide="book-open-check" class="w-8 h-8 text-indigo-600"></i>
+                        </div>
+                        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">İSG Sınav Öğrenceliği</h1>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Branş Seçimi</label>
+                                <div class="relative">
+                                    <select id="profileSelect" onchange="updateInfoBox()" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
+                                        <option value="igu">İGU (A-B-C)</option>
+                                        <option value="hekim">İşyeri Hekimliği</option>
+                                        <option value="dsp">Diğer Sağlık P.</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Sınav Kaynağı</label>
+                                <div class="relative">
+                                    <select id="sourceSelect" class="w-full pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 text-sm font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
+                                        ${sourceOptions}
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="infoBox" class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900 text-xs leading-relaxed space-y-2"></div>
+
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-white p-1.5 rounded-lg shadow-sm text-gray-600"><i data-lucide="timer" class="w-4 h-4"></i></div>
+                                    <span class="text-sm font-semibold text-gray-700">Süre Sayacı (75 dk)</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="timerToggle" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-white p-1.5 rounded-lg shadow-sm text-gray-600"><i data-lucide="zap" class="w-4 h-4"></i></div>
+                                    <div>
+                                        <span class="text-sm font-semibold text-gray-700 block">Eğitim Modu</span>
+                                        <span class="text-[10px] text-gray-400 leading-tight">Cevabı anında göster</span>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="feedbackToggle" class="sr-only peer" onchange="toggleExplanationOption()">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                            </div>
+
+                             <div class="flex items-center justify-between opacity-50 transition-opacity" id="explanationRow">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-white p-1.5 rounded-lg shadow-sm text-gray-600"><i data-lucide="message-square" class="w-4 h-4"></i></div>
+                                    <div>
+                                        <span class="text-sm font-semibold text-gray-700 block">Açıklamalı Çözüm</span>
+                                        <span class="text-[10px] text-gray-400 leading-tight">Cevaptan sonra detay ver</span>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="explanationToggle" disabled class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="startQuiz()" class="group w-full mt-6 bg-gray-900 text-white py-3.5 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-3">
+                        <span>Sınavı Başlat</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            `;
+            updateInfoBox();
+            toggleExplanationOption();
+        }
+        
+        function updateInfoBox() {
+            const profile = document.getElementById('profileSelect').value;
+            const config = EXAM_CONFIG[profile];
+            const dist = config.distribution;
+            
+            let distText = `<ul class="grid grid-cols-2 gap-x-2 gap-y-1 mt-2">`;
+            for (const [key, val] of Object.entries(dist)) {
+                distText += `<li><span class="font-bold text-indigo-700">${val}</span> ${key}</li>`;
+            }
+            distText += `</ul>`;
+
+            document.getElementById('infoBox').innerHTML = `
+                <div class="font-bold flex items-center gap-2 border-b border-blue-200 pb-2 mb-2"><i data-lucide="target" class="w-4 h-4"></i>Baraj: ${config.threshold} Doğru (Net)</div>
+                <div class="font-semibold text-blue-800 mb-1">Soru Dağılımı:</div>
+                ${distText}
+            `;
+            lucide.createIcons();
+        }
+
+        function toggleExplanationOption() {
+            const feedbackCheck = document.getElementById('feedbackToggle');
+            const expRow = document.getElementById('explanationRow');
+            const expCheck = document.getElementById('explanationToggle');
+            
+            if(feedbackCheck && feedbackCheck.checked) {
+                expRow.classList.remove('opacity-50');
+                expCheck.disabled = false;
+            } else {
+                expRow.classList.add('opacity-50');
+                expCheck.disabled = true;
+                expCheck.checked = false;
+            }
+        }
+
+        function startQuiz() {
+            const profile = document.getElementById('profileSelect').value;
+            const source = document.getElementById('sourceSelect').value;
+            
+            if(!source) { alert("Lütfen geçerli bir sınav kaynağı seçin."); return; }
+
+            const config = EXAM_CONFIG[profile];
+            const distribution = config.distribution;
+            
+            isTimerActive = document.getElementById('timerToggle').checked;
+            isInstantFeedback = document.getElementById('feedbackToggle').checked;
+            isExplanationActive = document.getElementById('explanationToggle').checked;
+
+            currentQuestions = [];
+            let missingCategories = [];
+
+            let basePool = questionPool.filter(q => q.source === source);
+
+            for (const [categoryName, count] of Object.entries(distribution)) {
+                let categoryQuestions = basePool.filter(q => 
+                    q.category === categoryName && 
+                    (q.profile === profile || q.profile === 'ortak' || !q.profile) 
+                );
                 
-                // Eğer bu soru daha önce çözüldüyse durumu geri yükle
-                if (userAnswers[currentQuestionIndex] !== undefined) {
-                    const savedAnswer = userAnswers[currentQuestionIndex];
-                    document.getElementById('check-btn').disabled = true;
-                    
-                    if (index === currentQ.correct) {
-                        btn.classList.add('correct');
-                    } else if (index === savedAnswer) {
-                        btn.classList.add('wrong');
-                    }
-                    btn.disabled = true; // Tekrar tıklanamasın
-                    
-                    // Açıklamayı göster
-                    if(currentQ.explanation) {
-                        const expBox = document.getElementById('explanation-box');
-                        expBox.innerHTML = `<strong>Açıklama:</strong> ${currentQ.explanation}`;
-                        expBox.style.display = 'block';
-                    }
+                categoryQuestions.sort(() => Math.random() - 0.5);
+                
+                if (categoryQuestions.length < count) {
+                    missingCategories.push(`- ${categoryName}: ${count} tane gerekli, ${categoryQuestions.length} bulundu.`);
                 }
-                
-                optionsContainer.appendChild(btn);
-            });
 
-            // Buton durumlarını ayarla
-            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
-            document.getElementById('next-btn').innerText = (currentQuestionIndex === questions.length - 1) ? "Bitir" : "Sonraki ❯";
-        }
+                currentQuestions.push(...categoryQuestions.slice(0, count));
+            }
 
-        let selectedOptionIndex = null;
-
-        function selectOption(index) {
-            // Eğer soru zaten cevaplandıysa işlem yapma
-            if (userAnswers[currentQuestionIndex] !== undefined) return;
-
-            // Seçimi güncelle
-            selectedOptionIndex = index;
-            
-            // Görsel olarak seçili olanı vurgula
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach((btn, idx) => {
-                if (idx === index) btn.classList.add('selected');
-                else btn.classList.remove('selected');
-            });
-        }
-
-        function checkAnswer() {
-            // Seçim yapılmadıysa veya zaten cevaplandıysa çık
-            if (selectedOptionIndex === null || userAnswers[currentQuestionIndex] !== undefined) {
-                alert("Lütfen bir şık seçiniz.");
+            if (missingCategories.length > 0) {
+                alert(`⚠️ SINAV BAŞLATILAMADI!\n\nSeçilen "${source}" kaynağında, "${config.label}" profili için yeterli soru girilmemiş.\n\nEksikler:\n${missingCategories.join('\n')}\n\nLütfen sorular.js dosyasına ilgili konularda soru ekleyin.`);
                 return;
             }
 
-            const currentQ = questions[currentQuestionIndex];
-            const buttons = document.querySelectorAll('.option-btn');
+            currentQuestions.sort(() => Math.random() - 0.5);
+
+            userAnswers = {};
+            currentIndex = 0;
+            timeRemaining = 75 * 60; 
             
-            // Cevabı kaydet
-            userAnswers[currentQuestionIndex] = selectedOptionIndex;
+            if(isTimerActive) startTimer();
+            renderQuiz();
+        }
 
-            // Doğru/Yanlış kontrolü
-            if (selectedOptionIndex === currentQ.correct) {
-                buttons[selectedOptionIndex].classList.add('correct');
-                correctCount++;
-            } else {
-                buttons[selectedOptionIndex].classList.add('wrong');
-                buttons[currentQ.correct].classList.add('correct'); // Doğruyu da göster
-                wrongCount++;
-            }
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const timerEl = document.getElementById('timerDisplay');
+                if(timerEl) {
+                    const m = Math.floor(timeRemaining / 60).toString().padStart(2,'0');
+                    const s = (timeRemaining % 60).toString().padStart(2,'0');
+                    timerEl.innerText = `${m}:${s}`;
+                    if(timeRemaining <= 300) timerEl.classList.add('text-red-500', 'animate-pulse');
+                }
+                if (timeRemaining <= 0) finishQuiz();
+            }, 1000);
+        }
 
-            // Puan tablosunu güncelle
-            document.getElementById('score-board').innerText = `Doğru: ${correctCount} | Yanlış: ${wrongCount}`;
+        function renderQuiz() {
+            setTimeout(() => lucide.createIcons(), 0);
+            const q = currentQuestions[currentIndex];
+            const isAnswered = userAnswers[currentIndex] !== undefined;
+            const savedAnswer = userAnswers[currentIndex];
+            
+            const optionsHtml = q.options.map((opt, i) => {
+                const letters = ["A", "B", "C", "D", "E"];
+                let btnClass = "w-full text-left p-3 md:p-4 rounded-xl border-2 transition-all flex items-center gap-3 relative group ";
+                let iconHtml = `<div class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center text-sm border border-gray-200 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">${letters[i]}</div>`;
 
-            // Açıklama varsa göster
-            if (currentQ.explanation) {
-                const expBox = document.getElementById('explanation-box');
-                expBox.innerHTML = `<strong>Açıklama:</strong> ${currentQ.explanation}`;
-                expBox.style.display = 'block';
-            }
+                let isDisabledAttr = (isInstantFeedback && isAnswered) ? 'disabled' : '';
+                let cursorClass = (isInstantFeedback && isAnswered) ? 'cursor-default' : 'cursor-pointer hover:border-indigo-400 hover:shadow-md';
 
-            // Butonu kilitle
-            document.getElementById('check-btn').disabled = true;
-            selectedOptionIndex = null; // Seçimi sıfırla
+                if (isAnswered) {
+                    if (i === savedAnswer) {
+                        btnClass += "bg-indigo-50 border-indigo-500 ring-1 ring-indigo-500 ";
+                        iconHtml = `<div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm"><i data-lucide="check" class="w-4 h-4"></i></div>`;
+                    } else {
+                         btnClass += "bg-white border-gray-100 opacity-60 ";
+                    }
+                    
+                    if (isInstantFeedback) {
+                        if (i === q.answer) {
+                             btnClass = "w-full text-left p-3 md:p-4 rounded-xl border-2 transition-all flex items-center gap-3 relative bg-green-50 border-green-500 ";
+                             iconHtml = `<div class="w-8 h-8 rounded-full bg-green-600 text-white font-bold flex items-center justify-center text-sm"><i data-lucide="check" class="w-4 h-4"></i></div>`;
+                        } else if (i === savedAnswer && i !== q.answer) {
+                             btnClass = "w-full text-left p-3 md:p-4 rounded-xl border-2 transition-all flex items-center gap-3 relative bg-red-50 border-red-500 ";
+                             iconHtml = `<div class="w-8 h-8 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-sm"><i data-lucide="x" class="w-4 h-4"></i></div>`;
+                        }
+                    }
+                } else {
+                    btnClass += `bg-white border-gray-200 ${cursorClass}`;
+                }
+
+                return `
+                <button type="button" onclick="selectAnswer(${i})" ${isDisabledAttr} class="${btnClass}">
+                    ${iconHtml}
+                    <span class="text-sm font-medium text-gray-700 flex-1 leading-snug">${opt}</span>
+                </button>`;
+            }).join('');
+
+            let navigatorHtml = '';
+            currentQuestions.forEach((_, idx) => {
+                let colorClass = 'bg-white border border-gray-200 text-gray-500 hover:bg-gray-50';
+                if (idx === currentIndex) colorClass = 'bg-indigo-600 text-white border-indigo-600 ring-2 ring-indigo-200';
+                else if (userAnswers[idx] !== undefined) colorClass = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+                
+                navigatorHtml += `<button type="button" onclick="goToQuestion(${idx})" id="nav-btn-${idx}" class="flex-shrink-0 w-10 h-10 rounded-lg text-xs font-bold flex items-center justify-center transition-all ${colorClass}">${idx + 1}</button>`;
+            });
+
+             const explanationHtml = (isInstantFeedback && isExplanationActive && isAnswered) ? `
+                <div class="mt-4 p-4 bg-sky-50 border border-sky-100 rounded-xl fade-in">
+                    <h4 class="text-sky-800 font-bold text-sm mb-1 flex items-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4"></i> Açıklama
+                    </h4>
+                    <p class="text-sky-900 text-sm leading-relaxed opacity-90">
+                        ${q.explanation || 'Bu soru için açıklama mevcut değil.'}
+                    </p>
+                </div>
+            ` : '';
+
+            app.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-[95vh] md:h-auto fade-in">
+                    <div class="px-4 py-3 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <button onclick="if(confirm('Sınavı iptal etmek istiyor musun?')) renderStartScreen()" class="text-slate-400 hover:text-red-500 transition-colors">
+                                <i data-lucide="x-circle" class="w-6 h-6"></i>
+                            </button>
+                            <div class="h-6 w-px bg-slate-200"></div>
+                            <span class="text-sm font-bold text-slate-700">Soru ${currentIndex + 1} <span class="text-slate-400 font-normal">/ ${currentQuestions.length}</span></span>
+                        </div>
+                        ${isTimerActive ? `
+                        <div class="bg-slate-800 text-white px-3 py-1.5 rounded-lg font-mono text-sm font-bold tracking-widest flex items-center gap-2 shadow-sm">
+                            <i data-lucide="clock" class="w-3 h-3"></i>
+                            <span id="timerDisplay">75:00</span>
+                        </div>` : ''}
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50/50" id="questionArea">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider rounded-md border border-indigo-100">
+                                    ${q.category}
+                                </span>
+                                <span class="px-2.5 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded-md border border-gray-200">
+                                    ${q.source}
+                                </span>
+                            </div>
+                            <h2 class="text-lg md:text-xl font-bold text-gray-800 leading-snug">${q.question}</h2>
+                        </div>
+
+                        <div class="space-y-3 mb-2">
+                            ${optionsHtml}
+                        </div>
+                         ${explanationHtml}
+                    </div>
+
+                    <div class="p-3 bg-white border-t border-slate-100 flex items-center justify-between gap-3 z-10">
+                        <button onclick="prevQuestion()" ${currentIndex === 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-bold hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i> Önceki
+                        </button>
+                        
+                         <button onclick="clearAnswer()" ${isInstantFeedback && isAnswered ? 'disabled' : ''} class="p-2.5 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-30" title="Cevabı Temizle">
+                            <i data-lucide="eraser" class="w-5 h-5"></i>
+                        </button>
+
+                        <button onclick="${currentIndex === currentQuestions.length - 1 ? 'finishQuiz()' : 'nextQuestion()'}" class="flex-1 px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2">
+                            ${currentIndex === currentQuestions.length - 1 ? 'Sınavı Bitir' : 'Sonraki'}
+                            ${currentIndex !== currentQuestions.length - 1 ? '<i data-lucide="chevron-right" class="w-4 h-4"></i>' : ''}
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gray-50 border-t border-gray-200 p-2 z-10">
+                         <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar px-1" id="navScroll">
+                            ${navigatorHtml}
+                         </div>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const navScroll = document.getElementById('navScroll');
+                const activeBtn = document.getElementById(`nav-btn-${currentIndex}`);
+                if (navScroll && activeBtn) {
+                    const scrollLeft = activeBtn.offsetLeft - (navScroll.clientWidth / 2) + (activeBtn.clientWidth / 2);
+                    navScroll.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                }
+            }, 50);
+        }
+
+        function selectAnswer(optionIndex) {
+            if (isInstantFeedback && userAnswers[currentIndex] !== undefined) return; 
+            userAnswers[currentIndex] = optionIndex;
+            renderQuiz();
+        }
+
+        function clearAnswer() {
+            if (isInstantFeedback && userAnswers[currentIndex] !== undefined) return;
+            delete userAnswers[currentIndex];
+            renderQuiz();
         }
 
         function nextQuestion() {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                selectedOptionIndex = null;
-                loadQuestion();
-            } else {
-                alert(`Sınav Bitti!\nDoğru: ${correctCount}\nYanlış: ${wrongCount}`);
+            if (currentIndex < currentQuestions.length - 1) {
+                currentIndex++;
+                renderQuiz();
             }
         }
 
         function prevQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                selectedOptionIndex = null;
-                loadQuestion();
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuiz();
             }
         }
+        
+        function goToQuestion(index) {
+            currentIndex = index;
+            renderQuiz();
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            let correct = 0;
+            let empty = 0;
+            let wrong = 0;
+
+            currentQuestions.forEach((q, i) => {
+                if (userAnswers[i] === undefined) empty++;
+                else if (userAnswers[i] === q.answer) correct++;
+                else wrong++;
+            });
+
+            const score = correct * 2; 
+            const profile = document.getElementById('profileSelect').value;
+            const config = EXAM_CONFIG[profile];
+            const isPassed = correct >= config.threshold;
+
+            setTimeout(() => lucide.createIcons(), 0);
+
+            app.innerHTML = `
+                 <div class="bg-white rounded-3xl shadow-xl p-8 max-w-md mx-auto fade-in text-center border border-slate-100 my-10">
+                    <div class="mb-6 relative inline-block">
+                        <div class="w-24 h-24 rounded-full ${isPassed ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'} flex items-center justify-center mx-auto">
+                            <i data-lucide="${isPassed ? 'trophy' : 'frown'}" class="w-10 h-10"></i>
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded-lg">
+                            ${score} Puan
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">${isPassed ? 'TEBRİKLER!' : 'BARAJ ALTI KALDINIZ'}</h2>
+                    <p class="text-sm text-slate-500 mb-6">
+                        ${config.label} Barajı: ${config.threshold} Net
+                        <br>
+                        Sizin Netiniz: <b>${correct}</b>
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-3 mb-8">
+                        <div class="p-3 bg-green-50 rounded-2xl border border-green-100">
+                            <div class="text-xl font-black text-green-600">${correct}</div>
+                            <div class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Doğru</div>
+                        </div>
+                        <div class="p-3 bg-red-50 rounded-2xl border border-red-100">
+                            <div class="text-xl font-black text-red-600">${wrong}</div>
+                            <div class="text-[10px] uppercase font-bold text-red-400 tracking-wider">Yanlış</div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-xl font-black text-gray-600">${empty}</div>
+                            <div class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Boş</div>
+                        </div>
+                    </div>
+
+                    <button onclick="location.reload()" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold shadow-lg hover:bg-black hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        Yeni Sınav Başlat
+                    </button>
+                </div>
+            `;
+        }
+
+        renderStartScreen();
     </script>
 </body>
 </html>

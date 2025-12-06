@@ -3,198 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İSG Sınav Sistemi v7</title>
-    
+    <title>İSG Sınav Öğrenceliği v9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        /* Şık Scrollbar */
+        /* Yeşil Tema Özel Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #ecfdf5; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #34d399; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center justify-center">
+<body class="bg-emerald-50 text-slate-800 min-h-screen flex flex-col">
 
-    <div id="app" class="w-full max-w-3xl p-3 md:p-4"></div>
+    <div id="app" class="flex-1 flex flex-col p-3 md:p-6 max-w-3xl mx-auto w-full justify-center"></div>
 
     <script src="sorular.js"></script>
 
     <script>
         // --- AYARLAR ---
         const EXAM_CONFIG = {
-            'igu': { 
-                label: 'İGU (A-B-C)', 
-                threshold: 35, 
-                distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } 
-            },
-            'hekim': {
-                label: 'İşyeri Hekimliği',
-                threshold: 35,
-                distribution: { 'Sağlık': 25, 'Mevzuat': 13, 'Genel İSG Konuları': 7, 'Hukuk': 3, 'Teknik': 2 }
-            },
-            'dsp': {
-                label: 'Diğer Sağlık P.',
-                threshold: 30, 
-                distribution: { 'Sağlık': 17, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Teknik': 5, 'Hukuk': 3 }
-            }
+            'igu': { label: 'İGU (A-B-C)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
+            'hekim': { label: 'İşyeri Hekimliği', threshold: 35, distribution: { 'Sağlık': 25, 'Mevzuat': 13, 'Genel İSG Konuları': 7, 'Hukuk': 3, 'Teknik': 2 } },
+            'dsp': { label: 'Diğer Sağlık P.', threshold: 30, distribution: { 'Sağlık': 17, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Teknik': 5, 'Hukuk': 3 } }
         };
 
-        // --- HATA KONTROLÜ ---
         if (typeof questionPool === 'undefined') {
-            document.body.innerHTML = '<div class="text-center p-10 text-red-600 font-bold">HATA: sorular.js dosyası bulunamadı!</div>';
-            throw new Error("Soru dosyası eksik.");
+            document.body.innerHTML = '<div class="text-center p-10 text-red-600 font-bold">HATA: sorular.js yüklenemedi.</div>';
+            throw new Error("Veri hatası");
         }
 
         let app = document.getElementById('app');
         let currentQuestions = [];
-        let userAnswers = {}; 
+        let userAnswers = {};
         let currentIndex = 0;
         let timerInterval;
-        let timeRemaining = 75 * 60; 
+        let timeRemaining = 75 * 60;
+        let isTimerActive = true;
+        let isEduMode = false; // Eğitim Modu
 
-        // --- GİRİŞ EKRANI (Şık Tasarım) ---
+        // --- GİRİŞ EKRANI ---
         function renderStartScreen() {
             setTimeout(() => lucide.createIcons(), 0);
             
-            // Kaynakları temizle
-            const sources = [...new Set(questionPool.map(q => q.source))]
-                .filter(s => s && s.trim() !== "")
-                .sort().reverse();
-            
-            let sourceOptions = sources.map(s => `<option value="${s}">${s}</option>`).join('');
+            const sources = [...new Set(questionPool.map(q => q.source))].filter(s => s).sort().reverse();
+            let sourceOptions = sources.map(s => {
+                let style = s.toLowerCase().includes('deneme') ? 'font-weight:bold; color:#059669;' : '';
+                return `<option value="${s}" style="${style}">${s}</option>`;
+            }).join('');
 
             app.innerHTML = `
-                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 fade-in border border-slate-100">
+                <div class="bg-white rounded-3xl shadow-xl p-8 max-w-lg mx-auto fade-in border border-emerald-100">
                     <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-50 rounded-full mb-3 ring-8 ring-indigo-50/50">
-                            <i data-lucide="book-open" class="w-8 h-8 text-indigo-600"></i>
+                        <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 rounded-full mb-4 text-emerald-600">
+                            <i data-lucide="book-open-check" class="w-10 h-10"></i>
                         </div>
-                        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">İSG Sınav Sistemi</h1>
-                        <p class="text-sm text-gray-500 mt-2 font-medium">Lütfen sınav türünü ve kaynağı seçiniz</p>
+                        <h1 class="text-3xl font-extrabold text-slate-800">İSG Sınav Öğrenceliği</h1>
                     </div>
 
                     <div class="space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Branş</label>
-                                <div class="relative">
-                                    <select id="profileSelect" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
-                                        <option value="igu">İGU (A-B-C)</option>
-                                        <option value="hekim">İşyeri Hekimliği</option>
-                                        <option value="dsp">Diğer Sağlık P.</option>
-                                    </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
-                                </div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Branş</label>
+                                <select id="profileSelect" class="w-full p-3 rounded-xl border border-gray-200 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-400">
+                                    <option value="igu">İGU (A-B-C)</option>
+                                    <option value="hekim">İşyeri Hekimliği</option>
+                                    <option value="dsp">Diğer Sağlık P.</option>
+                                </select>
                             </div>
-                            
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Kaynak</label>
-                                <div class="relative">
-                                    <select id="sourceSelect" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none appearance-none transition-all">
-                                        <option value="all" class="text-indigo-700">Tüm Havuzdan Deneme Oluştur</option>
-                                        ${sourceOptions}
-                                    </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 absolute right-3 top-4 pointer-events-none"></i>
-                                </div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Kaynak</label>
+                                <select id="sourceSelect" class="w-full p-3 rounded-xl border border-gray-200 bg-slate-50 font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-400">
+                                    <option value="Deneme">Rastgele Deneme</option>
+                                    ${sourceOptions}
+                                </select>
                             </div>
                         </div>
 
                         <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="bg-white p-2 rounded-lg shadow-sm text-gray-600"><i data-lucide="timer" class="w-5 h-5"></i></div>
-                                    <span class="text-sm font-bold text-gray-700">Süre Sayacı (75 dk)</span>
+                                    <div class="bg-white p-2 rounded-lg text-slate-600 shadow-sm"><i data-lucide="timer" class="w-5 h-5"></i></div>
+                                    <span class="font-bold text-slate-700">Süre (75 Dk)</span>
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="timerToggle" checked class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                                </label>
+                                <input type="checkbox" id="timerToggle" checked class="w-5 h-5 accent-emerald-600 cursor-pointer">
                             </div>
                             
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="bg-white p-2 rounded-lg shadow-sm text-gray-600"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                                    <div class="bg-white p-2 rounded-lg text-slate-600 shadow-sm"><i data-lucide="zap" class="w-5 h-5"></i></div>
                                     <div>
-                                        <span class="text-sm font-bold text-gray-700 block">Eğitim Modu</span>
-                                        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wide">Cevabı anında göster</span>
+                                        <span class="font-bold text-slate-700 block">Eğitim Modu</span>
+                                        <span class="text-[10px] text-slate-400 uppercase font-bold">Anlık Cevap + Açıklama</span>
                                     </div>
                                 </div>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="feedbackToggle" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                                </label>
+                                <input type="checkbox" id="eduToggle" class="w-5 h-5 accent-emerald-600 cursor-pointer">
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="startQuiz()" class="group w-full mt-8 bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-3">
-                        <span>Sınavı Başlat</span>
-                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    <button onclick="startQuiz()" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2">
+                        Sınavı Başlat <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </button>
                 </div>
             `;
         }
 
-        // --- SINAV ALGORİTMASI (DÜZELTİLMİŞ) ---
+        // --- SINAV BAŞLATMA ---
         function startQuiz() {
             const profile = document.getElementById('profileSelect').value;
             const source = document.getElementById('sourceSelect').value;
             const config = EXAM_CONFIG[profile];
+            
+            isTimerActive = document.getElementById('timerToggle').checked;
+            isEduMode = document.getElementById('eduToggle').checked;
 
             currentQuestions = [];
-            
-            // 1. DENEME MODU (Algoritma ile seçer)
-            if (source === 'all' || source.toLowerCase().includes('deneme')) {
-                const distribution = config.distribution;
-                let pool = (source === 'all') ? questionPool : questionPool.filter(q => q.source === source);
-                
-                // Kaynakta hiç soru yoksa uyar
-                if (pool.length === 0) {
-                    alert("Seçilen kaynakta hiç soru bulunamadı!");
-                    return;
-                }
 
-                // Dağılıma göre soru seç
+            // MOD 1: DENEME (Dağılımlı)
+            if (source.includes("Deneme")) {
+                const distribution = config.distribution;
+                let pool = questionPool.filter(q => q.source.includes("Deneme")); // Sadece Deneme sorularından havuz
+                
+                if (pool.length === 0) pool = questionPool; // Deneme yoksa genel havuzdan al (Test için)
+
                 for (const [cat, count] of Object.entries(distribution)) {
                     let validQs = pool.filter(q => q.category === cat && (q.profile === profile || q.profile === 'ortak' || !q.profile));
                     
-                    // Soru varsa ekle, yetmiyorsa olanı ekle (Sistemi kilitleme)
                     if (validQs.length > 0) {
-                         // Rastgele karıştır
+                        // Soru yetmiyorsa çoğalt
+                        while(validQs.length < count) { validQs.push(validQs[Math.floor(Math.random() * validQs.length)]); }
                         validQs.sort(() => Math.random() - 0.5);
-                        
-                        // İstenen sayı kadar al (Eğer yetmiyorsa eldekilerin hepsini al)
-                        let takeCount = Math.min(validQs.length, count);
-                        currentQuestions.push(...validQs.slice(0, takeCount));
+                        currentQuestions.push(...validQs.slice(0, count));
                     }
                 }
             } 
-            // 2. ÇIKMIŞ SORU MODU (Direkt getir)
+            // MOD 2: YILLAR (Sabit)
             else {
                 currentQuestions = questionPool.filter(q => q.source === source);
             }
 
-            // Hata Kontrolü: Eğer hiç soru bulunamadıysa
             if (currentQuestions.length === 0) {
-                alert("Sistem bu kriterlere uygun soru bulamadı. Lütfen sorular.js dosyasını kontrol edin veya başka bir kaynak seçin.");
+                alert("Seçilen kaynakta soru bulunamadı!");
                 return;
             }
 
-            // Soruları Karıştır
-            currentQuestions.sort(() => Math.random() - 0.5);
+            // Eğer "Yıl" seçildiyse sırayı bozma, Deneme ise karıştır
+            if (source.includes("Deneme")) {
+                currentQuestions.sort(() => Math.random() - 0.5);
+            }
 
-            // Başlat
             userAnswers = {};
             currentIndex = 0;
             timeRemaining = 75 * 60;
             
-            if (document.getElementById('timerToggle').checked) startTimer();
+            if(isTimerActive) startTimer();
             renderQuiz();
         }
 
@@ -203,137 +169,156 @@
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 const el = document.getElementById('timerDisplay');
-                if (el) {
-                    const m = Math.floor(timeRemaining / 60).toString().padStart(2,'0');
-                    const s = (timeRemaining % 60).toString().padStart(2,'0');
-                    el.innerText = `${m}:${s}`;
+                if(el) {
+                    el.innerText = `${Math.floor(timeRemaining / 60).toString().padStart(2,'0')}:${(timeRemaining % 60).toString().padStart(2,'0')}`;
                 }
                 if (timeRemaining <= 0) finishQuiz();
             }, 1000);
         }
 
-        // --- SORU EKRANI (Şık Tasarım) ---
+        // --- SORU EKRANI ---
         function renderQuiz() {
             setTimeout(() => lucide.createIcons(), 0);
             const q = currentQuestions[currentIndex];
-            const isFeedback = document.getElementById('feedbackToggle').checked;
             const isAnswered = userAnswers[currentIndex] !== undefined;
+            const myAnswer = userAnswers[currentIndex];
 
+            // Şıklar
             let optionsHtml = q.options.map((opt, i) => {
+                let btnClass = "bg-white border-slate-200 hover:border-emerald-400 hover:bg-emerald-50 cursor-pointer";
+                let iconClass = "bg-slate-100 text-slate-500";
                 const letters = ["A", "B", "C", "D", "E"];
-                let btnClass = "bg-white border-gray-200 hover:border-indigo-400 hover:shadow-md cursor-pointer";
-                let iconClass = "bg-gray-100 text-gray-500 group-hover:bg-indigo-100 group-hover:text-indigo-600";
-                
+
                 if (isAnswered) {
-                    btnClass = "cursor-default opacity-60 bg-white border-gray-100"; // Pasif görünüm
-                    if (i === userAnswers[currentIndex]) {
-                        // Kullanıcının seçimi
-                        btnClass = "bg-indigo-50 border-indigo-500 ring-1 ring-indigo-500 opacity-100";
-                        iconClass = "bg-indigo-600 text-white";
+                    if (i === myAnswer) { // Seçilen
+                        btnClass = "bg-emerald-50 border-emerald-500 ring-1 ring-emerald-500";
+                        iconClass = "bg-emerald-600 text-white";
                         
-                        if (isFeedback && i !== q.answer) {
-                            btnClass = "bg-red-50 border-red-500 ring-1 ring-red-500 opacity-100";
+                        if (isEduMode && i !== q.correct) { // Yanlışsa Kırmızı (Eğitim Modu)
+                            btnClass = "bg-red-50 border-red-500 ring-1 ring-red-500";
                             iconClass = "bg-red-600 text-white";
                         }
                     }
-                    if (isFeedback && i === q.answer) {
-                        // Doğru cevap (yeşil)
-                        btnClass = "bg-green-50 border-green-500 ring-1 ring-green-500 opacity-100";
+                    if (isEduMode && i === q.correct) { // Doğruyu Göster (Eğitim Modu)
+                        btnClass = "bg-green-50 border-green-500 ring-1 ring-green-500";
                         iconClass = "bg-green-600 text-white";
                     }
                 }
 
+                // Eğitim modundaysa ve cevaplandıysa tıklanmaz, değilse tıklanır
+                let clickAction = (isEduMode && isAnswered) ? '' : `onclick="selectAnswer(${i})"`;
+                if (isEduMode && isAnswered) btnClass += " cursor-default";
+
                 return `
-                <button type="button" onclick="selectAnswer(${i})" ${isFeedback && isAnswered ? 'disabled' : ''} class="group w-full text-left p-4 rounded-xl border-2 transition-all flex items-center gap-4 mb-3 relative ${btnClass}">
-                    <div class="w-8 h-8 rounded-full font-bold flex items-center justify-center text-sm border border-black/5 transition-colors ${iconClass}">
-                        ${isAnswered && isFeedback && i===q.answer ? '<i data-lucide="check" class="w-4 h-4"></i>' : (isAnswered && isFeedback && i===userAnswers[currentIndex] && i!==q.answer ? '<i data-lucide="x" class="w-4 h-4"></i>' : letters[i])}
+                <div ${clickAction} class="group w-full p-4 rounded-xl border-2 mb-3 flex items-center gap-4 transition-all ${btnClass}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border border-black/5 transition-colors ${iconClass}">
+                        ${letters[i]}
                     </div>
-                    <span class="text-sm md:text-base font-medium text-gray-700 flex-1 leading-snug">${opt}</span>
-                </button>`;
+                    <span class="text-sm md:text-base font-medium text-slate-700 flex-1">${opt}</span>
+                </div>`;
             }).join('');
 
-            let imageHtml = q.image ? `
-                <div class="mb-6 flex justify-center">
-                    <img src="${q.image}" class="max-h-60 rounded-xl border border-gray-200 shadow-sm object-contain">
-                </div>
-            ` : '';
+            // Resim
+            let imageHtml = q.image ? `<div class="mb-4 flex justify-center"><img src="${q.image}" class="max-h-60 rounded-lg border border-slate-200 shadow-sm"></div>` : '';
 
-            // Navigator (Alttaki yuvarlak butonlar)
+            // Timer
+            let timerHtml = isTimerActive ? `<div class="font-mono bg-slate-800 text-white px-3 py-1 rounded text-sm shadow-sm" id="timerDisplay">75:00</div>` : '';
+
+            // Temizle Butonu (Eğitim modunda değilse)
+            let clearBtn = (!isEduMode && isAnswered) ? 
+                `<button onclick="clearAnswer()" class="text-red-500 hover:bg-red-50 px-4 py-2 rounded-lg font-bold text-sm transition-colors">Temizle</button>` : `<div></div>`;
+
+            // Navigasyon Grid
             let navHtml = '';
             currentQuestions.forEach((_, idx) => {
-                let cls = 'bg-white border-gray-200 text-gray-400';
-                if (idx === currentIndex) cls = 'bg-gray-900 text-white border-gray-900 scale-110 shadow-lg';
-                else if (userAnswers[idx] !== undefined) cls = 'bg-indigo-50 text-indigo-600 border-indigo-200';
-                navHtml += `<button onclick="currentIndex=${idx}; renderQuiz()" class="flex-shrink-0 w-8 h-8 rounded-full text-xs font-bold border flex items-center justify-center transition-all ${cls}">${idx+1}</button>`;
+                let cls = 'bg-white border-slate-200 text-slate-400 hover:bg-slate-50';
+                if (idx === currentIndex) cls = 'bg-emerald-600 text-white border-emerald-600 shadow-md transform scale-110';
+                else if (userAnswers[idx] !== undefined) cls = 'bg-emerald-50 text-emerald-600 border-emerald-200';
+                navHtml += `<button onclick="goToQuestion(${idx})" id="nav-${idx}" class="flex-shrink-0 w-9 h-9 rounded-lg text-xs font-bold border flex items-center justify-center transition-all ${cls}">${idx+1}</button>`;
             });
 
             app.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[95vh] md:h-auto fade-in">
-                    <div class="px-5 py-4 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20">
+                <div class="bg-white rounded-3xl shadow-xl border border-emerald-100 overflow-hidden flex flex-col h-[95vh] md:h-auto fade-in">
+                    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20">
                         <div class="flex items-center gap-3">
-                            <button onclick="if(confirm('Çıkmak istiyor musunuz?')) renderStartScreen()" class="p-2 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors">
-                                <i data-lucide="x" class="w-5 h-5"></i>
-                            </button>
-                            <span class="text-sm font-bold text-slate-700">Soru ${currentIndex + 1} / ${currentQuestions.length}</span>
+                            <button onclick="if(confirm('Çıkmak istiyor musun?')) renderStartScreen()" class="text-slate-400 hover:text-red-500"><i data-lucide="x-circle" class="w-6 h-6"></i></button>
+                            <span class="font-bold text-slate-700">Soru ${currentIndex + 1} / ${currentQuestions.length}</span>
                         </div>
-                        ${document.getElementById('timerToggle').checked ? `
-                        <div class="bg-slate-900 text-white px-3 py-1.5 rounded-lg font-mono text-sm font-bold flex items-center gap-2 shadow-lg">
-                            <i data-lucide="clock" class="w-3 h-3"></i>
-                            <span id="timerDisplay">75:00</span>
-                        </div>` : ''}
+                        ${timerHtml}
                     </div>
 
-                    <div class="flex-1 overflow-y-auto p-5 md:p-8 bg-slate-50/50">
-                        <div class="mb-6">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold uppercase tracking-wider rounded-md border border-indigo-100">${q.category}</span>
-                                <span class="px-2.5 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded-md border border-gray-200">${q.source}</span>
-                            </div>
-                            
-                            ${imageHtml}
-                            <h2 class="text-lg md:text-xl font-bold text-gray-800 leading-relaxed">${q.question}</h2>
+                    <div class="flex-1 overflow-y-auto p-5 md:p-8 bg-slate-50">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-[10px] font-bold px-2 py-1 bg-emerald-100 text-emerald-800 rounded uppercase tracking-wider">${q.category}</span>
+                            <span class="text-[10px] font-bold px-2 py-1 bg-slate-200 text-slate-600 rounded uppercase tracking-wider">${q.source}</span>
                         </div>
-
+                        
+                        ${imageHtml}
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-6 leading-relaxed">${q.question}</h2>
+                        
                         <div>${optionsHtml}</div>
 
-                        ${(isFeedback && isAnswered) ? `
-                        <div class="mt-4 p-4 bg-sky-50 border border-sky-100 rounded-xl fade-in flex gap-3">
-                            <i data-lucide="info" class="w-5 h-5 text-sky-600 flex-shrink-0 mt-0.5"></i>
-                            <div>
-                                <h4 class="text-sky-800 font-bold text-sm mb-1">Açıklama</h4>
-                                <p class="text-sky-900 text-sm leading-relaxed opacity-90">${q.explanation || 'Açıklama yok.'}</p>
+                        <div id="explanationArea" class="hidden mt-4 fade-in">
+                            <div class="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl text-emerald-900 text-sm">
+                                <div class="font-bold mb-1 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Açıklama:</div>
+                                ${q.explanation || 'Açıklama girilmemiş.'}
                             </div>
-                        </div>` : ''}
+                        </div>
+                        
+                        ${(isEduMode && isAnswered) ? `
+                            <button onclick="document.getElementById('explanationArea').classList.remove('hidden'); this.style.display='none'" class="mt-2 text-emerald-600 text-sm font-bold flex items-center gap-1 hover:underline">
+                                <i data-lucide="eye" class="w-4 h-4"></i> Açıklamayı Göster
+                            </button>
+                        ` : ''}
+
                     </div>
 
-                    <div class="p-4 bg-white border-t border-slate-100 flex flex-col gap-3 z-10">
-                        <div class="flex items-center gap-3">
-                            <button onclick="if(currentIndex>0){currentIndex--; renderQuiz()}" ${currentIndex===0?'disabled':''} class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 disabled:opacity-50 flex items-center gap-2 transition-all">
-                                <i data-lucide="chevron-left" class="w-4 h-4"></i> Önceki
+                    <div class="p-4 bg-white border-t border-slate-100 flex flex-col gap-4 z-10">
+                        <div class="flex items-center justify-between gap-4">
+                            <button onclick="prevQ()" ${currentIndex===0?'disabled':''} class="px-5 py-3 rounded-xl border-2 border-slate-100 text-slate-500 font-bold hover:bg-slate-50 disabled:opacity-50">
+                                <i data-lucide="chevron-left" class="w-5 h-5"></i>
                             </button>
                             
-                            <button onclick="${currentIndex === currentQuestions.length-1 ? 'finishQuiz()' : 'currentIndex++; renderQuiz()'}" class="flex-1 px-5 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-lg hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2">
-                                ${currentIndex === currentQuestions.length-1 ? 'Sınavı Tamamla' : 'Sonraki'}
-                                ${currentIndex !== currentQuestions.length-1 ? '<i data-lucide="chevron-right" class="w-4 h-4"></i>' : ''}
+                            ${clearBtn}
+
+                            <button onclick="${currentIndex === currentQuestions.length-1 ? 'finishQuiz()' : 'nextQ()'}" class="flex-1 px-5 py-3 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 shadow-lg flex items-center justify-center gap-2">
+                                ${currentIndex === currentQuestions.length-1 ? 'Sınavı Bitir' : 'Sonraki'}
+                                <i data-lucide="${currentIndex === currentQuestions.length-1 ? 'check-circle' : 'chevron-right'}" class="w-5 h-5"></i>
                             </button>
                         </div>
                         
-                        <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar pt-1">
+                        <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar px-1" id="navScroll">
                             ${navHtml}
                         </div>
                     </div>
                 </div>
             `;
+            
+            // Navigasyon kaydırma
+            setTimeout(() => {
+                const nav = document.getElementById('navScroll');
+                const active = document.getElementById(`nav-${currentIndex}`);
+                if(nav && active) nav.scrollTo({ left: active.offsetLeft - nav.clientWidth/2 + active.clientWidth/2, behavior: 'smooth' });
+            }, 50);
         }
 
+        // --- AKSİYONLAR ---
         function selectAnswer(i) {
-            const isFeedback = document.getElementById('feedbackToggle').checked;
-            if (isFeedback && userAnswers[currentIndex] !== undefined) return;
+            if (isEduMode && userAnswers[currentIndex] !== undefined) return;
             userAnswers[currentIndex] = i;
             renderQuiz();
         }
 
-        // --- SONUÇ EKRANI (Şık Tasarım) ---
+        function clearAnswer() {
+            delete userAnswers[currentIndex];
+            renderQuiz();
+        }
+
+        function nextQ() { if(currentIndex < currentQuestions.length-1) { currentIndex++; renderQuiz(); } }
+        function prevQ() { if(currentIndex > 0) { currentIndex--; renderQuiz(); } }
+        function goToQuestion(i) { currentIndex = i; renderQuiz(); }
+
+        // --- SONUÇ ---
         function finishQuiz() {
             clearInterval(timerInterval);
             let correct = 0, wrong = 0, empty = 0;
@@ -343,37 +328,34 @@
                 else wrong++;
             });
 
+            const score = (correct * 2); // 50 soru * 2 = 100
+            
             app.innerHTML = `
-                <div class="bg-white rounded-3xl shadow-xl p-8 max-w-md mx-auto fade-in text-center border border-slate-100 my-10">
-                    <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="award" class="w-10 h-10"></i>
+                <div class="bg-white rounded-3xl shadow-xl p-8 max-w-md mx-auto fade-in text-center border border-emerald-100 mt-10">
+                    <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600">
+                        <i data-lucide="award" class="w-12 h-12"></i>
                     </div>
-
-                    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Sınav Tamamlandı</h2>
-                    <p class="text-slate-500 mb-8 text-sm">Sonuçlarınız aşağıdaki gibidir:</p>
+                    
+                    <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Sınav Bitti!</h2>
+                    <div class="text-sm font-bold text-emerald-600 bg-emerald-50 inline-block px-4 py-1 rounded-full mb-6">Puan: ${score}</div>
 
                     <div class="grid grid-cols-3 gap-3 mb-8">
-                        <div class="p-4 bg-green-50 rounded-2xl border border-green-100">
+                        <div class="p-4 bg-green-50 rounded-2xl border border-green-200">
                             <div class="text-2xl font-black text-green-600">${correct}</div>
-                            <div class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Doğru</div>
+                            <div class="text-[10px] font-bold uppercase text-green-800">Doğru</div>
                         </div>
-                        <div class="p-4 bg-red-50 rounded-2xl border border-red-100">
+                        <div class="p-4 bg-red-50 rounded-2xl border border-red-200">
                             <div class="text-2xl font-black text-red-600">${wrong}</div>
-                            <div class="text-[10px] uppercase font-bold text-red-400 tracking-wider">Yanlış</div>
+                            <div class="text-[10px] font-bold uppercase text-red-800">Yanlış</div>
                         </div>
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div class="text-2xl font-black text-gray-600">${empty}</div>
-                            <div class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Boş</div>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <div class="text-2xl font-black text-slate-600">${empty}</div>
+                            <div class="text-[10px] font-bold uppercase text-slate-800">Boş</div>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-xl mb-6 text-sm text-slate-600 border border-slate-200">
-                        Toplam Puan: <span class="font-bold text-slate-900">${correct * 2}</span> / 100
-                    </div>
-
-                    <button onclick="location.reload()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-black hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                        Yeni Sınav Başlat
+                    <button onclick="location.reload()" class="btn-primary w-full py-4 rounded-xl font-bold bg-slate-900 text-white shadow-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i> Yeni Sınav
                     </button>
                 </div>
             `;

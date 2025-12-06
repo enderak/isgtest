@@ -485,4 +485,72 @@
                 const givenAns = userAnswers[idx];
                 const isCorrect = givenAns === q.correct;
                 const isEmpty = givenAns === null;
-                let statusClass = isCorrect ? 'border-l-4 border-l-green-500 bg-green-5
+                let statusClass = isCorrect ? 'border-l-4 border-l-green-500 bg-green-50/30' : (isEmpty ? 'border-l-4 border-l-gray-400 bg-gray-50' : 'border-l-4 border-l-red-500 bg-red-50/30');
+
+                summaryHtml += `
+                    <div class="p-4 rounded-lg bg-white shadow-sm border border-gray-100 ${statusClass} text-sm mb-2">
+                        <span class="font-bold text-gray-800 block mb-1">Soru ${idx + 1}</span>
+                        <p class="text-gray-600 mb-2">${q.question}</p>
+                        <div class="flex flex-col gap-1 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-green-700 font-semibold">Doğru: ${q.options[q.correct]}</span>
+                            </div>
+                            ${!isCorrect ? `<span class="${isEmpty ? 'text-gray-500 italic' : 'text-red-600 font-semibold'}">Senin Cevabın: ${isEmpty ? 'Boş' : q.options[givenAns]}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            app.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-3xl mx-auto fade-in">
+                    <div class="text-center border-b border-gray-100 pb-6 mb-6">
+                         <div class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-600 mb-4 uppercase tracking-wider">
+                            ${currentProfile.name} 
+                            <span class="text-gray-300">|</span> 
+                            ${settings.source === 'all' ? 'Genel Tekrar' : settings.source}
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <i data-lucide="${icon}" class="w-16 h-16 ${iconColor}"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 mb-1">Sınav Tamamlandı</h2>
+                        <p class="font-medium ${colorClass}">${message}</p>
+                        
+                        <div class="grid grid-cols-3 gap-3 mt-6">
+                            <div class="bg-blue-50 p-3 rounded-xl border border-blue-100">
+                                <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider">Doğru</p>
+                                <p class="text-2xl font-bold text-blue-900">${score}</p>
+                            </div>
+                            <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+                                <p class="text-indigo-600 text-[10px] font-bold uppercase tracking-wider">Puan</p>
+                                <p class="text-2xl font-bold text-indigo-900">${totalPoints}</p>
+                            </div>
+                            <div class="bg-red-50 p-3 rounded-xl border border-red-100">
+                                <p class="text-red-500 text-[10px] font-bold uppercase tracking-wider">Yanlış/Boş</p>
+                                <p class="text-2xl font-bold text-red-900">${totalQ - score}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-4 h-4"></i>
+                            Cevap Anahtarı
+                        </h3>
+                        <div class="h-80 overflow-y-auto pr-2 custom-scrollbar space-y-2">
+                            ${summaryHtml}
+                        </div>
+                    </div>
+
+                    <button onclick="restartQuiz()" class="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                        Yeni Sınav Başlat
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        render();
+    </script>
+</body>
+</html>

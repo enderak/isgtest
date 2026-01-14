@@ -370,14 +370,18 @@
             let sources = [...new Set(questionPool.map(q => q.source))];
 
             if (classLetter) {
-                // Sadece o sınıfa ait kaynakları göster (örn: -C ile bitenler)
+                // Sadece o sınıfa ait kaynakları göster
                 sources = sources.filter(s => {
+                    const trimmed = s.trim();
+                    // Son karakter sınıf harfi mi? (Örn: "2025-1C" veya "2025-1-C")
+                    const endsWithClass = trimmed.endsWith(classLetter);
+
                     if (s.includes('Deneme')) {
-                        // Deneme sınavları için: -C ile biten veya sınıf belirtilmemiş olanlar
-                        return s.endsWith('-' + classLetter) || !s.match(/-[ABC]$/);
+                        // Deneme sınavları için: o sınıfla biten veya sınıf belirtilmemiş (sonu harfle bitmeyen) olanlar
+                        return endsWithClass || !s.match(/[ABC]$/);
                     } else {
-                        // Gerçek sınavlar için: -C ile bitenler
-                        return s.endsWith('-' + classLetter);
+                        // Gerçek sınavlar için: o sınıfla bitenler
+                        return endsWithClass;
                     }
                 });
             }
@@ -414,8 +418,8 @@
                     if (!q.source.includes("Deneme")) return false;
                     // Profile değerine göre filtrele
                     if (profileFilter && q.profile === profileFilter) return true;
-                    // Kaynak adına göre filtrele (örn: Deneme-2025-1-C)
-                    if (classLetter && q.source.includes('-' + classLetter)) return true;
+                    // Kaynak adına göre filtrele (örn: Deneme-2025-1-C veya ...1C)
+                    if (classLetter && q.source.trim().endsWith(classLetter)) return true;
                     // Hekim veya DSP için profile kontrolü
                     if (profile === 'hekim' && q.profile === 'hekim') return true;
                     if (profile === 'dsp' && q.profile === 'dsp') return true;

@@ -202,7 +202,9 @@
         // 2. UYGULAMA MANTIĞI
         // ==========================================
         const EXAM_CONFIG = {
-            'igu': { label: 'İGU (A-B-C)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
+            'igu_a': { label: 'İGU (A Sınıfı)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
+            'igu_b': { label: 'İGU (B Sınıfı)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
+            'igu_c': { label: 'İGU (C Sınıfı)', threshold: 35, distribution: { 'Teknik': 20, 'Mevzuat': 15, 'Genel İSG Konuları': 7, 'Sağlık': 5, 'Hukuk': 3 } },
             'hekim': { label: 'İşyeri Hekimliği', threshold: 35, distribution: { 'Sağlık': 25, 'Mevzuat': 13, 'Genel İSG Konuları': 7, 'Hukuk': 3, 'Teknik': 2 } },
             'dsp': { label: 'Diğer Sağlık P.', threshold: 30, distribution: { 'Sağlık': 17, 'Genel İSG Konuları': 15, 'Mevzuat': 10, 'Teknik': 5, 'Hukuk': 3 } }
         };
@@ -316,7 +318,9 @@
                                 <div>
                                     <label class="text-xs font-bold text-slate-400 uppercase">Branş</label>
                                     <select id="profileSelect" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
-                                        <option value="igu">İGU (A-B-C)</option>
+                                        <option value="igu_c">İGU (C Sınıfı)</option>
+                                        <option value="igu_b">İGU (B Sınıfı)</option>
+                                        <option value="igu_a">İGU (A Sınıfı)</option>
                                         <option value="hekim">İşyeri Hekimliği</option>
                                         <option value="dsp">Diğer Sağlık P.</option>
                                     </select>
@@ -363,10 +367,25 @@
             isTimerActive = document.getElementById('timerToggle').checked;
             isEduMode = document.getElementById('eduToggle').checked;
 
+            // Branşa göre sınıf belirleme (A, B veya C)
+            let classFilter = null;
+            if (profile === 'igu_a') classFilter = 'A';
+            else if (profile === 'igu_b') classFilter = 'B';
+            else if (profile === 'igu_c') classFilter = 'C';
+
             currentQuestions = [];
             if (source.includes("Deneme")) {
-                let pool = questionPool.filter(q => q.source.includes("Deneme"));
+                // Deneme sınavı - branşa göre filtrele
+                let pool = questionPool.filter(q => {
+                    if (!q.source.includes("Deneme")) return false;
+                    if (classFilter && q.source.includes('-' + classFilter)) return true;
+                    if (classFilter && !q.source.match(/-[ABC]/)) return true; // Sınıf belirtilmemiş denemeler
+                    if (!classFilter) return true;
+                    return false;
+                });
+                if (pool.length === 0) pool = questionPool.filter(q => q.source.includes("Deneme"));
                 if (pool.length === 0) pool = questionPool;
+
                 const distribution = config.distribution;
                 for (const [cat, count] of Object.entries(distribution)) {
                     let validQs = pool.filter(q => q.category === cat);
@@ -377,6 +396,7 @@
                 }
                 currentQuestions.sort(() => Math.random() - 0.5);
             } else {
+                // Gerçek sınav - kaynağa göre filtrele
                 currentQuestions = questionPool.filter(q => q.source === source);
             }
 

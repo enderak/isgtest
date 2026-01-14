@@ -83,23 +83,33 @@
             overscroll-behavior-y: contain;
         }
 
+        /* SCROLLBAR ÖZELLEŞTİRME - Beyaz çubuğu yok et */
+        ::-webkit-scrollbar {
+            width: 5px;
+            /* Daha ince */
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            /* Arkası şeffaf olsun */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            /* Gri renk */
+            border-radius: 10px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+            /* Koyu modda koyu gri */
+        }
+
         .scroller {
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
             scroll-behavior: smooth;
-        }
-
-        .scroller::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .scroller::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .dark .scroller::-webkit-scrollbar-thumb {
-            background: #475569;
         }
 
         button,

@@ -589,6 +589,25 @@
             userAnswers = {};
             currentIndex = 0;
             timeRemaining = 75 * 60;
+            // ŞIKLARI KARIŞTIRMA (Görselsiz Sorular İçin)
+            currentQuestions = currentQuestions.map(q => {
+                // Görsel varsa karıştırma (Referans kaybolmasın)
+                if (q.image) return q;
+
+                // Orijinal soruyu bozmamak için kopyala
+                const newQ = { ...q, options: [...q.options] };
+
+                // Şık indekslerini karıştır
+                const indices = Array.from({ length: newQ.options.length }, (_, i) => i);
+                indices.sort(() => Math.random() - 0.5);
+
+                // Yeni şıklar ve doğru cevap
+                newQ.options = indices.map(i => q.options[i]);
+                newQ.correct = indices.indexOf(q.correct);
+
+                return newQ;
+            });
+
             if (isTimerActive) startTimer();
             renderQuiz();
         }

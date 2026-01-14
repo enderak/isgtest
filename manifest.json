@@ -1,6 +1,6 @@
 {
-    "name": "İSG Sınav Öğrencisi",
-    "short_name": "İSG Sınav",
+    "name": "İSG Sınavmatik",
+    "short_name": "Sınavmatik",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",

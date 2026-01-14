@@ -885,6 +885,14 @@
 
             const score = (correct * (100 / currentQuestions.length)).toFixed(1);
 
+            // Motivasyon Mesajı
+            let motivationMsg = "";
+            const numScore = parseFloat(score);
+            if (numScore >= 90) motivationMsg = "🏆 Efsanesin! Şov yapıyorsun!";
+            else if (numScore >= 75) motivationMsg = "👏 Gayet iyi! Zirveye çok yakınsın.";
+            else if (numScore >= 50) motivationMsg = "👍 Fena değil. Yanlışlarına çalışırsan geçersin.";
+            else motivationMsg = "💪 Pes etmek yok! Eksikleri tamamlayıp geri dönelim.";
+
             // Kategori analizi HTML
             let analysisHtml = '';
             // Kategorileri başarı oranına göre sırala
@@ -930,6 +938,7 @@
                         </div>
                         
                         <h2 class="text-2xl font-black text-slate-800 dark:text-dark-text mb-1">Test Bitti!</h2>
+                        <div class="text-sm font-bold text-amber-500 dark:text-amber-400 mb-2">${motivationMsg}</div>
                         <p class="text-sm text-slate-500 dark:text-slate-400 mb-8 font-medium">Başarı Puanı: <span class="text-emerald-600 dark:text-emerald-400 font-bold text-xl ml-1">${score}</span></p>
 
                         <div class="grid grid-cols-3 gap-3 w-full mb-6">

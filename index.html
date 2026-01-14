@@ -278,6 +278,53 @@
             updateThemeIcons();
         }
 
+        // DISKO MODU (Easter Egg) 🕺
+        let discoTimer = null;
+        function setupDisco() {
+            const title = document.getElementById('appTitle');
+            if (!title) return;
+
+            // Önceki listenerları temizle (cloneNode ile)
+            const newTitle = title.cloneNode(true);
+            title.parentNode.replaceChild(newTitle, title);
+
+            let pressTimer;
+
+            const startPress = (e) => {
+                if (e.type === 'mousedown' && e.button !== 0) return;
+                pressTimer = setTimeout(() => {
+                    startDiscoEffect();
+                }, 1500);
+            };
+
+            const cancelPress = () => {
+                clearTimeout(pressTimer);
+            };
+
+            newTitle.addEventListener('mousedown', startPress);
+            newTitle.addEventListener('touchstart', startPress, { passive: true });
+
+            ['mouseup', 'mouseleave', 'touchend'].forEach(evt =>
+                newTitle.addEventListener(evt, cancelPress)
+            );
+        }
+
+        function startDiscoEffect() {
+            let duration = 3000;
+            const end = Date.now() + duration;
+
+            // Eğer zaten çalışıyorsa durdur
+            if (discoTimer) clearInterval(discoTimer);
+
+            discoTimer = setInterval(() => {
+                toggleTheme();
+                if (Date.now() > end) {
+                    clearInterval(discoTimer);
+                    discoTimer = null;
+                }
+            }, 100); // Çok hızlı
+        }
+
         function updateThemeIcons() {
             const btn = document.getElementById('themeBtn');
             if (btn) {
@@ -325,7 +372,7 @@
                         <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg p-5 border border-emerald-100 dark:border-dark-border max-w-sm mx-auto w-full transition-colors duration-300">
                             <div class="text-center mb-4">
                                 <div class="flex items-center justify-center gap-3">
-                                    <h1 class="text-xl font-extrabold tracking-tight">
+                                    <h1 id="appTitle" class="text-xl font-extrabold tracking-tight select-none cursor-pointer active:scale-95 transition-transform" title="Sürpriz için basılı tut!">
                                         <span class="text-amber-500 dark:text-amber-400">İSG</span>
                                         <span class="text-emerald-600 dark:text-emerald-400 font-black">SINAVMATİK</span>
                                     </h1>
@@ -422,6 +469,7 @@
             updateSourceOptions();
             // Default olarak Sorumatik kapalı
             toggleExamModeOptions();
+            setupDisco();
         }
 
         function toggleExamModeOptions() {

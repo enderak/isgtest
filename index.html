@@ -367,22 +367,28 @@
             isTimerActive = document.getElementById('timerToggle').checked;
             isEduMode = document.getElementById('eduToggle').checked;
 
-            // Branşa göre sınıf belirleme (A, B veya C)
-            let classFilter = null;
-            if (profile === 'igu_a') classFilter = 'A';
-            else if (profile === 'igu_b') classFilter = 'B';
-            else if (profile === 'igu_c') classFilter = 'C';
+            // Branşa göre sınıf ve profile belirleme
+            let classLetter = null;
+            let profileFilter = null;
+            if (profile === 'igu_a') { classLetter = 'A'; profileFilter = 'isg_a'; }
+            else if (profile === 'igu_b') { classLetter = 'B'; profileFilter = 'isg_b'; }
+            else if (profile === 'igu_c') { classLetter = 'C'; profileFilter = 'isg_c'; }
 
             currentQuestions = [];
             if (source.includes("Deneme")) {
-                // Deneme sınavı - branşa göre filtrele
+                // Deneme sınavı - branşa göre filtrele (profile veya kaynak adından)
                 let pool = questionPool.filter(q => {
                     if (!q.source.includes("Deneme")) return false;
-                    if (classFilter && q.source.includes('-' + classFilter)) return true;
-                    if (classFilter && !q.source.match(/-[ABC]/)) return true; // Sınıf belirtilmemiş denemeler
-                    if (!classFilter) return true;
+                    // Profile değerine göre filtrele
+                    if (profileFilter && q.profile === profileFilter) return true;
+                    // Kaynak adına göre filtrele (örn: Deneme-2025-1-C)
+                    if (classLetter && q.source.includes('-' + classLetter)) return true;
+                    // Hekim veya DSP için profile kontrolü
+                    if (profile === 'hekim' && q.profile === 'hekim') return true;
+                    if (profile === 'dsp' && q.profile === 'dsp') return true;
                     return false;
                 });
+                // Eğer filtrelenmiş soru yoksa, tüm deneme sorularını kullan
                 if (pool.length === 0) pool = questionPool.filter(q => q.source.includes("Deneme"));
                 if (pool.length === 0) pool = questionPool;
 

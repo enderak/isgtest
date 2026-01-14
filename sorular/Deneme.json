@@ -1,0 +1,146 @@
+{
+    "source": "Deneme",
+    "profile": "ortak",
+    "questions": [
+        {
+            "category": "Teknik",
+            "text": "[Deneme Teknik-1] Aşağıdakilerden hangisi fiziksel risk etmenidir?",
+            "options": [
+                "Gürültü",
+                "Virüs",
+                "Silika Tozu",
+                "Benzen",
+                "Ergonomi"
+            ],
+            "correct": 0,
+            "explanation": "Gürültü, titreşim, aydınlatma fiziksel risktir.",
+            "image": ""
+        },
+        {
+            "category": "Teknik",
+            "text": "[Deneme Teknik-2] Aşağıdakilerden hangisi kimyasal risk etmeni değildir?",
+            "options": [
+                "Titreşim",
+                "Kurşun",
+                "Benzen",
+                "Asbest",
+                "Silika"
+            ],
+            "correct": 0,
+            "explanation": "Titreşim fiziksel risk etmenidir, kimyasal değil.",
+            "image": ""
+        },
+        {
+            "category": "Mevzuat",
+            "text": "[Deneme Mevzuat-1] İSG Kurulu en az kaç ayda bir toplanır?",
+            "options": [
+                "1",
+                "2",
+                "3",
+                "6",
+                "12"
+            ],
+            "correct": 0,
+            "explanation": "Tehlike sınıfına göre değişir ancak standart en az ayda 1'dir.",
+            "image": ""
+        },
+        {
+            "category": "Mevzuat",
+            "text": "[Deneme Mevzuat-2] Risk değerlendirmesi kaç yılda bir yenilenmelidir?",
+            "options": [
+                "Her yıl",
+                "2 yılda bir",
+                "Tehlike sınıfına göre değişir",
+                "5 yılda bir",
+                "10 yılda bir"
+            ],
+            "correct": 2,
+            "explanation": "Az tehlikeli 6 yıl, tehlikeli 4 yıl, çok tehlikeli 2 yılda bir yenilenir.",
+            "image": ""
+        },
+        {
+            "category": "Sağlık",
+            "text": "[Deneme Sağlık-1] Pnömokonyoz hangi organda görülür?",
+            "options": [
+                "Deri",
+                "Akciğer",
+                "Karaciğer",
+                "Böbrek",
+                "Kalp"
+            ],
+            "correct": 1,
+            "explanation": "Akciğer toz hastalığıdır.",
+            "image": ""
+        },
+        {
+            "category": "Sağlık",
+            "text": "[Deneme Sağlık-2] Silikozis hangi tozdan kaynaklanır?",
+            "options": [
+                "Asbest",
+                "Kömür",
+                "Silika (SiO2)",
+                "Demir",
+                "Pamuk"
+            ],
+            "correct": 2,
+            "explanation": "Silikozis, kristal silika tozunun solunmasıyla oluşan bir akciğer hastalığıdır.",
+            "image": ""
+        },
+        {
+            "category": "Genel İSG Konuları",
+            "text": "[Deneme Genel-1] İSG Kültürünün temeli nedir?",
+            "options": [
+                "Ceza",
+                "Denetim",
+                "Güvenlik Önceliği",
+                "Üretim",
+                "Maliyet"
+            ],
+            "correct": 2,
+            "explanation": "Güvenlik önceliği esastır.",
+            "image": ""
+        },
+        {
+            "category": "Genel İSG Konuları",
+            "text": "[Deneme Genel-2] Heinrich'in domino teorisine göre kazaların yüzde kaçı insan hatasından kaynaklanır?",
+            "options": [
+                "%60",
+                "%72",
+                "%80",
+                "%88",
+                "%95"
+            ],
+            "correct": 3,
+            "explanation": "Heinrich'e göre kazaların %88'i güvensiz davranışlardan kaynaklanır.",
+            "image": ""
+        },
+        {
+            "category": "Hukuk",
+            "text": "[Deneme Hukuk-1] İdari para cezasına itiraz süresi kaç gündür?",
+            "options": [
+                "7",
+                "15",
+                "30",
+                "60",
+                "90"
+            ],
+            "correct": 1,
+            "explanation": "15 gün içinde itiraz edilir.",
+            "image": ""
+        },
+        {
+            "category": "Hukuk",
+            "text": "[Deneme Hukuk-2] İş kazası en geç kaç gün içinde SGK'ya bildirilmelidir?",
+            "options": [
+                "1 gün",
+                "3 gün",
+                "7 gün",
+                "10 gün",
+                "15 gün"
+            ],
+            "correct": 1,
+            "explanation": "İş kazası 3 iş günü içinde SGK'ya bildirilmelidir.",
+            "image": ""
+        }
+    ]
+}

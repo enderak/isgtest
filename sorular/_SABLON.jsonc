@@ -1,0 +1,73 @@
+{
+    "source": "KAYNAK_ADI",
+    "profile": "igu",
+    "questions": [
+        {
+            "category": "Mevzuat",
+            "text": "1. Soru metni buraya yazılacak...",
+            "options": [
+                "A şıkkı",
+                "B şıkkı",
+                "C şıkkı",
+                "D şıkkı",
+                "E şıkkı"
+            ],
+            "correct": 0,
+            "explanation": "Doğru cevabın açıklaması...",
+            "image": ""
+        },
+        {
+            "category": "Teknik",
+            "text": "2. İkinci soru metni...",
+            "options": [
+                "A şıkkı",
+                "B şıkkı",
+                "C şıkkı",
+                "D şıkkı",
+                "E şıkkı"
+            ],
+            "correct": 2,
+            "explanation": "Açıklama...",
+            "image": "img/gorsel.jpg"
+        }
+    ]
+}
+// ============================================
+// ŞABLON KULLANIM KILAVUZU
+// ============================================
+// 
+// 1. Bu dosyayı kopyalayın ve yeni isimle kaydedin
+//    Örnek: 2024-2A.json, 2025-1B.json
+//
+// 2. "source" alanını dosya adıyla aynı yapın
+//    Örnek: "source": "2024-2A"
+//
+// 3. "profile" alanı:
+//    - "igu" = İş Güvenliği Uzmanı
+//    - "hekim" = İşyeri Hekimi
+//    - "dsp" = Diğer Sağlık Personeli
+//    - "ortak" = Herkes için geçerli
+//
+// 4. "category" alanı için geçerli değerler:
+//    - Mevzuat
+//    - Teknik
+//    - Sağlık
+//    - Hukuk
+//    - Genel İSG Konuları
+//    - Risk Analizi
+//    - Eğitim
+//    - İşaretler
+//    - Elektrik
+//    - Acil Durum
+//    - Yangın
+//    - Biyolojik Riskler
+//    - Fiziksel Riskler
+//    - Kimyasal Riskler
+//    - Ergonomi
+//    - Maden
+//
+// 5. "correct" alanı 0'dan başlar (0=A, 1=B, 2=C, 3=D, 4=E)
+//
+// 6. "image" alanı boş bırakılabilir veya img/ klasöründeki dosya yolu yazılır
+//
+// ============================================

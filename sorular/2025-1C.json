@@ -1,0 +1,406 @@
+{
+  "source": "2025-1C",
+  "profile": "igu",
+  "questions": [
+    {
+      "category": "Mevzuat",
+      "text": "1. İşyeri Bina ve Eklentilerinde Alınacak Sağlık ve Güvenlik Önlemlerine İlişkin Yönetmelik hükümlerine göre, dinlenme yerleri için yukarıdakilerden hangileri doğrudur? I-İş aralarında uygun dinlenme imkânı bulunan büro ve benzeri iş yerlerinde, ayrıca dinlenme yeri bulunması gerekmez. II-Gerekli şartlar sağlansa bile, yemek yeme yerlerinin dinlenme yeri olarak kullanılması uygun değildir. III-10 ve daha fazla çalışanın bulunduğu iş yerlerinde dinlenme yeri bulunmalıdır.",
+      "options": ["Yalnız I", "Yalnız II", "I ve II", "I ve III", "II ve III"],
+      "correct": 3,
+      "explanation": "Yönetmeliğe göre 10 ve daha fazla çalışan varsa dinlenme yeri şarttır. Büro işlerinde iş aralarında dinlenme imkanı varsa ayrıca odaya gerek yoktur. Yemek yerleri şartlar sağlanırsa dinlenme yeri olarak kullanılabilir (II yanlıştır).",
+      "image": ""
+    },
+    {
+      "category": "Genel İSG Konuları",
+      "text": "2. 6331 sayılı Kanun'a göre iş yerinde veya işin yürütümü nedeniyle meydana gelen, ölüme sebebiyet veren veya vücut bütünlüğünü ruhen ya da bedenen engelli hâle getiren olaydır. Yukarıdaki tanım, aşağıdakilerden hangisine aittir?",
+      "options": ["Acil durum", "İş kazası", "Risk", "Ramak kala olay", "Tehlike"],
+      "correct": 1,
+      "explanation": "Tanım 6331 sayılı kanunun 3. maddesinde yer alan 'İş Kazası' tanımıdır.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "3. Ekranlı Araçlarla Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik'e göre, çalışanların bilgilendirilmesi ve eğitimi; I-Ekranlı araçlarla çalışmalarda riskler ve korunma yolları II-Gözleri en az yoran yazı karakterleri ve renkler III-Ara dinlenmeleri ve egzersizler konularından hangilerini içermektedir?",
+      "options": ["Yalnız I", "Yalnız III", "I ve II", "II ve III", "I, II ve III"],
+      "correct": 4,
+      "explanation": "Yönetmeliğe göre eğitimler; riskler, doğru oturuş, gözleri yormayan detaylar, ara dinlenmeleri ve egzersizleri kapsamalıdır.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "4. Kişisel Koruyucu Donanımların İşyerlerinde Kullanılması Hakkında Yönetmelik'e göre, aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Çalışan tarafından ücreti karşılığında alınır.", "Hijyenik şartlarda muhafaza edilir ve kullanıma hazır bulundurulur.", "İşveren, kişisel koruyucu donanımları hangi risklere karşı kullanacağı konusunda çalışanı bilgilendirir.", "Kullanım kılavuzuna uygun olarak bakım, onarım ve periyodik kontrolleri yapılır.", "Kullananın ergonomik gereksinimlerine ve sağlık durumuna uygun olmalıdır."],
+      "correct": 0,
+      "explanation": "KKD'ler işveren tarafından ücretsiz verilir, çalışan tarafından satın alınmaz.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "5. Kadın Çalışanların Gece Postalarında Çalıştırılma Koşulları Hakkında Yönetmelik'e göre aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Belediye sınırları dışındaki her türlü iş yeri işverenleri, gece postalarında çalıştıracakları kadın çalışanları iş yerine götürüp getirmekle yükümlüdür.", "İşveren, gece postalarında çalıştırılan kadın çalışanların sağlık muayenelerinin yapılmasını sağlar.", "Kadın çalışanların gece postalarında çalıştırılabilmeleri için 'sakınca olmadığına' dair sağlık raporu alınmalıdır.", "Kadın çalışanın kocası da işin postalar hâlinde yürütüldüğü aynı veya ayrı bir iş yerinde çalışıyor ise, kadın çalışanın görüşü dikkate alınmaksızın, çalışma saatlerini işveren düzenler.", "Turizm, sağlık vb. işlerde kadın çalışanın onayıyla 7.5 saatin üzerinde gece çalışması yaptırılabilir."],
+      "correct": 3,
+      "explanation": "Eşlerin her ikisinin de postalar halinde çalışması durumunda, postalar eşlerin görüşü alınarak düzenlenir, dikkate alınmaksızın değil.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "6. Asbestle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik'e göre, aşağıdakilerden hangisi işverenin iş planı ile birlikte bildirimde bulunmak ile yükümlü olduğu bilgilerden biri değildir?",
+      "options": ["Risk değerlendirme sonuçları", "Yapılacak işler ve işlemler", "Çalışan sayısı", "İşe başlama tarihi ve işin tahmini süresi", "Sökümü yapılacak asbestin türü ve miktarı"],
+      "correct": 0,
+      "explanation": "Bildirimde işyeri ticari unvanı, söküm çeşidi, süresi, çalışan sayısı vb. istenir ancak 'Risk değerlendirme sonuçları' bildirim listesinde yer almaz.",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "7. 4857 sayılı İş Kanunu'na göre, aynı iş yerinde hizmet süresi 5 yıldan fazla 15 yıldan az olan 35 yaşında bir işçinin yıllık izin süresi kaç günden az olamaz?",
+      "options": ["14", "15", "20", "26", "30"],
+      "correct": 2,
+      "explanation": "Hizmet süresi 5 yıldan fazla 15 yıldan az olanlar için yıllık izin 20 gündür.",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "8. 4857 sayılı İş Kanunu'na göre, tarafların anlaşması ile haftalık normal çalışma süresi, iş yerlerinde haftanın çalışılan günlerine dağıtılabilir. Bunun için, günlük çalışma süresinin kanunen kaç saati aşmaması gerekir?",
+      "options": ["8", "9", "11", "12", "14"],
+      "correct": 2,
+      "explanation": "Denkleştirme yapılsa bile günlük çalışma süresi her ne şart altında olursa olsun 11 saati aşamaz.",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "9. Ahmet, 25 yaşında bir işçidir. Bir tekstil fabrikasında ilk kez çalışmaya başlamıştır. Ahmet iş yerinde 7 ay süreyle aralıksız çalışmıştır. İş sözleşmesi sona erdikten 3 ay sonra ikinci kez aynı iş yerinde çalışmaya başlayan Ahmet, bu kez 6 ay aralıksız çalışmıştır. Buna göre; I-Ahmet yıllık izne hak kazanmıştır. II-Ahmet'in yıllık izin süresi yirmi günden az olamaz. III-İşveren, ücret ödeyebilir. 4857 sayılı İş Kanunu'na göre Ahmet'in yıllık izin hakkıyla ilgili olarak aşağıdakilerden hangisi doğrudur?",
+      "options": ["Yalnız I", "Yalnız III", "I ve II", "II ve III", "I, II ve III"],
+      "correct": 0,
+      "explanation": "Aralıklı çalışmalarda süreler birleştirilir (7+6=13 ay), 1 yılı geçtiği için hak kazanır (I doğru). 5 yıldan az olduğu için izin 14 gündür (II yanlış). İzin hakkı ücrete dönüşemez, kullandırılmalıdır (III yanlış).",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "10. 5510 sayılı Sosyal Sigortalar ve Genel Sağlık Sigortası Kanunu kapsamında aşağıdakilerden hangisi iş kazası sayılmaz?",
+      "options": ["Emzirme odasında kadının kolunu kırması", "İş yerinin avlusunda düşüp bacağını kırması", "Müşterinin evinde tamir yaparken elektriğe kapılması", "Tahsilat için gidilen yerde darp edilmesi", "İşçinin kendi aracıyla iş yerine giderken trafik kazası geçirmesi"],
+      "correct": 4,
+      "explanation": "İşçinin kendi aracıyla işe gidip gelmesi sırasında olan kazalar, işveren tarafından sağlanan bir taşıt olmadığı sürece iş kazası sayılmaz.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "11. İş Güvenliği Uzmanlarının Görev, Yetki, Sorumluluk ve Eğitimleri Hakkında Yönetmelik'e göre eğitim kurumları, katılımcı kaydı yapabilmek ve eğitime başlayabilmek için aşağıdaki işlemlerden hangisini yapmak zorundadır?",
+      "options": ["Genel müdürlükçe düzenlenen yetki belgesini almak", "Genel müdürlük ile sözleşme yapmak", "İl müdürlüklerince düzenlenen yetki belgesini almak", "İl müdürlükleri ile sözleşme yapmak", "Valilik ile sözleşme yapmak"],
+      "correct": 0,
+      "explanation": "Eğitim kurumları Genel Müdürlükçe (İSGGM) düzenlenen yetki belgesini almadan faaliyete başlayamaz.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "12. İş Güvenliği Uzmanlarının Görev, Yetki, Sorumluluk ve Eğitimleri Hakkında Yönetmelik'e göre, çok tehlikeli sınıfta yer alan 1000 çalışanlı bir iş yerinde tam gün çalışacak en az kaç iş güvenliği uzmanı görevlendirilmelidir?",
+      "options": ["1", "2", "3", "4", "5"],
+      "correct": 3,
+      "explanation": "Çok tehlikeli sınıfta 250 çalışana 1 tam gün uzman düşer. 1000 / 250 = 4 uzman gereklidir.",
+      "image": ""
+    },
+    {
+      "category": "Eğitim",
+      "text": "13. Coşkun, 2025 yılında iş güvenliği uzmanı olmak için teorik kısmı 180 saat ve uygulama kısmı 40 saat olan, iş güvenliği uzmanlığına yönelik bir eğitim programına katılacaktır. İş Güvenliği Uzmanlarının Görev, Yetki, Sorumluluk ve Eğitimleri Hakkında Yönetmelik'e göre, bu eğitim programı içerisinde yer alan teorik eğitimin en fazla kaç saati uzaktan eğitim ile verilebilir?",
+      "options": ["80", "90", "100", "110", "120"],
+      "correct": 1,
+      "explanation": "Yönetmeliğe göre teorik eğitimin en fazla yarısı (%50) uzaktan eğitimle verilebilir. 180 / 2 = 90 saat.",
+      "image": ""
+    },
+    {
+      "category": "Risk Analizi",
+      "text": "14. Bir çalışanın maruz kaldığı kaza sonucu ortaya çıkan durumlardan hangisinin şiddeti en yüksektir?",
+      "options": ["Ayakta tedavi gerektiren", "İncinme nedeniyle tedavi gerektiren", "Temel ilk yardım gerektiren", "Üç gün istirahat raporu gerektiren", "Uzuv kaybı nedeniyle tedavi gerektiren"],
+      "correct": 4,
+      "explanation": "Uzuv kaybı kalıcı sakatlık/iş göremezlik anlamına geldiği için verilen şıklar arasında şiddeti en yüksek olan durumdur.",
+      "image": ""
+    },
+    {
+      "category": "Risk Analizi",
+      "text": "15. İş Güvenliği Analizi (JSA) ile ilgili olarak aşağıdakilerden hangisi doğrudur?",
+      "options": ["Çalışanların bireysel performanslarını ölçmek için geliştirilmiştir.", "İş süreçleri adım adım analiz edilerek her aşamada potansiyel tehlikeler belirlenir.", "İş kazaları gerçekleştikten sonra uygulanır.", "Risk değerlendirme sürecinde kullanılmaz.", "Sadece büyük ölçekli işletmelerde kullanılır."],
+      "correct": 1,
+      "explanation": "Job Safety Analysis (JSA), işi adımlara bölüp her adımdaki tehlikeleri belirleyen proaktif bir yöntemdir.",
+      "image": ""
+    },
+    {
+      "category": "Risk Analizi",
+      "text": "16. Bir iş yerinde L tipi matris yöntemine göre yapılan risk değerlendirmesi sonucunda olasılık ve şiddet sırasıyle 4 ve 5 olarak belirlenmiştir. Buna göre, risk skoru kaçtır ve hangi önlem alınmalıdır?",
+      "options": ["Risk skoru 9'dur, izleme yapılmalıdır.", "Risk skoru 9'dur, tüm faaliyetler durdurulmalıdır.", "Risk skoru 16'dır, periyodik kontroller yapılmalıdır.", "Risk skoru 20'dir, acil önlem alınmalıdır.", "Risk skoru 20'dir, kabul edilebilir seviyededir."],
+      "correct": 3,
+      "explanation": "L Tipi Matriste Risk Skoru = Olasılık x Şiddet. 4 x 5 = 20. Bu skor 'Yüksek Risk' (veya kabul edilemez risk) grubundadır ve acil önlem gerektirir.",
+      "image": ""
+    },
+    {
+      "category": "Teknik",
+      "text": "17. İş Ekipmanlarının Kullanımında Sağlık ve Güvenlik Şartları Yönetmeliği'ne göre, standartlarda süre belirtilmemiş ise tezgâhlara uygulanacak periyodik kontrol dönemi azami süresi nedir?",
+      "options": ["3 ay", "6 ay", "12 ay", "18 ay", "24 ay"],
+      "correct": 2,
+      "explanation": "Tezgâhlar için standartlarda aksi belirtilmediyse periyodik kontrol süresi 1 yıldır (12 ay).",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "18. I. Çıraklar ve stajyerler II. Ev hizmetleri III. Hükümlü ve tutuklulara yönelik infaz hizmetleri sırasında yapılan meslek edindirme faaliyetleri IV. KKK Dikimevinde yapılan faaliyetler. Hangileri hakkında 6331 sayılı Kanun hükümleri uygulanmaz?",
+      "options": ["I ve IV", "II ve III", "II ve IV", "III ve IV", "I, II ve III"],
+      "correct": 1,
+      "explanation": "Ev hizmetleri ve Hükümlü/tutukluların iyileştirme kapsamındaki işleri 6331 kapsamı dışındadır. Çıraklar ve Askeri dikimevleri kapsamdadır.",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "19. 6331 sayılı Kanun kapsamında, işveren vekili ve sorumluluğu ile ilgili hangileri doğrudur? I. İşveren vekilinin, işveren vekili sıfatıyla yaptığı işlemlerden doğan cezai sorumluluk, temsil ilişkisi gereği, işverene aittir. II. İşveren adına hareket eden, işin ve iş yerinin yönetiminde görev alan işveren vekilleri, 6331 sayılı Kanun'un uygulanması bakımından işveren sayılır. III. İşveren vekillerinin cezai sorumlulukları gündeme gelebilir.",
+      "options": ["Yalnız I", "Yalnız II", "Yalnız III", "I ve II", "II ve III"],
+      "correct": 4,
+      "explanation": "İşveren vekili 6331 uygulanmasında işveren sayılır ve kendi kusurlarından dolayı cezai sorumlulukları vardır.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "20. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu'na göre 'genç çalışan' aşağıdakilerden hangisi ile tanımlanır?",
+      "options": ["On beş yaşını bitirmiş ancak on sekiz yaşını doldurmamış çalışan", "On dört yaşını bitirmiş ancak on yedi yaşını doldurmamış çalışan", "On sekiz yaşını bitirmiş ancak yirmi yaşını doldurmamış çalışan", "On altı yaşını bitirmiş ancak on sekiz yaşını doldurmamış çalışan", "On sekiz yaşını bitirmiş ancak yirmi iki yaşını doldurmamış çalışan"],
+      "correct": 0,
+      "explanation": "Genç çalışan: 15 yaşını tamamlamış ancak 18 yaşını tamamlamamış çalışandır.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "21. 6331 sayılı İş Sağlığı ve Güvenliği Kanunu kapsamında aşağıdakilerden hangisi çalışanların yükümlülükleri arasında sayılmamıştır?",
+      "options": ["Araç, gereç, tehlikeli maddeyi kurallara uygun kullanmak", "Ciddi tehlike ile karşılaştıklarında işverene haber vermek", "İş yerinde alınan iş sağlığı ve güvenliği tedbirlerine uyulup uyulmadığını izlemek, denetlemek", "Kendisinin ve diğer çalışanların güvenliğini tehlikeye düşürmemek", "Müfettiş tespitlerinde işverenle iş birliği yapmak"],
+      "correct": 2,
+      "explanation": "Tedbirleri 'izlemek ve denetlemek' işverenin veya uzmanların görevidir, çalışanın yükümlülüğü değildir.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "22. İş Sağlığı ve Güvenliği Kurulları Hakkında Yönetmelik'in kapsadığı iş yerleri ile ilgili olarak aşağıdakilerden hangisi doğrudur?",
+      "options": ["Elli ve daha fazla çalışanın bulunduğu ve altı aydan fazla süren sürekli işler", "Yirmi ve daha fazla çalışanın bulunduğu ve altı aydan fazla süren sürekli işler", "Elli ve daha fazla çalışanın bulunduğu ve üç aydan fazla süren sürekli işler", "Otuz ve daha fazla çalışanın bulunduğu ve altı aydan fazla süren sürekli işler", "Otuz ve daha fazla çalışanın bulunduğu ve bir yıldan fazla süren sürekli işler"],
+      "correct": 0,
+      "explanation": "Kurul kurulması için şart: 50+ çalışan ve 6 aydan uzun süren sürekli işlerdir.",
+      "image": ""
+    },
+    {
+      "category": "Hukuk",
+      "text": "23. 1982 Anayasası'nın 'Toplu iş sözleşmesi, grev hakkı ve lokavt' başlıklı hükümleri kapsamında aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Uyuşmazlık Yüksek Hakem Kurulunca çözülür.", "Grev ve lokavt toplum zararına kullanılamaz.", "İşçi ve işveren toplu iş sözleşmesi yapma hakkına sahiptir.", "Memurlar ve diğer kamu görevlileri, toplu sözleşme yapma hakkına sahiptir.", "Toplu iş sözleşmesinin yapılması sırasında uyuşmazlık çıkması hâlinde işçiler ve memurlar grev hakkına sahiptir."],
+      "correct": 4,
+      "explanation": "Memurların grev hakkı yoktur, sadece toplu sözleşme hakkı vardır.",
+      "image": ""
+    },
+    {
+      "category": "Teknik",
+      "text": "24. Yapı İşlerinde İş Sağlığı ve Güvenliği Yönetmeliği hükümlerine göre, aşağıdakilerden hangisi kazı işlerinde uyulması gereken kurallar bakımından yanlıştır?",
+      "options": ["Açıkta yapılan 150 cm'den daha derin kazı işlerinde, yan yüzeylerin altını şerit gibi kazarak yukarıdan çökertmek suretiyle kazı yapılmaz.", "Kazının bitişik yapıları etkileme ihtimali mevcut ise kazı başlamadan önce gerekli tedbirler alınır.", "Kazı yan yüzeyi her vardiyadan önce kontrol edilir.", "Meskûn mahallerde, kazı alanının çevresine uyarı şeritleri çekilerek ikaz levhaları asılır.", "Yağış sırasında, kazı işlerinde çalışma yapılmaz."],
+      "correct": 4,
+      "explanation": "Yağış sırasında gerekli tedbirler (iksa vb.) alınarak çalışılabilir, kesin yasaklama yoktur ancak A, B, C, D kesin hükümlerdir.",
+      "image": ""
+    },
+    {
+      "category": "Fiziksel Riskler",
+      "text": "25. Çalışanların Titreşimle İlgili Risklerden Korunmalarına Dair Yönetmelik'e göre, çalışanların el-kol titreşimine maruz kalmaları durumunda, sekiz saatlik çalışma süresi için günlük maruziyet sınır değeri kaç m/s²dir?",
+      "options": ["1,15", "2", "2,5", "4", "5"],
+      "correct": 4,
+      "explanation": "El-kol titreşimi için Sınır Değer 5 m/s², Eylem Değeri 2.5 m/s²'dir.",
+      "image": ""
+    },
+    {
+      "category": "Eğitim",
+      "text": "26. Çalışanların İş Sağlığı ve Güvenliği Eğitimlerinin Usul ve Esasları Hakkında Yönetmelik'e göre, çalışanlara verilecek iş sağlığı ve güvenliği eğitimlerinde işverenin sorumluluğuyla ilgili olarak aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Asıl işveren, alt işverene ait çalışanların eğitimlerinden alt işverenle birlikte sorumludur.", "Geçici iş ilişkisi kurulan işveren, geçici iş ilişkisi ile çalışanlara gerekli eğitimi vermekle yükümlüdür.", "İşveren, çalışanların iş sağlığı ve güvenliği eğitimlerine katılmak zorundadır.", "İşverenler, çalışanlarına, iş sözleşmesinin türüne bakılmaksızın, gerekli eğitimi vermekle yükümlüdür.", "İşveren, eğitim programlarının hazırlanması ve uygulanmasını sağlar."],
+      "correct": 2,
+      "explanation": "İşverenin eğitim alma zorunluluğu yoktur, eğitim verilmesini sağlama yükümlülüğü vardır.",
+      "image": ""
+    },
+    {
+      "category": "İşaretler",
+      "text": "27. Sağlık ve Güvenlik İşaretleri Yönetmeliği'ne göre, uyarı işaretlerinin temel nitelikleri ile ilgili olarak aşağıdakilerden hangisi doğrudur?",
+      "options": ["Beyaz zemin üzerine siyah piktogram", "Kırmızı zemin üzerine beyaz piktogram", "Mavi zemin üzerine beyaz piktogram", "Sarı zemin üzerine siyah piktogram", "Yeşil zemin üzerine beyaz piktogram"],
+      "correct": 3,
+      "explanation": "Uyarı işaretleri sarı zemin üzerine siyah piktogram ve siyah çerçeve ile ifade edilir.",
+      "image": ""
+    },
+    {
+      "category": "İşaretler",
+      "text": "28. (Sarı zemin üzerine siyah ünlem işareti görseli) Sağlık ve Güvenlik İşaretleri Yönetmeliği'ne göre bu işaret, hangi işaret levhası kategorisinde yer alır?",
+      "options": ["Acil çıkış ve ilk yardım", "Emredici", "Uyarı", "Yangınla mücadele", "Yasaklayıcı"],
+      "correct": 2,
+      "explanation": "Sarı üçgen levhalar 'Uyarı' işaretleridir.",
+      "image": "img/eldiven.jpg"
+    },
+    {
+      "category": "İşaretler",
+      "text": "29. Sağlık ve Güvenlik İşaretleri Yönetmeliği'ne göre; daire biçimindeki yasaklayıcı işaretlerde, beyaz zemin üzerine çerçeve ve diyagonal çizgiden oluşan kırmızı kısımlar, işaret alanının en az yüzde kaçını kapsar?",
+      "options": ["%25", "%30", "%35", "%45", "%50"],
+      "correct": 2,
+      "explanation": "Yasaklayıcı işaretlerde kırmızı alan en az %35 olmalıdır.",
+      "image": ""
+    },
+    {
+      "category": "Elektrik",
+      "text": "30. Elektrik Tesislerinde Topraklamalar Yönetmeliği'ne göre, etkin değeri alçak gerilimde 50 voltun üzerinde olan... gerilim, aşağıdakilerden hangisidir?",
+      "options": ["Çalışma gerilimi", "Hata gerilimi", "Sınır gerilim", "Tehlikeli gerilim", "Zayıf gerilim"],
+      "correct": 3,
+      "explanation": "50 Volt üzerindeki alternatif gerilim 'Tehlikeli Gerilim' olarak kabul edilir.",
+      "image": ""
+    },
+    {
+      "category": "Acil Durum",
+      "text": "31. İşyerlerinde Acil Durumlar Hakkında Yönetmelik'e göre, az tehlikeli sınıfta yer alan ve 90 çalışanı olan bir iş yerinde, uygun donanıma sahip ve özel eğitimli en az kaç söndürme ekibi, destek elemanı olarak görevlendirilir?",
+      "options": ["1", "2", "3", "4", "5"],
+      "correct": 1,
+      "explanation": "Az tehlikeli sınıfta her 50 çalışan için 1 destek elemanı gerekir. 90 çalışan için: 1 tam + 1 artan = 2 kişi.",
+      "image": ""
+    },
+    {
+      "category": "Acil Durum",
+      "text": "32. İşyerlerinde Acil Durumlar Hakkında Yönetmelik'e göre... az tehlikeli iş yerlerinde acil durum planı en geç kaç yılda bir yenilenir?",
+      "options": ["1", "2", "4", "5", "6"],
+      "correct": 4,
+      "explanation": "Az tehlikeli sınıfta acil durum planları 6 yılda bir yenilenir.",
+      "image": ""
+    },
+    {
+      "category": "Teknik",
+      "text": "33. Basit Basınçlı Kaplar Yönetmeliği; kaynaklı, ……… bar'dan daha yüksek iç basınca tabi tutulması amaçlanan... kapları kapsar.",
+      "options": ["0,5", "1", "1,25", "2", "2,5"],
+      "correct": 0,
+      "explanation": "Yönetmelik 0,5 bar'dan yüksek basınçlı kapları kapsar.",
+      "image": ""
+    },
+    {
+      "category": "Yangın",
+      "text": "34. Binaların Yangından Korunması Hakkında Yönetmelik'e göre, acil çıkış kapıları için aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Çalışanların hemen ve kolayca açabilecekleri şekilde yapılmalıdır.", "Doğrudan, güvenli bir alana yönlendirmelidir.", "Kaçış istikametine doğru açılmalıdır.", "Raylı veya döner kapı olmalıdır.", "Yanmaya dayanıklı malzemeden imal edilmelidir."],
+      "correct": 3,
+      "explanation": "Acil çıkış kapıları raylı veya döner kapı OLAMAZ.",
+      "image": ""
+    },
+    {
+      "category": "Yangın",
+      "text": "35. Yangın dumanında bulunan aşağıdaki gazlardan hangisinin toksik etkisi vardır?",
+      "options": ["Azot", "Karbonmonoksit", "Metan", "Oksijen", "Su buharı"],
+      "correct": 1,
+      "explanation": "Karbonmonoksit (CO) zehirli (toksik) ve boğucu bir gazdır.",
+      "image": ""
+    },
+    {
+      "category": "Yangın",
+      "text": "36. Binaların Yangından Korunması Hakkında Yönetmelik'e göre, aşağıdaki 'yanıcı madde - yangın sınıfı' eşleştirmelerinden hangisi yanlıştır?",
+      "options": ["Akaryakıt–B", "Asetilen–C", "Doğal gaz–A", "Magnezyum–D", "Odun–A"],
+      "correct": 2,
+      "explanation": "Doğal gaz bir gazdır ve C sınıfı yangındır. A sınıfı katı madde yangınlarıdır.",
+      "image": ""
+    },
+    {
+      "category": "Biyolojik Riskler",
+      "text": "37. Biyolojik Etkenlere Maruziyet... Yönetmelik'e göre hangisi önlemlerden biri değildir?",
+      "options": ["Acil eylem planı hazırlanmalıdır.", "Hijyen önlemleri alınmalıdır.", "Teknik kontrol önlemleri uygulanmalıdır.", "Çalışanların biyolojik etkenlere karşı doğal bağışıklık kazanması için düzenli olarak maruziyet sağlanmalıdır.", "Kişisel korunma yöntemleri uygulanmalıdır."],
+      "correct": 3,
+      "explanation": "Çalışanların kasıtlı olarak etkene maruz bırakılması bir önlem değil, suçtur.",
+      "image": ""
+    },
+    {
+      "category": "Fiziksel Riskler",
+      "text": "38. Çalışanların Gürültü ile İlgili Risklerden Korunmalarına Dair Yönetmelik'e göre gürültünün en düşük maruziyet eylem değeri (LEX, 8saat) aşağıdakilerden hangisidir?",
+      "options": ["70 dB(A)", "75 dB(A)", "80 dB(A)", "85 dB(A)", "87 dB(A)"],
+      "correct": 2,
+      "explanation": "En Düşük Eylem Değeri: 80 dB(A). En Yüksek Eylem Değeri: 85 dB(A). Sınır Değer: 87 dB(A).",
+      "image": ""
+    },
+    {
+      "category": "Fiziksel Riskler",
+      "text": "39. Kapalı bir ortamda, aynı yerde 85 dB(A) ve 85 dB(A) gürültü ile çalışan iki cihazın toplam gürültü değeri kaç dB(A)'dır?",
+      "options": ["85", "87", "88", "95", "170"],
+      "correct": 2,
+      "explanation": "Eşit düzeydeki iki ses kaynağı birleştiğinde toplam ses 3 dB artar. 85 + 3 = 88 dB.",
+      "image": ""
+    },
+    {
+      "category": "Kimyasal Riskler",
+      "text": "40. Aşağıdakilerden hangisi, kimyasal maddelerle çalışmalarda 'çalışma süresinin herhangi bir bölümünde aşılmaması gereken maruziyet sınır değeri'nin kısaltmasıdır?",
+      "options": ["CEILING", "CAS", "EINECS", "STEL", "TWA"],
+      "correct": 0,
+      "explanation": "CEILING: Tavan değerdir, asla aşılmaması gerekir.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "41. İş Sağlığı ve Güvenliği ile İlgili Çalışan Temsilcisinin... Tebliğ'e göre, 1300 çalışanın olduğu bir iş yerinde kaç tane çalışan temsilcisi olmak zorundadır?",
+      "options": ["3", "4", "5", "6", "7"],
+      "correct": 2,
+      "explanation": "1001 ile 2000 arası çalışanı olan işyerlerinde 5 temsilci seçilir.",
+      "image": ""
+    },
+    {
+      "category": "Sağlık",
+      "text": "42. Gürültüye bağlı mesleki işitme kaybıyla ilgili olarak aşağıdakilerden hangisi yanlıştır?",
+      "options": ["Uzun süre maruz kalınmasıyla meydana gelir.", "Konuşmaları anlamada güçlükler başlar.", "Genellikle 4-5 kHz frekans aralığında başlar.", "Maruziyet sona erdiğinde kendiliğinden düzelir.", "Kalıcı hasara neden olabilir."],
+      "correct": 3,
+      "explanation": "Gürültüye bağlı işitme kaybı (sensörinöral tip) kalıcıdır, maruziyet bitince düzelmez.",
+      "image": ""
+    },
+    {
+      "category": "Ergonomi",
+      "text": "43. Elle Taşıma İşleri Yönetmeliği'ne göre, aşağıdaki faaliyetlerden hangisi elle taşıma işi olarak değerlendirilemez?",
+      "options": ["Yükün itilmesi", "Yükün kaldırılması", "Yükün indirilmesi", "Yükün tartılması", "Yükün çekilmesi"],
+      "correct": 3,
+      "explanation": "Yükü tartmak fiziksel bir taşıma eylemi (yer değiştirme/güç harcama anlamında) değildir.",
+      "image": ""
+    },
+    {
+      "category": "Ergonomi",
+      "text": "44. Elle Taşıma İşleri Yönetmeliği'ne göre, aşağıdakilerden hangisi yükün elle taşınmasına ilişkin risk faktörleri arasında yer almaz?",
+      "options": ["Çalışma ortamının özellikleri", "Fiziksel güç gereksinimi", "İşin gerekleri", "Yükün özellikleri", "Yükün maddi değeri"],
+      "correct": 4,
+      "explanation": "Yükün pahalı veya ucuz olması ergonomik bir risk faktörü değildir.",
+      "image": ""
+    },
+    {
+      "category": "Kimyasal Riskler",
+      "text": "45. Kanserojen veya Mutajen Maddelerle... Yönetmelik'e göre, risk değerlendirmesinde hangileri dikkate alınır? I-Maruziyet türü II-Maruziyet süresi III-Maruz kalan çalışanın cinsiyeti IV-Maruziyet düzeyi",
+      "options": ["Yalnız II", "Yalnız III", "I ve IV", "II ve III", "I, II ve IV"],
+      "correct": 4,
+      "explanation": "Yönetmelik risk değerlendirmesinde maruziyetin türü, düzeyi ve süresini esas alır. Cinsiyet doğrudan bir kriter değildir.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "46. İş Sağlığı ve Güvenliğine İlişkin İşyeri Tehlike Sınıfları Tebliği'ne göre; I-Tehlike sınıfında asıl iş esas alınır. II-Tereddütte kuruluş amacına bakılır. III-Birden fazla asıl iş varsa ağırlıklı faaliyet esas alınır. Hangileri doğrudur?",
+      "options": ["Yalnız I", "Yalnız II", "I ve II", "I ve III", "II ve III"],
+      "correct": 2,
+      "explanation": "Birden fazla asıl iş varsa 'ağırlıklı faaliyet' değil, tehlike sınıfı en yüksek olan iş esas alınır. Bu yüzden III yanlıştır.",
+      "image": ""
+    },
+    {
+      "category": "Teknik",
+      "text": "47. Kaynak işlerinde yanıcı gaz tüplerinin kullanımı ile ilgili olarak aşağıdakilerden hangisi güvenli bir uygulamadır?",
+      "options": ["Tüpler yatay konumda kullanılmalıdır.", "Asetilen yakıcı gazdır.", "Taşımada basınç arttırılmalıdır.", "Her üç dakikada bir kontrol edilmelidir.", "Tüpler taşınırken vanalar kapalı ve tüplerin koruyucu kapakları takılı olmalıdır."],
+      "correct": 4,
+      "explanation": "Tüplerin devrilme ve vanalarının kırılma riskine karşı taşınırken kapaklar takılı ve vanalar kapalı olmalıdır.",
+      "image": ""
+    },
+    {
+      "category": "Sağlık",
+      "text": "48. Gebe veya emziren çalışan için risk varsa işveren ne yapmalıdır? I-Çalışma koşulları/saatleri uyarlanır. II-Mümkün değilse başka işe aktarılır. III-O da mümkün değilse ücretli izinli sayılır.",
+      "options": ["Yalnız II", "Yalnız III", "I ve II", "I ve III", "I, II ve III"],
+      "correct": 4,
+      "explanation": "Prosedür sırasıyla: Koşulları düzelt -> İşi değiştir -> Ücretli izin ver şeklindedir.",
+      "image": ""
+    },
+    {
+      "category": "Mevzuat",
+      "text": "49. İşyeri Hekimi... Yönetmelik'e göre, iş yeri hekiminin çalışma süresi az tehlikeli-tehlikeli-çok tehlikeli sınıfta çalışan başına sırasıyla en az kaç dakikadır?",
+      "options": ["5, 10, 15", "10, 15, 20", "10, 20, 40", "15, 10, 5", "40, 20, 10"],
+      "correct": 0,
+      "explanation": "Süreler: Az Tehlikeli 5 dk, Tehlikeli 10 dk, Çok Tehlikeli 15 dk.",
+      "image": ""
+    },
+    {
+      "category": "Maden",
+      "text": "50. Maden İşyerlerinde İş Sağlığı ve Güvenliği Yönetmeliği'ne göre 'ayak', aşağıdakilerin hangisinde doğru olarak ifade edilmiştir?",
+      "options": ["Ana kütleden ayrılmış, her an düşebilecek parça", "Maden içerisinde, iki galeri arasında, cephe hâlinde üretim yapılan yer", "Maden içerisinden sürülen galeri", "Taş içerisinde sürülen galeri", "Varagel üzerinde taşımayı sağlayan sistem"],
+      "correct": 1,
+      "explanation": "Ayak: Madende üretimin yapıldığı (kazının yapıldığı) cepheye verilen isimdir.",
+      "image": ""
+    }
+  ]
+}

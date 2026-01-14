@@ -213,6 +213,21 @@
         let isTimerActive = true;
         let isEduMode = false;
 
+        // FONT BOYUTU YÖNETİMİ
+        const FONT_SIZES = ['text-sm', 'text-base', 'text-lg', 'text-xl'];
+        const FONT_LABELS = ['Küçük', 'Normal', 'Büyük', 'Çok Büyük'];
+        let fontSizeIndex = parseInt(localStorage.getItem('fontSize') || '1'); // Default: text-base
+
+        function changeFontSize(delta) {
+            fontSizeIndex = Math.max(0, Math.min(FONT_SIZES.length - 1, fontSizeIndex + delta));
+            localStorage.setItem('fontSize', fontSizeIndex);
+            renderQuiz();
+        }
+
+        function getCurrentFontClass() {
+            return FONT_SIZES[fontSizeIndex];
+        }
+
         // TEMA YÖNETİMİ
         function toggleTheme() {
             const html = document.documentElement;
@@ -403,7 +418,7 @@
                     <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs border border-black/5 mt-0.5 ${iconClass}">
                         ${letters[i]}
                     </div>
-                    <span class="text-sm font-medium leading-snug">${opt}</span>
+                    <span class="${getCurrentFontClass()} font-medium leading-snug">${opt}</span>
                 </div>`;
             }).join('');
 
@@ -430,8 +445,16 @@
                         <button onclick="if(confirm('Çıkmak istiyor musun?')) location.reload()" class="text-slate-400 hover:text-red-500"><i data-lucide="x" class="w-5 h-5"></i></button>
                         <span class="font-bold text-slate-700 dark:text-dark-text text-sm">Soru ${currentIndex + 1} / ${currentQuestions.length}</span>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
                         ${timerHtml}
+                        <div class="flex items-center gap-0.5 bg-slate-100 dark:bg-slate-700 rounded-lg px-1">
+                            <button onclick="changeFontSize(-1)" class="p-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30" ${fontSizeIndex === 0 ? 'disabled' : ''}>
+                                <span class="text-xs font-bold">A-</span>
+                            </button>
+                            <button onclick="changeFontSize(1)" class="p-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30" ${fontSizeIndex === FONT_SIZES.length - 1 ? 'disabled' : ''}>
+                                <span class="text-sm font-bold">A+</span>
+                            </button>
+                        </div>
                         <button id="themeBtn" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                         </button>
                     </div>
@@ -444,7 +467,7 @@
                         </div>
                         
                         ${imageHtml}
-                        <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-dark-text mb-4 leading-relaxed">${q.text}</h2>
+                        <h2 class="${getCurrentFontClass()} md:${FONT_SIZES[Math.min(fontSizeIndex + 1, FONT_SIZES.length - 1)]} font-bold text-slate-800 dark:text-dark-text mb-4 leading-relaxed whitespace-pre-line">${q.text}</h2>
                         
                         <div>${optionsHtml}</div>
                         ${explanationHtml}

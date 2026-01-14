@@ -300,6 +300,10 @@
                 return;
             }
 
+            // Mevcut kategorileri bul (Sorumatik için)
+            const categories = [...new Set(questionPool.map(q => q.category).filter(c => c))].sort();
+            const categoryOptions = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
             app.innerHTML = `
                 <div class="flex flex-col h-full bg-slate-50 dark:bg-dark-bg transition-colors duration-300">
                     <div class="absolute top-4 right-4 z-50">
@@ -328,10 +332,50 @@
                                         <option value="dsp">Diğer Sağlık P.</option>
                                     </select>
                                 </div>
+
                                 <div>
+                                    <label class="text-xs font-bold text-slate-400 uppercase">Sınav Modu</label>
+                                    <select id="examMode" onchange="toggleExamModeOptions()" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
+                                        <option value="classic">Klasik Sınav (Deneme/Çıkmış)</option>
+                                        <option value="sorumatik">Sorumatik (Özel Test)</option>
+                                    </select>
+                                </div>
+
+                                <!-- KLASİK SEÇENEKLERİ -->
+                                <div id="classicOptions">
                                     <label class="text-xs font-bold text-slate-400 uppercase">Kaynak</label>
                                     <select id="sourceSelect" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
                                     </select>
+                                </div>
+
+                                <!-- SORUMATİK SEÇENEKLERİ -->
+                                <div id="sorumatikOptions" class="hidden space-y-4">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-400 uppercase">Tür</label>
+                                        <select id="sorumatikType" onchange="toggleSorumatikSubOptions()" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
+                                            <option value="topic">Konu Tarama</option>
+                                            <option value="mistakes">Yanlışlarım (Hata Telafi)</option>
+                                            <option value="random">Maraton (Karışık)</option>
+                                        </select>
+                                    </div>
+
+                                    <div id="topicSelectDiv">
+                                        <label class="text-xs font-bold text-slate-400 uppercase">Konu</label>
+                                        <select id="topicSelect" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
+                                            ${categoryOptions}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-400 uppercase">Soru Sayısı</label>
+                                        <select id="questionCount" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
+                                            <option value="10">10 Soru</option>
+                                            <option value="20">20 Soru</option>
+                                            <option value="30">30 Soru</option>
+                                            <option value="50">50 Soru</option>
+                                            <option value="100">100 Soru</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="pt-2 space-y-2">
@@ -363,6 +407,31 @@
 
             // Kaynak dropdown'unu güncelle
             updateSourceOptions();
+            // Default olarak Sorumatik kapalı
+            toggleExamModeOptions();
+        }
+
+        function toggleExamModeOptions() {
+            const mode = document.getElementById('examMode').value;
+            const classic = document.getElementById('classicOptions');
+            const sorumatik = document.getElementById('sorumatikOptions');
+
+            if (mode === 'classic') {
+                classic.classList.remove('hidden');
+                sorumatik.classList.add('hidden');
+            } else {
+                classic.classList.add('hidden');
+                sorumatik.classList.remove('hidden');
+                toggleSorumatikSubOptions(); // Alt seçenekleri ayarla
+            }
+        }
+
+        function toggleSorumatikSubOptions() {
+            const type = document.getElementById('sorumatikType').value;
+            const topicDiv = document.getElementById('topicSelectDiv');
+
+            if (type === 'topic') topicDiv.classList.remove('hidden');
+            else topicDiv.classList.add('hidden');
         }
 
         // Branşa göre kaynak listesini güncelle
@@ -409,11 +478,10 @@
         }
 
         function startQuiz() {
-            const profile = document.getElementById('profileSelect').value;
-            const source = document.getElementById('sourceSelect').value;
-            const config = EXAM_CONFIG[profile];
-            isTimerActive = document.getElementById('timerToggle').checked;
             isEduMode = document.getElementById('eduToggle').checked;
+            isTimerActive = document.getElementById('timerToggle').checked;
+            const profile = document.getElementById('profileSelect').value;
+            const mode = document.getElementById('examMode').value; // Sınav Modu Check
 
             // Branşa göre sınıf ve profile belirleme
             let classLetter = null;
@@ -423,38 +491,87 @@
             else if (profile === 'igu_c') { classLetter = 'C'; profileFilter = 'isg_c'; }
 
             currentQuestions = [];
-            if (source.includes("Deneme")) {
-                // Deneme sınavı - branşa göre filtrele (profile veya kaynak adından)
-                let pool = questionPool.filter(q => {
-                    if (!q.source.includes("Deneme")) return false;
-                    // Profile değerine göre filtrele
-                    if (profileFilter && q.profile === profileFilter) return true;
-                    // Kaynak adına göre filtrele (örn: Deneme-2025-1-C veya ...1C)
-                    if (classLetter && q.source.trim().endsWith(classLetter)) return true;
-                    // Hekim veya DSP için profile kontrolü
-                    if (profile === 'hekim' && q.profile === 'hekim') return true;
-                    if (profile === 'dsp' && q.profile === 'dsp') return true;
-                    return false;
-                });
-                // Eğer filtrelenmiş soru yoksa, tüm deneme sorularını kullan
-                if (pool.length === 0) pool = questionPool.filter(q => q.source.includes("Deneme"));
-                if (pool.length === 0) pool = questionPool;
 
-                const distribution = config.distribution;
-                for (const [cat, count] of Object.entries(distribution)) {
-                    let validQs = pool.filter(q => q.category === cat);
-                    if (validQs.length > 0) {
-                        while (validQs.length < count) { validQs.push(validQs[Math.floor(Math.random() * validQs.length)]); }
-                        currentQuestions.push(...validQs.slice(0, count));
+            if (mode === 'classic') {
+                const source = document.getElementById('sourceSelect').value;
+                if (!source) { alert("Lütfen bir kaynak seçin!"); return; }
+
+                if (source.includes("Deneme")) {
+                    const config = EXAM_CONFIG[profile] || EXAM_CONFIG['igu_c'];
+                    // Deneme sınavı - branşa göre filtrele
+                    let pool = questionPool.filter(q => {
+                        if (!q.source.includes("Deneme")) return false;
+                        if (profileFilter && q.profile === profileFilter) return true;
+                        if (classLetter && q.source.trim().endsWith(classLetter)) return true;
+                        if (profile === 'hekim' && q.profile === 'hekim') return true;
+                        if (profile === 'dsp' && q.profile === 'dsp') return true;
+                        return false;
+                    });
+
+                    if (pool.length === 0) pool = questionPool.filter(q => q.source.includes("Deneme"));
+                    if (pool.length === 0) pool = questionPool;
+
+                    const distribution = config.distribution;
+                    for (const [cat, count] of Object.entries(distribution)) {
+                        let validQs = pool.filter(q => q.category === cat);
+                        if (validQs.length > 0) {
+                            // Havuz yeterliyse rastgele seç, değilse tekrarla
+                            if (validQs.length >= count) {
+                                validQs.sort(() => Math.random() - 0.5);
+                                currentQuestions.push(...validQs.slice(0, count));
+                            } else {
+                                while (validQs.length < count) { validQs.push(validQs[Math.floor(Math.random() * validQs.length)]); }
+                                currentQuestions.push(...validQs.slice(0, count));
+                            }
+                        }
                     }
+                    currentQuestions.sort(() => Math.random() - 0.5);
+                } else {
+                    // Gerçek sınav
+                    currentQuestions = questionPool.filter(q => q.source === source);
                 }
-                currentQuestions.sort(() => Math.random() - 0.5);
-            } else {
-                // Gerçek sınav - kaynağa göre filtrele
-                currentQuestions = questionPool.filter(q => q.source === source);
+            }
+            else { // SORUMATİK MODU
+                const type = document.getElementById('sorumatikType').value;
+                const count = parseInt(document.getElementById('questionCount').value);
+
+                if (type === 'mistakes') {
+                    const savedMistakes = JSON.parse(localStorage.getItem('myMistakes') || '[]');
+                    if (savedMistakes.length === 0) {
+                        alert("Kayıtlı yanlış cevabınız yok! Önce test çözüp yanlış yapmalısınız :)");
+                        return;
+                    }
+                    // Karıştır ve limit uygula
+                    savedMistakes.sort(() => Math.random() - 0.5);
+                    currentQuestions = savedMistakes.slice(0, count);
+                }
+                else {
+                    let pool = [...questionPool];
+
+                    // Şimdilik sadece profile/branşa uygun soruları alalım
+                    pool = pool.filter(q => {
+                        // Ortak sorular ve branş soruları
+                        if (!q.profile || q.profile === 'ortak') return true;
+                        if (classLetter && q.source.trim().endsWith(classLetter)) return true;
+                        if (profileFilter && q.profile === profileFilter) return true;
+                        if (profile === 'hekim' && q.profile === 'hekim') return true;
+                        if (profile === 'dsp' && q.profile === 'dsp') return true;
+                        return false;
+                    });
+
+                    if (type === 'topic') {
+                        const topic = document.getElementById('topicSelect').value;
+                        pool = pool.filter(q => q.category === topic);
+                    }
+
+                    if (pool.length === 0) { alert("Bu kriterlere uygun soru bulunamadı!"); return; }
+
+                    pool.sort(() => Math.random() - 0.5);
+                    currentQuestions = pool.slice(0, count);
+                }
             }
 
-            if (currentQuestions.length === 0) { alert("Soru bulunamadı!"); return; }
+            if (currentQuestions.length === 0) { alert("Soru bulunamadı (Filtreleme hatası)!"); return; }
 
             userAnswers = {};
             currentIndex = 0;
@@ -637,6 +754,21 @@
         function nextQ() { if (currentIndex < currentQuestions.length - 1) { currentIndex++; renderQuiz(); } }
         function prevQ() { if (currentIndex > 0) { currentIndex--; renderQuiz(); } }
 
+        function saveMistake(q) {
+            if (!q) return;
+            try {
+                const mistakes = JSON.parse(localStorage.getItem('myMistakes') || '[]');
+                // Zaten kayıtlı mı kontrol et (Soru metni ve kaynağa göre)
+                const exists = mistakes.some(m => m.text === q.text && m.source === q.source);
+                if (!exists) {
+                    mistakes.push(q);
+                    localStorage.setItem('myMistakes', JSON.stringify(mistakes));
+                }
+            } catch (e) {
+                console.error("Hata kaydetme sorunu:", e);
+            }
+        }
+
         function finishQuiz() {
             clearInterval(timerInterval);
             let correct = 0, wrong = 0, empty = 0;
@@ -660,6 +792,8 @@
                 else {
                     wrong++;
                     categoryStats[q.category].wrong++;
+                    // Yanlış cevabı kaydet (Sorumatik için)
+                    saveMistake(q);
                 }
             });
 

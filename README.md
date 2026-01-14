@@ -1,49 +1,56 @@
-# İSG Sınavmatik 🚧✅
+# 🛡️ İSG Sınavmatik
 
-**İş Sağlığı ve Güvenliği (İSG)** sınavlarına hazırlanan adaylar (İGU A/B/C, İşyeri Hekimliği, DSP) için geliştirilmiş; yapay zeka destekli özelliklere sahip, kişiselleştirilebilir ve modern bir sınav çalışma asistanıdır.
-
----
-
-## 🌟 Öne Çıkan Özellikler
-
-### 🧠 Sorumatik (Akıllı Test Oluşturucu)
-Klasik denemelerin ötesine geçin!
-- **🎯 Konu Tarama:** Sadece eksik olduğunuz konulardan (Örn: *Mevzuat*, *Risk Analizi*) özel test oluşturun.
-- **❌ Yanlışlarım (Hata Telafi):** Daha önce yanlış cevapladığınız sorular akıllı hafızaya kaydedilir. Bu mod ile sadece hatalarınızdan oluşan bir "telafi sınavı" olabilirsiniz.
-- **🔀 Şık Karıştırma:** Ezberlemeyi önlemek için resimsiz sorularda **şıkların yeri (A-B-C-D-E) her seferinde rastgele değişir**. Resimli sorular ise bozulmaz.
-
-### 📱 Modern ve Kullanıcı Dostu Arayüz
-- **PWA Desteği:** Uygulamayı telefonunuza indirip **internet yokken bile (Offline)** kullanabilirsiniz.
-- **Touch & Swipe:** Sorular arasında parmağınızla kaydırarak gezinin.
-- **Karanlık Mod 🌙:** Göz dostu koyu tema.
-- **Minimal Tasarım:** Gereksiz detaylardan arındırılmış, odaklanmayı sağlayan arayüz.
-
-### 📊 Eğitim ve Analiz
-- **Anında Geri Bildirim:** Eğitim modunda cevabı işaretler işaretlemez açıklamayı görün.
-- **Detaylı Analiz:** Sınav sonunda hangi konuda ne kadar başarılı olduğunuzu grafiklerle görün.
-- **🚩 Hata Bildirimi:** Şüpheli gördüğünüz soruları tek tıkla e-posta yoluyla geliştiriciye bildirin.
-
-### 🥚 Sürpriz Yumurta (Easter Egg)
-- **🕺 Disko Modu:** Başlık çubuğundaki **İSG SINAVMATİK** yazısına **1.5 saniye** basılı tutarsanız ne olacağını görün! (Gizli özellik).
+**İş Sağlığı ve Güvenliği (İSG)** sınavlarına hazırlanan adaylar için özel olarak tasarlanmış; modern, hızlı ve kullanıcı dostu bir web tabanlı test çözme uygulaması. İster masaüstünde ister mobilde, sınavlara en verimli şekilde hazırlanın.
 
 ---
 
-## 🛠️ Teknik Özellikler
-- **Teknoloji:** HTML5, Tailwind CSS, Vanilla JavaScript.
-- **Veri Yapısı:** JSON tabanlı soru havuzu sistemi. Multi-file desteği ile binlerce soru eklenebilir.
-- **Kurulumsuz:** Build step gerektirmez. Direkt `index.html` ile çalışır.
+## ✨ Öne Çıkan Özellikler
 
-## 🚀 Kurulum
+### 🎯 Gelişmiş Sınav Arayüzü
+*   **Kullanıcı Dostu Üst Bar:** Sınav sırasındaki tüm araçlar (Süre, Font, Hata Bildir, Favori, Tema) artık tek bir yerde, elinizin altında.
+*   **Dinamik Font Ayarı:** "T" butonuna basarak soru ve şıkların yazı boyutunu anlık olarak değiştirebilir, okuma deneyiminizi kişiselleştirebilirsiniz.
+*   **Akıllı Şık Karıştırma:** Görseli olmayan sorularda şıkların yerini sürekli değiştirerek ezberciliğin önüne geçer.
+*   **Motivasyon Sistemi:** Sınav sonucunuza göre sizi motive eden özel mesajlar ve detaylı analiz ekranı.
 
-1. Depoyu klonlayın:
-   ```bash
-   git clone https://github.com/enderak/isgtest.git
-   ```
-2. Klasöre girin ve `index.html` dosyasını tarayıcınızda açın.
-   *(Not: JSON dosyalarının sorunsuz yüklenmesi için Live Server vb. bir yerel sunucu kullanmanız önerilir.)*
+### 🧠 Sorumatik Modülü
+Klasik testlerin ötesine geçin:
+*   **Konu Tarama:** Sadece eksik hissettiğiniz konulardan (örn: Hukuk, Teknik) özel testler oluşturun.
+*   **Hata Telafi:** Yanlış yaptığınız soruları otomatik hafızaya alır ve size tekrar sorarak öğrenmenizi pekiştirir.
+*   **❤️ Favorilerim:** Sınav anında "Kalp" ikonuna basarak kaydettiğiniz önemli soruları daha sonra topluca çözebilirsiniz. Ana ekrandaki "Favorilerim" butonu ile tek tıkla erişim!
 
-## 📝 Soru Ekleme Rehberi
-`sorular/_SABLON.jsonc` dosyasındaki formata uygun olarak hazırladığınız `.json` dosyalarını `sorular/` klasörüne atıp, `sorular/index.json` listesine ekleyerek sistemi büyütebilirsiniz.
+### 🎨 Görsel ve Teknik Detaylar
+*   **Modern & Minimalist Tasarım:** Tailwind CSS ile hazırlanmış, göz yormayan ve odaklanmayı artıran arayüz.
+*   **Karanlık Mod (Dark Mode):** Gece çalışmaları için sistemle uyumlu veya manuel ayarlanabilen karanlık tema.
+*   **Disko Modu (Easter Egg 🕺):** Başlıktaki "İSG SINAVMATİK" yazısına basılı tutarsanız ne olur? Küçük bir sürpriz sizi bekliyor!
+*   **PWA Altyapısı:** Mobil uyumlu ve gelecekte offline çalışma yeteneği.
 
 ---
-*Geliştirici: Ender AK*
+
+## 🚀 Kurulum ve Kullanım
+
+Bu proje herhangi bir derleme (build) işlemi veya karmaşık kurulum gerektirmez.
+
+1.  **Projeyi İndirin:**
+    ```bash
+    git clone https://github.com/enderak/isgtest.git
+    ```
+2.  **Çalıştırın:**
+    İndirdiğiniz klasördeki `index.html` dosyasına çift tıklayın ve tarayıcınızda açın. Hepsi bu kadar!
+
+---
+
+## 🛠️ Teknolojiler
+
+*   **HTML5 & Vanilla JavaScript:** Saf performans, framework bağımlılığı yok.
+*   **Tailwind CSS (CDN):** Hızlı ve modern stillendirme.
+*   **Lucide Icons:** Zarif ve hafif ikon seti.
+*   **LocalStorage:** İlerlemenizi, favorilerinizi ve ayarlarınızı tarayıcınızda saklar.
+
+---
+
+## 🤝 Katkıda Bulunma
+
+Hatalı bir soru mu gördünüz? Sınav ekranındaki **Bayrak** ikonuna tıklayarak bize anında bildirebilirsiniz. Geliştirme önerileriniz için Pull Request açmaktan çekinmeyin!
+
+---
+*Başarılar dileriz! 🎓*

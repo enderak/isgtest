@@ -674,8 +674,13 @@
 
                 <div id="quizContent" class="pt-14 pb-20 px-4 overflow-y-auto h-full bg-white dark:bg-dark-card scroller transition-colors duration-300">
                     <div class="max-w-2xl mx-auto">
-                        <div class="flex gap-2 mb-3">
+                        <div class="flex justify-between items-start mb-3">
                             <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 rounded uppercase tracking-wider">${q.category}</span>
+                            
+                            <a href="mailto:isgapp@proton.me?subject=${encodeURIComponent('Hatalı Soru Bildirimi: ' + q.source)}&body=${encodeURIComponent('Merhaba,\n\nAşağıdaki soruda bir hata olduğunu düşünüyorum:\n\nKaynak: ' + q.source + '\nID/Ref: ' + (currentIndex + 1) + '\n\nSoru Metni:\n' + q.text.substring(0, 300) + '...')}" 
+                               class="text-slate-300 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 transition-colors p-1" title="Hatalı Soru Bildir">
+                                <i data-lucide="flag" class="w-4 h-4"></i>
+                            </a>
                         </div>
                         
                         ${imageHtml}

@@ -2,5 +2,22 @@
     "sources": [
         "2025-1C",
         "Deneme"
+    ],
+    "jsFiles": [
+        "2023-2-C",
+        "2024-1-C",
+        "2024-2-C",
+        "2025-1-A",
+        "2025-1-B",
+        "2025-1-C",
+        "Deneme-2024-1-C",
+        "Deneme-2024-2-C",
+        "Deneme-2025-1-A",
+        "Deneme-2025-1-B",
+        "Deneme-2025-1-C",
+        "Deneme-2026-Tahmini-C",
+        "Deneme-2026-Tahmini2-C",
+        "Deneme-2026-Tahmini3-C",
+        "Deneme-2026-Tahmini4-C"
     ]
 }

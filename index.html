@@ -165,15 +165,19 @@
         let questionPool = [];
         let availableSources = [];
         let isLoading = true;
+        window.SoruHavuzu = []; // JS dosyaları için global değişken
 
         async function loadQuestions() {
             try {
                 const indexRes = await fetch('sorular/index.json');
                 if (!indexRes.ok) throw new Error('index.json yüklenemedi');
                 const indexData = await indexRes.json();
-                availableSources = indexData.sources || [];
 
-                const loadPromises = availableSources.map(async (source) => {
+                const jsonSources = indexData.sources || [];
+                const jsFiles = indexData.jsFiles || [];
+
+                // 1. JSON dosyalarını yükle
+                const jsonPromises = jsonSources.map(async (source) => {
                     try {
                         const res = await fetch(`sorular/${source}.json`);
                         if (!res.ok) return [];
@@ -189,16 +193,44 @@
                     }
                 });
 
-                const results = await Promise.all(loadPromises);
-                questionPool = results.flat();
+                // 2. JS dosyalarını dinamik olarak yükle
+                const loadJsFile = (filename) => {
+                    return new Promise((resolve) => {
+                        const script = document.createElement('script');
+                        script.src = `sorular/${filename}.js`;
+                        script.onload = () => resolve(true);
+                        script.onerror = () => {
+                            console.warn(`${filename}.js yüklenemedi`);
+                            resolve(false);
+                        };
+                        document.head.appendChild(script);
+                    });
+                };
+
+                // Önce JS dosyalarını yükle (sırayla)
+                for (const jsFile of jsFiles) {
+                    await loadJsFile(jsFile);
+                }
+
+                // JSON sonuçlarını bekle
+                const jsonResults = await Promise.all(jsonPromises);
+
+                // Tüm soruları birleştir
+                questionPool = [
+                    ...jsonResults.flat(),
+                    ...(window.SoruHavuzu || [])
+                ];
+
+                // Kaynak listesini oluştur
+                availableSources = [...new Set(questionPool.map(q => q.source))].sort().reverse();
 
                 console.log(`✅ ${questionPool.length} soru yüklendi (${availableSources.length} kaynak)`);
                 isLoading = false;
                 renderStartScreen();
             } catch (error) {
                 console.error('Soru yükleme hatası:', error);
-                questionPool = [];
-                availableSources = [];
+                questionPool = window.SoruHavuzu || [];
+                availableSources = [...new Set(questionPool.map(q => q.source))];
                 isLoading = false;
                 renderStartScreen();
             }

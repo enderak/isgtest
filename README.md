@@ -1,61 +1,49 @@
-# İSG Sınav Öğrencisi V18
+# İSG Sınavmatik 🚧✅
 
-İş Sağlığı ve Güvenliği (İSG) sınavlarına hazırlanan adaylar (İGU A/B/C, İşyeri Hekimliği, DSP) için geliştirilmiş; mobil uyumlu, modern ve kullanıcı dostu bir web tabanlı sınav uygulamasıdır.
+**İş Sağlığı ve Güvenliği (İSG)** sınavlarına hazırlanan adaylar (İGU A/B/C, İşyeri Hekimliği, DSP) için geliştirilmiş; yapay zeka destekli özelliklere sahip, kişiselleştirilebilir ve modern bir sınav çalışma asistanıdır.
 
-![Ekran Görüntüsü](img/logo.png) <!-- Varsa logo veya ekran görüntüsü -->
+---
 
-## 🚀 Özellikler
+## 🌟 Öne Çıkan Özellikler
 
-### 🎯 Akıllı Sınav Sistemi
-- **Branş Bazlı Filtreleme:** İGU A, B, C, İşyeri Hekimliği ve DSP için özelleştirilmiş soru havuzları.
-- **Dinamik Soru Yükleme:** JSON ve JS dosyalarından soruları otomatik olarak yükler ve kategorize eder.
-- **Gerçekçi Sınav Dağılımı:** ÖSYM müfredatına uygun konu ağırlıkları (Mevzuat, Teknik, Sağlık vb.).
+### 🧠 Sorumatik (Akıllı Test Oluşturucu)
+Klasik denemelerin ötesine geçin!
+- **🎯 Konu Tarama:** Sadece eksik olduğunuz konulardan (Örn: *Mevzuat*, *Risk Analizi*) özel test oluşturun.
+- **❌ Yanlışlarım (Hata Telafi):** Daha önce yanlış cevapladığınız sorular akıllı hafızaya kaydedilir. Bu mod ile sadece hatalarınızdan oluşan bir "telafi sınavı" olabilirsiniz.
+- **🔀 Şık Karıştırma:** Ezberlemeyi önlemek için resimsiz sorularda **şıkların yeri (A-B-C-D-E) her seferinde rastgele değişir**. Resimli sorular ise bozulmaz.
 
-### 📱 Mobil & Tablet Uyumu
-- **Responsive Tasarım:** Telefon ve tabletlerde kusursuz görünüm.
-- **Dokunmatik Kontroller:** Sola/sağa kaydırarak (swipe) soru değiştirme.
-- **PWA Desteği:** Ana ekrana eklenebilir ve tam ekran çalışır.
+### 📱 Modern ve Kullanıcı Dostu Arayüz
+- **PWA Desteği:** Uygulamayı telefonunuza indirip **internet yokken bile (Offline)** kullanabilirsiniz.
+- **Touch & Swipe:** Sorular arasında parmağınızla kaydırarak gezinin.
+- **Karanlık Mod 🌙:** Göz dostu koyu tema.
+- **Minimal Tasarım:** Gereksiz detaylardan arındırılmış, odaklanmayı sağlayan arayüz.
 
-### 💡 Eğitim Modu
-- **Anında Geri Bildirim:** Cevabı işaretlediğiniz an doğru/yanlış durumu ve detaylı açıklamayı görün.
-- **Konu Analizi:** Sınav sonunda her ders kategorisi için detaylı başarı grafikleri (Örn: Hukuk %80, Teknik %40).
+### 📊 Eğitim ve Analiz
+- **Anında Geri Bildirim:** Eğitim modunda cevabı işaretler işaretlemez açıklamayı görün.
+- **Detaylı Analiz:** Sınav sonunda hangi konuda ne kadar başarılı olduğunuzu grafiklerle görün.
+- **🚩 Hata Bildirimi:** Şüpheli gördüğünüz soruları tek tıkla e-posta yoluyla geliştiriciye bildirin.
 
-### ⚙️ Kişiselleştirme
-- **Karanlık Mod (Dark Mode):** Göz yormayan gece modu.
-- **Font Boyutu:** Yazı boyutunu (A+/A-) isteğinize göre ayarlayın.
-- **Süre Kontrolü:** İsteğe bağlı 75 dakikalık sınav sayacı.
+### 🥚 Sürpriz Yumurta (Easter Egg)
+- **🕺 Disko Modu:** Başlık çubuğundaki **İSG SINAVMATİK** yazısına **1.5 saniye** basılı tutarsanız ne olacağını görün! (Gizli özellik).
 
-## 🛠️ Kurulum ve Çalıştırma
+---
 
-Bu proje **HTML, Tailwind CSS (CDN) ve Vanilla JavaScript** ile geliştirilmiştir. Herhangi bir derleme (build) işlemi gerektirmez.
+## 🛠️ Teknik Özellikler
+- **Teknoloji:** HTML5, Tailwind CSS, Vanilla JavaScript.
+- **Veri Yapısı:** JSON tabanlı soru havuzu sistemi. Multi-file desteği ile binlerce soru eklenebilir.
+- **Kurulumsuz:** Build step gerektirmez. Direkt `index.html` ile çalışır.
 
-1. **Projeyi İndirin:**
+## 🚀 Kurulum
+
+1. Depoyu klonlayın:
    ```bash
    git clone https://github.com/enderak/isgtest.git
    ```
-2. **Çalıştırın:**
-   `index.html` dosyasını tarayıcınızda açmanız yeterlidir.
-   *(Not: JSON dosyalarının okunabilmesi için yerel bir sunucuda (Live Server vb.) çalıştırmanız önerilir.)*
+2. Klasöre girin ve `index.html` dosyasını tarayıcınızda açın.
+   *(Not: JSON dosyalarının sorunsuz yüklenmesi için Live Server vb. bir yerel sunucu kullanmanız önerilir.)*
 
-## 📂 Dosya Yapısı
-
-- `index.html`: Uygulamanın ana giriş noktası ve tüm mantığı barındıran dosya.
-- `sorular/`: Soru havuzlarının bulunduğu klasör (JSON formatında).
-  - `index.json`: Yüklenecek soru dosyalarının listesi.
-  - `_SABLON.jsonc`: Yeni soru eklemek için şablon dosyası.
-- `img/`: Görsel dosyaları.
-
-## 📝 Soru Ekleme
-
-Yeni bir soru paketi eklemek için:
-1. `sorular/_SABLON.jsonc` dosyasındaki formatı inceleyin.
-2. Yeni bir `.json` dosyası oluşturun (örn: `2025-Deneme-1.json`).
-3. Dosya adını `sorular/index.json` listesine ekleyin.
-4. (Opsiyonel) Sorular JS formatında da (`window.SoruHavuzu`) eklenebilir.
-
-## 🤝 Katkıda Bulunma
-
-Hataları bildirmek veya özellik önermek için lütfen "Issues" kısmını kullanın.
+## 📝 Soru Ekleme Rehberi
+`sorular/_SABLON.jsonc` dosyasındaki formata uygun olarak hazırladığınız `.json` dosyalarını `sorular/` klasörüne atıp, `sorular/index.json` listesine ekleyerek sistemi büyütebilirsiniz.
 
 ---
 *Geliştirici: Ender AK*

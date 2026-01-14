@@ -289,14 +289,6 @@
                 return;
             }
 
-            const sources = [...new Set(questionPool.map(q => q.source))].sort().reverse();
-            let sourceOptions = sources.length > 0
-                ? sources.map(s => {
-                    let style = s.includes('Deneme') ? 'font-weight:bold; color:#059669;' : '';
-                    return `<option value="${s}" style="${style}">${s}</option>`;
-                }).join('')
-                : '<option value="">Soru bulunamadı</option>';
-
             app.innerHTML = `
                 <div class="flex flex-col h-full bg-slate-50 dark:bg-dark-bg transition-colors duration-300">
                     <div class="absolute top-4 right-4 z-50">
@@ -317,7 +309,7 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-xs font-bold text-slate-400 uppercase">Branş</label>
-                                    <select id="profileSelect" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
+                                    <select id="profileSelect" onchange="updateSourceOptions()" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
                                         <option value="igu_c">İGU (C Sınıfı)</option>
                                         <option value="igu_b">İGU (B Sınıfı)</option>
                                         <option value="igu_a">İGU (A Sınıfı)</option>
@@ -328,7 +320,6 @@
                                 <div>
                                     <label class="text-xs font-bold text-slate-400 uppercase">Kaynak</label>
                                     <select id="sourceSelect" class="w-full mt-1 p-3 rounded-lg border dark:border-dark-border bg-white dark:bg-slate-700 font-bold text-slate-700 dark:text-dark-text outline-none focus:ring-2 focus:ring-emerald-400 text-sm">
-                                        ${sourceOptions}
                                     </select>
                                 </div>
 
@@ -358,6 +349,48 @@
                     </div>
                 </div>
             `;
+
+            // Kaynak dropdown'unu güncelle
+            updateSourceOptions();
+        }
+
+        // Branşa göre kaynak listesini güncelle
+        function updateSourceOptions() {
+            const profile = document.getElementById('profileSelect')?.value || 'igu_c';
+            const sourceSelect = document.getElementById('sourceSelect');
+            if (!sourceSelect) return;
+
+            // Branşa göre sınıf harfi belirleme
+            let classLetter = null;
+            if (profile === 'igu_a') classLetter = 'A';
+            else if (profile === 'igu_b') classLetter = 'B';
+            else if (profile === 'igu_c') classLetter = 'C';
+
+            // Kaynakları filtrele
+            let sources = [...new Set(questionPool.map(q => q.source))];
+
+            if (classLetter) {
+                // Sadece o sınıfa ait kaynakları göster (örn: -C ile bitenler)
+                sources = sources.filter(s => {
+                    if (s.includes('Deneme')) {
+                        // Deneme sınavları için: -C ile biten veya sınıf belirtilmemiş olanlar
+                        return s.endsWith('-' + classLetter) || !s.match(/-[ABC]$/);
+                    } else {
+                        // Gerçek sınavlar için: -C ile bitenler
+                        return s.endsWith('-' + classLetter);
+                    }
+                });
+            }
+
+            sources = sources.sort().reverse();
+
+            // Dropdown'u güncelle
+            sourceSelect.innerHTML = sources.length > 0
+                ? sources.map(s => {
+                    let style = s.includes('Deneme') ? 'font-weight:bold; color:#059669;' : '';
+                    return `<option value="${s}" style="${style}">${s}</option>`;
+                }).join('')
+                : '<option value="">Soru bulunamadı</option>';
         }
 
         function startQuiz() {

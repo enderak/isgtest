@@ -1,6 +1,6 @@
 {
     "source": "KAYNAK_ADI",
-    "profile": "igu",
+    "profile": "isg_c",
     "questions": [
         {
             "category": "Mevzuat",
@@ -43,10 +43,12 @@
 //    Örnek: "source": "2024-2A"
 //
 // 3. "profile" alanı:
-//    - "igu" = İş Güvenliği Uzmanı
+// 3. "profile" alanı:
+//    - "isg_c" = İGU C Sınıfı (En yaygın)
+//    - "isg_b" = İGU B Sınıfı
+//    - "isg_a" = İGU A Sınıfı
 //    - "hekim" = İşyeri Hekimi
 //    - "dsp" = Diğer Sağlık Personeli
-//    - "ortak" = Herkes için geçerli
 //
 // 4. "category" alanı için geçerli değerler:
 //    - Mevzuat

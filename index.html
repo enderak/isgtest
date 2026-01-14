@@ -714,7 +714,7 @@
                     <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs border border-black/5 mt-0.5 ${iconClass}">
                         ${letters[i]}
                     </div>
-                    <span class="${getCurrentFontClass()} font-medium leading-snug">${opt}</span>
+                    <span class="option-text ${getCurrentFontClass()} md:${FONT_SIZES[Math.min(fontSizeIndex + 1, FONT_SIZES.length - 1)]} font-medium leading-snug transition-all duration-300">${opt}</span>
                 </div>`;
             }).join('');
 
@@ -742,44 +742,54 @@
             }
 
             app.innerHTML = `
-                <div id="quizHeader" class="fixed top-0 left-0 right-0 px-4 py-3 border-b border-slate-100 dark:border-dark-border bg-white dark:bg-dark-card flex items-center justify-between z-40 shadow-sm h-12 transition-colors duration-300 max-w-md mx-auto">
-                    <div class="flex items-center gap-2">
-                        <button onclick="if(confirm('Çıkmak istiyor musun?')) location.reload()" class="text-slate-400 hover:text-red-500"><i data-lucide="x" class="w-5 h-5"></i></button>
-                        <span class="font-bold text-slate-700 dark:text-dark-text text-sm">Soru ${currentIndex + 1} / ${currentQuestions.length}</span>
+                <div id="quizHeader" class="fixed top-0 left-0 right-0 px-4 h-14 bg-white dark:bg-dark-card border-b border-slate-100 dark:border-dark-border flex items-center justify-between z-40 transition-colors duration-300 max-w-md mx-auto">
+                    <!-- Sol: Çıkış ve Soru No -->
+                    <div class="flex items-center gap-3">
+                         <button onclick="if(confirm('Çıkmak istiyor musun?')) location.reload()" class="p-1 -ml-1 text-slate-400 hover:text-red-500 transition-colors"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                         <div class="flex flex-col leading-none">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500">SORU</span>
+                            <span class="font-black text-slate-700 dark:text-dark-text text-base">${currentIndex + 1} <span class="text-slate-300 font-normal">/</span> ${currentQuestions.length}</span>
+                         </div>
                     </div>
+                    
+                    <!-- Sağ: Araçlar -->
                     <div class="flex items-center gap-2">
                         ${timerHtml}
-                        <div class="flex items-center gap-0.5 bg-slate-100 dark:bg-slate-700 rounded-lg px-1">
-                            <button onclick="changeFontSize(-1)" class="p-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30" ${fontSizeIndex === 0 ? 'disabled' : ''}>
-                                <span class="text-xs font-bold">A-</span>
+                        
+                        <!-- Araç Çubuğu -->
+                        <div class="flex items-center gap-0.5 bg-slate-50 dark:bg-slate-800/50 rounded-full border border-slate-100 dark:border-slate-800 p-0.5">
+                             <!-- Font -->
+                            <button onclick="cycleFontSize()" class="p-2 rounded-full hover:bg-white dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all active:scale-95" title="Yazı Boyutu">
+                                <i data-lucide="type" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="changeFontSize(1)" class="p-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-30" ${fontSizeIndex === FONT_SIZES.length - 1 ? 'disabled' : ''}>
-                                <span class="text-sm font-bold">A+</span>
+
+                            <!-- Hata -->
+                             <a href="mailto:isgapp@proton.me?subject=${encodeURIComponent('Hatalı Soru Bildirimi: ' + q.source)}&body=${encodeURIComponent('Ref: ' + (currentIndex + 1) + '\nSoru: ' + q.text.substring(0, 50))}" 
+                               class="p-2 rounded-full hover:bg-white dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-all active:scale-95 flex items-center justify-center" title="Hata Bildir">
+                                <i data-lucide="flag" class="w-4 h-4"></i>
+                            </a>
+
+                            <!-- Favori -->
+                            <button onclick="toggleFavorite(${currentIndex})" class="p-2 rounded-full hover:bg-white dark:hover:bg-slate-700 ${isFavorite(q) ? 'text-red-500 dark:text-red-400' : 'text-slate-500 dark:text-slate-400'} transition-all active:scale-95" title="Favori">
+                                <i data-lucide="heart" class="w-4 h-4 ${isFavorite(q) ? 'fill-current' : ''}"></i>
+                            </button>
+
+                            <!-- Tema -->
+                            <button id="quizThemeBtn" onclick="toggleTheme()" class="p-2 rounded-full hover:bg-white dark:hover:bg-slate-700 text-amber-500 dark:text-blue-400 transition-all active:scale-95">
+                                <i data-lucide="${document.documentElement.classList.contains('dark') ? 'moon' : 'sun'}" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <button id="themeBtn" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                        </button>
                     </div>
                 </div>
 
                 <div id="quizContent" class="pt-14 pb-20 px-4 overflow-y-auto h-full bg-white dark:bg-dark-card scroller transition-colors duration-300">
                     <div class="max-w-2xl mx-auto">
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300 rounded uppercase tracking-wider">${q.category}</span>
-                            
-                            <a href="mailto:isgapp@proton.me?subject=${encodeURIComponent('Hatalı Soru Bildirimi: ' + q.source)}&body=${encodeURIComponent('Merhaba,\n\nAşağıdaki soruda bir hata olduğunu düşünüyorum:\n\nKaynak: ' + q.source + '\nID/Ref: ' + (currentIndex + 1) + '\n\nSoru Metni:\n' + q.text.substring(0, 300) + '...')}" 
-                               class="group flex items-center gap-1.5 px-2 py-1 rounded-full bg-red-50 dark:bg-red-900/10 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all opacity-80 hover:opacity-100" title="Hatalı Soru Bildir">
-                                <i data-lucide="flag" class="w-3.5 h-3.5"></i>
-                                <span class="text-[10px] font-bold">Hata Bildir</span>
-                            </a>
-                            
-                            <button onclick="toggleFavorite()" class="group flex items-center gap-1.5 px-2 py-1 rounded-full bg-pink-50 dark:bg-pink-900/10 text-pink-500 hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-all ml-1" title="Favorilere Ekle">
-                                <i data-lucide="heart" class="w-3.5 h-3.5 ${isFavorite(q) ? 'fill-current' : ''}"></i>
-                            </button>
+                        <div class="mb-3">
+                             <span class="text-[10px] font-bold px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-md uppercase tracking-wider shadow-sm">${q.category}</span>
                         </div>
                         
                         ${imageHtml}
-                        <h2 class="${getCurrentFontClass()} md:${FONT_SIZES[Math.min(fontSizeIndex + 1, FONT_SIZES.length - 1)]} font-bold text-slate-800 dark:text-dark-text mb-4 leading-relaxed whitespace-pre-line">${q.text}</h2>
+                        <h2 id="questionText" class="${getCurrentFontClass()} md:${FONT_SIZES[Math.min(fontSizeIndex + 1, FONT_SIZES.length - 1)]} font-bold text-slate-800 dark:text-dark-text mb-6 leading-relaxed whitespace-pre-line transition-all duration-300 bg-white dark:bg-dark-card p-4 rounded-xl shadow-sm border border-slate-100 dark:border-dark-border">${q.text}</h2>
                         
                         <div>${optionsHtml}</div>
                         ${explanationHtml}

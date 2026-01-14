@@ -266,6 +266,14 @@
         loadTheme();
         loadQuestions();
 
+        // Cache temizleme
+        function clearCacheAndReload() {
+            if (confirm('Tüm ayarlar sıfırlanacak ve sayfa yenilenecek. Devam etmek istiyor musunuz?')) {
+                localStorage.clear();
+                location.reload(true);
+            }
+        }
+
         function renderStartScreen() {
             setTimeout(() => { lucide.createIcons(); updateThemeIcons(); }, 0);
 
@@ -337,6 +345,10 @@
 
                             <button onclick="startQuiz()" ${questionPool.length === 0 ? 'disabled' : ''} class="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50">
                                 Başla <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                            
+                            <button onclick="clearCacheAndReload()" class="w-full mt-2 text-xs text-slate-400 hover:text-red-500 py-2">
+                                🗑️ Cache Temizle ve Yenile
                             </button>
                         </div>
                     </div>

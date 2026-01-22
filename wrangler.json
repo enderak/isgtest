@@ -1,6 +1,7 @@
 {
-  "name": "isg-sinavmatik",
-  "compatibility_date": "2024-01-22",
+  // wrangler.json
+"name": "isgtest",
+    "compatibility_date": "2024-01-22",
   "assets": {
     "directory": "."
   }
